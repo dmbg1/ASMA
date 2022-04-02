@@ -1,0 +1,45 @@
+{
+  "id": 1,
+  "width": 5,
+  "lanes": [
+    {
+      "vmax": entre 50 a 60,
+      "cars": [ nº de carros entre 0 e 7
+        { tirar carro do json quando ultrapassa a interseção
+          "acceleration": entre 2.5 5,
+          "deceleration": +2 relativamente à acelaração,
+          "position": relativamente ao semáforo
+        }
+      ],
+      "orientation": "N",
+      "trafficLight": {
+        "default_color": "red",
+        "default_duration": 5
+      }
+    },
+    {
+      "cars": [],
+      "orientation": "E",
+      "trafficLight": {
+        "default_color": "red",
+        "default_duration": 5
+      }
+    },
+    {
+      "cars": [],
+      "orientation": "O",
+      "trafficLight": {
+        "default_color": "red",
+        "default_duration": 5
+      }
+    },
+    {
+      "cars": [],
+      "orientation": "S",
+      "trafficLight": {
+        "default_color": "red",
+        "default_duration": 5
+      }
+    }
+  ]
+}
