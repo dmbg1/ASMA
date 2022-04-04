@@ -8,16 +8,16 @@ public class Lane {
     private JSONObject JSONlane = new JSONObject();
     private ArrayList<Car> cars = new ArrayList<>();
     private JSONArray JSONCars = new JSONArray();
-    private String orientation;
-    private float velMax;
+    private TrafficLight trafficLight;
+    private char orientation;
 
-    public Lane(String orientation, float velMax) {
+    public Lane(char orientation, TrafficLight trafficLight) {
 
         this.orientation = orientation;
-        this.velMax = velMax;
-        JSONlane.put("maxVelocity", velMax);
-        JSONlane.put("orientation", this.orientation);
+        this.trafficLight = trafficLight;
+        JSONlane.put("orientation", Character.toString(this.orientation));
         JSONlane.put("cars", this.JSONCars);
+        JSONlane.put("traffic_light", this.trafficLight.getJSONTrafficLight());
     }
 
     public JSONObject getJSONlane() {

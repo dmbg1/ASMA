@@ -1,0 +1,121 @@
+{
+    "max_vel": 51.2798,
+    "width": 5,
+    "lanes": [
+        {
+            "cars": [{
+                "deceleration": 5.5458374,
+                "acceleration": 3.5458376,
+                "position": 10
+            }],
+            "orientation": "N",
+            "traffic_light": {
+                "color": "g",
+                "default_duration": 16.50328
+            }
+        },
+        {
+            "cars": [
+                {
+                    "deceleration": 5.1721945,
+                    "acceleration": 3.1721945,
+                    "position": 10
+                },
+                {
+                    "deceleration": 4.7313895,
+                    "acceleration": 2.7313895,
+                    "position": 10
+                },
+                {
+                    "deceleration": 4.6964254,
+                    "acceleration": 2.6964257,
+                    "position": 10
+                },
+                {
+                    "deceleration": 6.0722733,
+                    "acceleration": 4.0722733,
+                    "position": 10
+                },
+                {
+                    "deceleration": 6.670942,
+                    "acceleration": 4.670942,
+                    "position": 10
+                },
+                {
+                    "deceleration": 4.824419,
+                    "acceleration": 2.824419,
+                    "position": 10
+                }
+            ],
+            "orientation": "S",
+            "traffic_light": {
+                "color": "g",
+                "default_duration": 16.50328
+            }
+        },
+        {
+            "cars": [
+                {
+                    "deceleration": 5.5828896,
+                    "acceleration": 3.5828898,
+                    "position": 10
+                },
+                {
+                    "deceleration": 6.361755,
+                    "acceleration": 4.361755,
+                    "position": 10
+                },
+                {
+                    "deceleration": 4.750264,
+                    "acceleration": 2.7502642,
+                    "position": 10
+                }
+            ],
+            "orientation": "E",
+            "traffic_light": {
+                "color": "r",
+                "default_duration": 16.50328
+            }
+        },
+        {
+            "cars": [
+                {
+                    "deceleration": 6.856002,
+                    "acceleration": 4.856002,
+                    "position": 10
+                },
+                {
+                    "deceleration": 6.0746584,
+                    "acceleration": 4.0746584,
+                    "position": 10
+                },
+                {
+                    "deceleration": 6.1295853,
+                    "acceleration": 4.1295853,
+                    "position": 10
+                },
+                {
+                    "deceleration": 5.720847,
+                    "acceleration": 3.720847,
+                    "position": 10
+                },
+                {
+                    "deceleration": 6.9843388,
+                    "acceleration": 4.9843388,
+                    "position": 10
+                },
+                {
+                    "deceleration": 5.924222,
+                    "acceleration": 3.9242222,
+                    "position": 10
+                }
+            ],
+            "orientation": "W",
+            "traffic_light": {
+                "color": "r",
+                "default_duration": 16.50328
+            }
+        }
+    ],
+    "id": 1
+}

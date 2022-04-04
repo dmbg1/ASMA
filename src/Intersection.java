@@ -1,39 +1,33 @@
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.io.BufferedWriter;
-import java.io.IOException;
-import java.lang.reflect.Array;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 
 public class Intersection {
 
-    private JSONObject JSONintersection = new JSONObject();
+    private JSONObject JSONIntersection = new JSONObject();
     private int id;
     private float width;
+    private float vMax;
     private ArrayList<Lane> lanes = new ArrayList<>();
-    private JSONArray JSONlanes = new JSONArray();
+    private JSONArray JSONLanes = new JSONArray();
 
-    public Intersection(int id, float width) {
-
+    public Intersection(int id, float width, float vMax) {
+        this.vMax = vMax;
         this.id = id;
         this.width = width;
-
-        JSONintersection.put("id", id);
-        JSONintersection.put("width", width);
-        JSONintersection.put("lanes", JSONlanes);
-
+        JSONIntersection.put("id", id);
+        JSONIntersection.put("max_vel", vMax);
+        JSONIntersection.put("width", width);
+        JSONIntersection.put("lanes", JSONLanes);
     }
 
     public void addLane(Lane lane) {
-
         this.lanes.add(lane);
-        this.JSONlanes.put(lane.getJSONlane());
+        this.JSONLanes.put(lane.getJSONlane());
     }
 
-    public JSONObject getJSONintersection() {
-        return JSONintersection;
+    public JSONObject getJSONIntersection() {
+        return JSONIntersection;
     }
 }

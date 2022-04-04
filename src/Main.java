@@ -7,7 +7,7 @@ public class Main {
 
     public static void main(String[] args) {
 
-        String filename = "file";
+        String filename = "file2";
 
         try {
             JsonGenerator jsonGenerator = new JsonGenerator(filename + ".json");
