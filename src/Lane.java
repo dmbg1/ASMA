@@ -20,13 +20,13 @@ public class Lane {
         JSONlane.put("traffic_light", this.trafficLight.getJSONTrafficLight());
     }
 
-    public JSONObject getJSONlane() {
+    public JSONObject getJSONLane() {
         return JSONlane;
     }
 
     public void addCar(Car car) {
 
         this.cars.add(car);
-        this.JSONCars.put(car.getJSONcar());
+        this.JSONCars.put(car.getJSONCar());
     }
 }

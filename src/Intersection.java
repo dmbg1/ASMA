@@ -7,12 +7,12 @@ public class Intersection {
 
     private JSONObject JSONIntersection = new JSONObject();
     private int id;
-    private float width;
-    private float vMax;
+    private double width;
+    private double vMax;
     private ArrayList<Lane> lanes = new ArrayList<>();
     private JSONArray JSONLanes = new JSONArray();
 
-    public Intersection(int id, float width, float vMax) {
+    public Intersection(int id, double width, double vMax) {
         this.vMax = vMax;
         this.id = id;
         this.width = width;
@@ -24,7 +24,7 @@ public class Intersection {
 
     public void addLane(Lane lane) {
         this.lanes.add(lane);
-        this.JSONLanes.put(lane.getJSONlane());
+        this.JSONLanes.put(lane.getJSONLane());
     }
 
     public JSONObject getJSONIntersection() {

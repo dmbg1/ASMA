@@ -1,119 +1,74 @@
 {
-    "max_vel": 51.2798,
+    "max_vel": 51.47065685339111,
     "width": 5,
     "lanes": [
         {
-            "cars": [{
-                "deceleration": 5.5458374,
-                "acceleration": 3.5458376,
-                "position": 10
-            }],
+            "cars": [
+                {
+                    "deceleration": 4.812750650822688,
+                    "acceleration": 2.812750650822687,
+                    "length": 4.140592257999673,
+                    "position": 10
+                },
+                {
+                    "deceleration": 4.653834468746889,
+                    "acceleration": 2.653834468746889,
+                    "length": 4.562323789537906,
+                    "position": 10
+                },
+                {
+                    "deceleration": 5.962110548080062,
+                    "acceleration": 3.9621105480800622,
+                    "length": 4.462853694304707,
+                    "position": 10
+                }
+            ],
             "orientation": "N",
             "traffic_light": {
                 "color": "g",
-                "default_duration": 16.50328
+                "default_duration": 13.145769875005783
             }
         },
         {
             "cars": [
                 {
-                    "deceleration": 5.1721945,
-                    "acceleration": 3.1721945,
+                    "deceleration": 4.952066872432786,
+                    "acceleration": 2.9520668724327854,
+                    "length": 4.3066199064153015,
                     "position": 10
                 },
                 {
-                    "deceleration": 4.7313895,
-                    "acceleration": 2.7313895,
-                    "position": 10
-                },
-                {
-                    "deceleration": 4.6964254,
-                    "acceleration": 2.6964257,
-                    "position": 10
-                },
-                {
-                    "deceleration": 6.0722733,
-                    "acceleration": 4.0722733,
-                    "position": 10
-                },
-                {
-                    "deceleration": 6.670942,
-                    "acceleration": 4.670942,
-                    "position": 10
-                },
-                {
-                    "deceleration": 4.824419,
-                    "acceleration": 2.824419,
+                    "deceleration": 6.960921369114589,
+                    "acceleration": 4.960921369114589,
+                    "length": 4.500005296374923,
                     "position": 10
                 }
             ],
             "orientation": "S",
             "traffic_light": {
                 "color": "g",
-                "default_duration": 16.50328
+                "default_duration": 13.145769875005783
             }
         },
         {
-            "cars": [
-                {
-                    "deceleration": 5.5828896,
-                    "acceleration": 3.5828898,
-                    "position": 10
-                },
-                {
-                    "deceleration": 6.361755,
-                    "acceleration": 4.361755,
-                    "position": 10
-                },
-                {
-                    "deceleration": 4.750264,
-                    "acceleration": 2.7502642,
-                    "position": 10
-                }
-            ],
+            "cars": [{
+                "deceleration": 5.531387967583695,
+                "acceleration": 3.531387967583695,
+                "length": 4.143581999439758,
+                "position": 10
+            }],
             "orientation": "E",
             "traffic_light": {
                 "color": "r",
-                "default_duration": 16.50328
+                "default_duration": 13.145769875005783
             }
         },
         {
-            "cars": [
-                {
-                    "deceleration": 6.856002,
-                    "acceleration": 4.856002,
-                    "position": 10
-                },
-                {
-                    "deceleration": 6.0746584,
-                    "acceleration": 4.0746584,
-                    "position": 10
-                },
-                {
-                    "deceleration": 6.1295853,
-                    "acceleration": 4.1295853,
-                    "position": 10
-                },
-                {
-                    "deceleration": 5.720847,
-                    "acceleration": 3.720847,
-                    "position": 10
-                },
-                {
-                    "deceleration": 6.9843388,
-                    "acceleration": 4.9843388,
-                    "position": 10
-                },
-                {
-                    "deceleration": 5.924222,
-                    "acceleration": 3.9242222,
-                    "position": 10
-                }
-            ],
+            "cars": [],
             "orientation": "W",
             "traffic_light": {
                 "color": "r",
-                "default_duration": 16.50328
+                "default_duration": 13.145769875005783
             }
         }
     ],
