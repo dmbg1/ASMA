@@ -1,0 +1,132 @@
+{
+    "max_vel": 50.84418124808867,
+    "width": 5,
+    "lanes": [
+        {
+            "cars": [
+                {
+                    "deceleration": 6.287453783369941,
+                    "acceleration": 4.287453783369941,
+                    "length": 4.084164626250171,
+                    "position": 3.0420823131250856
+                },
+                {
+                    "deceleration": 6.470070666864444,
+                    "acceleration": 4.470070666864444,
+                    "length": 4.72163789839375,
+                    "position": 8.444983575447047
+                },
+                {
+                    "deceleration": 4.904359427918797,
+                    "acceleration": 2.9043594279187968,
+                    "length": 4.572946153221066,
+                    "position": 14.092275601254457
+                },
+                {
+                    "deceleration": 4.64733382547376,
+                    "acceleration": 2.64733382547376,
+                    "length": 4.402578490365389,
+                    "position": 19.580037923047684
+                },
+                {
+                    "deceleration": 5.837479522640459,
+                    "acceleration": 3.837479522640459,
+                    "length": 4.796206567899407,
+                    "position": 25.17943045218008
+                },
+                {
+                    "deceleration": 5.997695758197203,
+                    "acceleration": 3.997695758197203,
+                    "length": 4.80537118548914,
+                    "position": 30.980219328874348
+                },
+                {
+                    "deceleration": 6.368434411304372,
+                    "acceleration": 4.368434411304372,
+                    "length": 4.626431396558425,
+                    "position": 36.69612061989813
+                }
+            ],
+            "orientation": "N",
+            "traffic_light": {
+                "color": "r",
+                "default_duration": 13.39665433985985
+            }
+        },
+        {
+            "cars": [
+                {
+                    "deceleration": 6.720515552156792,
+                    "acceleration": 4.720515552156792,
+                    "length": 4.988342199800025,
+                    "position": 3.4941710999000124
+                },
+                {
+                    "deceleration": 6.003057652474438,
+                    "acceleration": 4.003057652474438,
+                    "length": 4.223205325268105,
+                    "position": 9.099944862434077
+                },
+                {
+                    "deceleration": 5.052761710868904,
+                    "acceleration": 3.052761710868904,
+                    "length": 4.782670832496183,
+                    "position": 14.60288294131622
+                }
+            ],
+            "orientation": "S",
+            "traffic_light": {
+                "color": "r",
+                "default_duration": 13.39665433985985
+            }
+        },
+        {
+            "cars": [],
+            "orientation": "E",
+            "traffic_light": {
+                "color": "g",
+                "default_duration": 13.39665433985985
+            }
+        },
+        {
+            "cars": [
+                {
+                    "deceleration": 4.903444030782103,
+                    "acceleration": 2.903444030782103,
+                    "length": 4.642748269594096,
+                    "position": 3.321374134797048
+                },
+                {
+                    "deceleration": 4.54142447785858,
+                    "acceleration": 2.541424477858581,
+                    "length": 4.864262390648285,
+                    "position": 9.074879464918238
+                },
+                {
+                    "deceleration": 6.585271806274301,
+                    "acceleration": 4.585271806274301,
+                    "length": 4.044275513345007,
+                    "position": 14.529148416914884
+                },
+                {
+                    "deceleration": 4.945725886516843,
+                    "acceleration": 2.945725886516844,
+                    "length": 4.628950724951095,
+                    "position": 19.865761536062937
+                },
+                {
+                    "deceleration": 5.298263975801602,
+                    "acceleration": 3.2982639758016017,
+                    "length": 4.195186419131163,
+                    "position": 25.277830108104066
+                }
+            ],
+            "orientation": "W",
+            "traffic_light": {
+                "color": "g",
+                "default_duration": 13.39665433985985
+            }
+        }
+    ],
+    "id": 1
+}

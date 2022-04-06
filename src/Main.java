@@ -7,24 +7,18 @@ public class Main {
 
     public static void main(String[] args) {
 
-        String filename = "file2";
+        String filename = "intersection";
+        Intersection intersection;
 
         try {
             JsonGenerator jsonGenerator = new JsonGenerator(filename + ".json");
+            intersection = jsonGenerator.getIntersection();
 
         } catch (IOException e) {
             e.printStackTrace();
+            return;
         }
 
-        /*
-        try {
-            BufferedWriter writer = Files.newBufferedWriter(Paths.get(filename + ".json"));
-
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        */
 
     }
 }

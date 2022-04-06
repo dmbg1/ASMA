@@ -10,6 +10,7 @@ public class JsonGenerator {
 
     private String filename;
     private Intersection intersection;
+    private double distance = 0;
 
     public JsonGenerator(String filename) throws IOException {
 
@@ -48,6 +49,7 @@ public class JsonGenerator {
 
             int numCars = r.nextInt(8);
             //Aciciona carros a lane
+            distance = 0;
             for (int j = 0; j < numCars; j++)
                 addCarToLane(lane, r);
 
@@ -55,11 +57,15 @@ public class JsonGenerator {
         }
     }
 
+    //distance e um temporary field nao sei se vale a pena corrigir isso
     public void addCarToLane(Lane lane, Random r) {
         double acceleration = (2.5 + r.nextDouble() * 2.5);
         double deceleration = acceleration + 2;
-        double position = 10; // Nao sei como definir este valor
         double length =  (4 + r.nextDouble() * 1);
+        //Codigo que calcula posicao de cada carro
+        distance += length/2 + 1; //1 representa o espaço entre dois carros ou entre o carro e o semaforo
+        double position = distance; //distancia do meio do carro até ao semaforo.
+        distance += length/2;
         Car car = new Car(acceleration, deceleration, position, length);
         lane.addCar(car);
     }
@@ -77,5 +83,9 @@ public class JsonGenerator {
         trafficLights.put("WETrafficLight", new TrafficLight(weTrafficLightColor, initialTrafLightDur));
 
         return trafficLights;
+    }
+
+    public Intersection getIntersection() {
+        return intersection;
     }
 }

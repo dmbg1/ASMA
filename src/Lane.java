@@ -24,6 +24,10 @@ public class Lane {
         return JSONlane;
     }
 
+    public ArrayList<Car> getCars() {
+        return cars;
+    }
+
     public void addCar(Car car) {
 
         this.cars.add(car);

@@ -22,12 +22,16 @@ public class Intersection {
         JSONIntersection.put("lanes", JSONLanes);
     }
 
-    public void addLane(Lane lane) {
-        this.lanes.add(lane);
-        this.JSONLanes.put(lane.getJSONLane());
+    public ArrayList<Lane> getLanes() {
+        return lanes;
     }
 
     public JSONObject getJSONIntersection() {
         return JSONIntersection;
+    }
+
+    public void addLane(Lane lane) {
+        this.lanes.add(lane);
+        this.JSONLanes.put(lane.getJSONLane());
     }
 }
