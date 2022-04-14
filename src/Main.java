@@ -19,6 +19,10 @@ public class Main {
             return;
         }
 
-
+        for (Lane lane : intersection.getLanes()) {
+            for (Car car : lane.getCars()) {
+                car.start();
+            }
+        }
     }
 }
