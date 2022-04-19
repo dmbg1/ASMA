@@ -63,10 +63,12 @@ public class JsonGenerator {
         double deceleration = acceleration + 2;
         double length =  (4 + r.nextDouble() * 1);
         //Codigo que calcula posicao de cada carro
-        distance += length/2 + 1; //1 representa o espaço entre dois carros ou entre o carro e o semaforo
+        double security_distance = 1;
+        distance += length + 1; //1 representa o espaço entre dois carros ou entre o carro e o semaforo
         double position = distance; //distancia do meio do carro até ao semaforo.
-        distance += length/2;
-        Car car = new Car(acceleration, deceleration, position, length);
+
+        Car front_car = lane.getCars().size() == 0 ? null : lane.getCars().get(lane.getCars().size() - 1);
+        Car car = new Car(acceleration, deceleration, position, length, front_car, lane);
         lane.addCar(car);
     }
 

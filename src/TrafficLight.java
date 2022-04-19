@@ -3,7 +3,7 @@ import org.json.JSONObject;
 public class TrafficLight {
     private JSONObject JSONTrafficLight = new JSONObject();
     private char curr_color;
-    private double curr_duration;
+    private double curr_duration; // TODO mudar para int
 
     TrafficLight(char color, double curr_duration) {
         this.curr_color = color;
@@ -15,5 +15,16 @@ public class TrafficLight {
 
     public JSONObject getJSONTrafficLight() {
         return JSONTrafficLight;
+    }
+
+    public void change_color() {
+        curr_color = curr_color == 'g' ? 'r' : 'g';
+    }
+    public double getCurr_duration() {
+        return curr_duration;
+    }
+
+    public char getCurr_color() {
+        return curr_color;
     }
 }

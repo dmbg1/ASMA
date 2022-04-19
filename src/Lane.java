@@ -3,7 +3,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-public class Lane {
+public class Lane extends Thread{
 
     private JSONObject JSONlane = new JSONObject();
     private ArrayList<Car> cars = new ArrayList<>();
@@ -32,5 +32,21 @@ public class Lane {
 
         this.cars.add(car);
         this.JSONCars.put(car.getJSONCar());
+    }
+
+    @Override
+    public void run() {
+
+        // TODO Usar esta thread para gerar carros na lane tlvz
+        /*
+        while(true) {
+            try {
+                sleep((long) (trafficLight.getCurr_duration() * 1000));
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+            trafficLight.change_color();
+            // Alterar semaforos consoante o contexto (parte multiagente entra aqui)
+        }*/
     }
 }

@@ -18,5 +18,11 @@ public class Main {
             e.printStackTrace();
             return;
         }
+
+        for (Lane lane : intersection.getLanes()) {
+            for (Car car : lane.getCars()) {
+                car.start();
+            }
+        }
     }
 }
