@@ -55,6 +55,8 @@ public class Car extends Thread {
 
         while(aux_velocity > 0) {
             aux_velocity -= this.deceleration;
+            // velocidade não pode ser inferior a zero
+            if(aux_velocity <= 0 ) aux_velocity = 0;
             distance += this.velocity;
         }
 
@@ -66,7 +68,7 @@ public class Car extends Thread {
         double pos_after_stopping = this.position - this.length - stopping_distance();
         // TODO when green the position in front should be ~~ -inf and 0 if red so the car stops (maybe introduce yellow light)
         double front_car_position = front_car == null ? -9999 : front_car.getPosition();
-        // TODO solve race condition
+        // TODO solve race condition (solved?)
         return pos_after_stopping >= front_car_position &&
                 pos_after_stopping <= front_car_position + max_distance;
     }
