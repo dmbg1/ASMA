@@ -79,7 +79,7 @@ public class JsonGenerator {
         char weTrafficLightColor = nsTrafficLightColor == 'r' ? 'g' : 'r';
 
         // Duração inicial dos semáforos entre 10 e 20 segundos
-        double initialTrafLightDur = 10 + r.nextDouble() * (20 - 10);
+        int initialTrafLightDur = r.nextInt(11) + 10;
         trafficLights.put("NSTrafficLight", new TrafficLight(nsTrafficLightColor, initialTrafLightDur));
         trafficLights.put("WETrafficLight", new TrafficLight(weTrafficLightColor, initialTrafLightDur));
 
