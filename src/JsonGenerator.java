@@ -44,8 +44,9 @@ public class JsonGenerator {
         //Adiciona lanes a intersecao
         for (char orientation : orientations) {
             // TODO Depois e preciso definir outros valores de orientacao.
+            int probGenerateCars = r.nextInt(100);
             Lane lane = new Lane(orientation, orientation == 'W' || orientation == 'E' ?
-                    trafficLights.get("WETrafficLight") : trafficLights.get("NSTrafficLight"));
+                    trafficLights.get("WETrafficLight") : trafficLights.get("NSTrafficLight"), probGenerateCars);
 
             int numCars = r.nextInt(8);
             //Aciciona carros a lane

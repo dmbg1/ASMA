@@ -39,10 +39,12 @@ public class Car extends Thread {
     }
 
     public void update_position() {
+        if(this.id == 1)
+            System.out.println(this.velocity);
         if(forward)
             this.velocity += this.acceleration;
         else
-            this.velocity -= this.deceleration;
+            this.velocity = this.velocity <= 0 ? 0 : this.velocity - this.deceleration;
 
         this.position -= this.velocity;
     }
@@ -53,6 +55,8 @@ public class Car extends Thread {
 
         while(aux_velocity > 0) {
             aux_velocity -= this.deceleration;
+            // velocidade não pode ser inferior a zero
+            if(aux_velocity <= 0 ) aux_velocity = 0;
             distance += this.velocity;
         }
 
@@ -62,8 +66,9 @@ public class Car extends Thread {
 
     public synchronized boolean check_security_position(double max_distance) { //detetar colisao entre carros na mesma lane.
         double pos_after_stopping = this.position - this.length - stopping_distance();
-        double front_car_position = front_car == null ? 0 : front_car.getPosition();
-        // TODO solve race condition
+        // TODO when green the position in front should be ~~ -inf and 0 if red so the car stops (maybe introduce yellow light)
+        double front_car_position = front_car == null ? -9999 : front_car.getPosition();
+        // TODO solve race condition (solved?)
         return pos_after_stopping >= front_car_position &&
                 pos_after_stopping <= front_car_position + max_distance;
     }
@@ -78,8 +83,9 @@ public class Car extends Thread {
             if(check_security_position(1.5))
                 forward = false;
             else
-                if (forward == false) forward = true;
-            System.out.println(this.id + " "+ this.lane.getId()+" car position: " + this.position + "\n" + "car forwardstate: " + this.forward);
+                if (!forward) forward = true;
+            if(this.id == 1)
+                System.out.println(this.id + " "+ this.lane.getId()+" car position: " + this.position + "\n" + "car forwardstate: " + this.forward);
             update_position();
             // TODO Semaforo check
         }

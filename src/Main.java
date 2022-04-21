@@ -20,6 +20,7 @@ public class Main {
         }
 
         for (Lane lane : intersection.getLanes()) {
+            lane.start();
             for (Car car : lane.getCars()) {
                 car.start();
             }

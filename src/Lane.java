@@ -2,6 +2,9 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Random;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class Lane extends Thread{
 
@@ -10,14 +13,17 @@ public class Lane extends Thread{
     private JSONArray JSONCars = new JSONArray();
     private TrafficLight trafficLight;
     private char orientation;
+    private int probGenerateCars;
 
-    public Lane(char orientation, TrafficLight trafficLight) {
+    public Lane(char orientation, TrafficLight trafficLight, int probGenerateCars) {
 
         this.orientation = orientation;
         this.trafficLight = trafficLight;
+        this.probGenerateCars = probGenerateCars;
         JSONlane.put("orientation", Character.toString(this.orientation));
         JSONlane.put("cars", this.JSONCars);
         JSONlane.put("traffic_light", this.trafficLight.getJSONTrafficLight());
+        JSONlane.put("probGenerateCars", this.probGenerateCars);
     }
 
     public JSONObject getJSONLane() {
@@ -34,10 +40,44 @@ public class Lane extends Thread{
         this.JSONCars.put(car.getJSONCar());
     }
 
+    private synchronized void generateCars(Lane lane) {
+
+        Timer t = new Timer();
+
+        t.scheduleAtFixedRate(
+                new TimerTask() {
+                    @Override
+                    public void run() {
+
+                        Random r = new Random();
+
+                        if(r.nextInt(1, 101) <= lane.probGenerateCars) {
+                            double acceleration = (2.5 + r.nextDouble() * 2.5);
+                            double deceleration = acceleration + 2;
+                            double length =  (4 + r.nextDouble() * 1);
+                            Car front_car = lane.getCars().size() == 0 ? null : lane.getCars().get(lane.getCars().size() - 1);
+                            Car car = new Car(acceleration, deceleration, 5, length, front_car, lane); //TODO: gerar posicao
+
+                            lane.addCar(car);
+                        }
+                    }
+                }, 0,10000
+        );
+    }
+
     @Override
     public void run() {
 
         // TODO Usar esta thread para gerar carros na lane tlvz
+
+        generateCars(this);
+
+        while(true) {
+            if(this.getId() == 16) {
+                System.out.println("lane: " + this.getId() + " num_cars: " + this.cars.size());
+            }
+        }
+
         /*
         while(true) {
             try {
