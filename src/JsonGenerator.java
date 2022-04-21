@@ -8,9 +8,7 @@ import java.util.Random;
 public class JsonGenerator {
 
 
-    private String filename;
     private Intersection intersection;
-    private double distance = 0;
 
     public JsonGenerator(String filename) throws IOException {
 
@@ -48,29 +46,30 @@ public class JsonGenerator {
             Lane lane = new Lane(orientation, orientation == 'W' || orientation == 'E' ?
                     trafficLights.get("WETrafficLight") : trafficLights.get("NSTrafficLight"), probGenerateCars);
 
-            int numCars = r.nextInt(8);
-            //Aciciona carros a lane
-            distance = 0;
-            for (int j = 0; j < numCars; j++)
-                addCarToLane(lane, r);
+            addCarsToLane(lane, r);
 
             intersection.addLane(lane);
         }
     }
 
-    //distance e um temporary field nao sei se vale a pena corrigir isso
-    public void addCarToLane(Lane lane, Random r) {
-        double acceleration = (2.5 + r.nextDouble() * 2.5);
-        double deceleration = acceleration + 2;
-        double length =  (4 + r.nextDouble() * 1);
-        //Codigo que calcula posicao de cada carro
-        double security_distance = 1;
-        distance += length + 1; //1 representa o espaço entre dois carros ou entre o carro e o semaforo
-        double position = distance; //distancia do meio do carro até ao semaforo.
+    //Aciciona número aleatório de carros (max 8) a uma lane
+    public void addCarsToLane(Lane lane, Random r) {
+        int numCars = r.nextInt(8);
+        double acceleration, deceleration, length;
+        double position = 0;
+        double security_distance = 1; // representa o espaço inicial entre dois carros ou entre o carro e o semaforo
 
-        Car front_car = lane.getCars().size() == 0 ? null : lane.getCars().get(lane.getCars().size() - 1);
-        Car car = new Car(acceleration, deceleration, position, length, front_car, lane);
-        lane.addCar(car);
+        for (int j = 0; j < numCars; j++) {
+            acceleration = (2.5 + r.nextDouble() * 2.5);
+            deceleration = acceleration + 2;
+            length = (4 + r.nextDouble() * 1);
+            position += length + security_distance;
+
+            Car front_car = lane.getCars().size() == 0 ? null : lane.getCars().get(lane.getCars().size() - 1);
+
+            Car car = new Car(acceleration, deceleration, position, length, front_car, lane);
+            lane.addCar(car);
+        }
     }
 
     public HashMap<String, TrafficLight> generateTrafficLights(Random r) {
@@ -81,7 +80,7 @@ public class JsonGenerator {
         char weTrafficLightColor = nsTrafficLightColor == 'r' ? 'g' : 'r';
 
         // Duração inicial dos semáforos entre 10 e 20 segundos
-        double initialTrafLightDur = 10 + r.nextDouble() * (20 - 10);
+        int initialTrafLightDur = r.nextInt(11) + 10;
         trafficLights.put("NSTrafficLight", new TrafficLight(nsTrafficLightColor, initialTrafLightDur));
         trafficLights.put("WETrafficLight", new TrafficLight(weTrafficLightColor, initialTrafLightDur));
 

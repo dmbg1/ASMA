@@ -1,131 +1,70 @@
 {
-    "max_vel": 57.08111892953085,
+    "max_vel": 56.882091849184064,
     "width": 5,
     "lanes": [
         {
-            "cars": [
-                {
-                    "deceleration": 5.989269572208349,
-                    "acceleration": 3.9892695722083493,
-                    "length": 4.622162628377414,
-                    "position": 5.622162628377414
-                },
-                {
-                    "deceleration": 6.746474093834182,
-                    "acceleration": 4.746474093834182,
-                    "length": 4.525241039306862,
-                    "position": 11.147403667684276
-                },
-                {
-                    "deceleration": 5.466809631303386,
-                    "acceleration": 3.4668096313033865,
-                    "length": 4.581578885403733,
-                    "position": 16.72898255308801
-                },
-                {
-                    "deceleration": 5.333726247186832,
-                    "acceleration": 3.3337262471868323,
-                    "length": 4.069287167860911,
-                    "position": 21.79826972094892
-                },
-                {
-                    "deceleration": 6.768850039737363,
-                    "acceleration": 4.768850039737363,
-                    "length": 4.066456430457604,
-                    "position": 26.864726151406522
-                },
-                {
-                    "deceleration": 6.622143305630955,
-                    "acceleration": 4.622143305630955,
-                    "length": 4.159774780220077,
-                    "position": 32.0245009316266
-                }
-            ],
+            "cars": [{
+                "deceleration": 5.66144302542806,
+                "acceleration": 3.6614430254280603,
+                "length": 4.091957423514633,
+                "position": 5.091957423514633
+            }],
             "orientation": "N",
-            "probGenerateCars": 21,
+            "probGenerateCars": 32,
             "traffic_light": {
-                "color": "r",
-                "default_duration": 16.01091241820016
+                "color": "g",
+                "default_duration": 10
             }
         },
         {
-            "cars": [
-                {
-                    "deceleration": 4.879714703466166,
-                    "acceleration": 2.879714703466166,
-                    "length": 4.082549635024462,
-                    "position": 5.082549635024462
-                },
-                {
-                    "deceleration": 5.214014685918428,
-                    "acceleration": 3.214014685918429,
-                    "length": 4.660087533576925,
-                    "position": 10.742637168601387
-                },
-                {
-                    "deceleration": 5.467392872956902,
-                    "acceleration": 3.4673928729569017,
-                    "length": 4.581902235942836,
-                    "position": 16.324539404544225
-                },
-                {
-                    "deceleration": 5.275720992481303,
-                    "acceleration": 3.275720992481303,
-                    "length": 4.243972557836305,
-                    "position": 21.56851196238053
-                },
-                {
-                    "deceleration": 5.134951603811815,
-                    "acceleration": 3.134951603811815,
-                    "length": 4.5652841390110614,
-                    "position": 27.133796101391592
-                },
-                {
-                    "deceleration": 5.659896171004364,
-                    "acceleration": 3.659896171004364,
-                    "length": 4.452296318663246,
-                    "position": 32.58609242005484
-                },
-                {
-                    "deceleration": 6.542819691045185,
-                    "acceleration": 4.542819691045185,
-                    "length": 4.487281547323687,
-                    "position": 38.07337396737853
-                }
-            ],
+            "cars": [],
             "orientation": "S",
-            "probGenerateCars": 94,
+            "probGenerateCars": 68,
             "traffic_light": {
-                "color": "r",
-                "default_duration": 16.01091241820016
+                "color": "g",
+                "default_duration": 10
             }
         },
         {
             "cars": [{
-                "deceleration": 6.759960839304614,
-                "acceleration": 4.759960839304614,
-                "length": 4.825781395973182,
-                "position": 5.825781395973182
+                "deceleration": 6.8252662128325285,
+                "acceleration": 4.8252662128325285,
+                "length": 4.898931322359362,
+                "position": 5.898931322359362
             }],
             "orientation": "E",
-            "probGenerateCars": 45,
+            "probGenerateCars": 46,
             "traffic_light": {
-                "color": "g",
-                "default_duration": 16.01091241820016
+                "color": "r",
+                "default_duration": 10
             }
         },
         {
-            "cars": [{
-                "deceleration": 6.546279852950876,
-                "acceleration": 4.546279852950876,
-                "length": 4.35114385192312,
-                "position": 5.35114385192312
-            }],
+            "cars": [
+                {
+                    "deceleration": 5.348408338549821,
+                    "acceleration": 3.348408338549821,
+                    "length": 4.634575121846283,
+                    "position": 5.634575121846283
+                },
+                {
+                    "deceleration": 5.350479496953959,
+                    "acceleration": 3.3504794969539584,
+                    "length": 4.3255903280316526,
+                    "position": 10.960165449877936
+                },
+                {
+                    "deceleration": 6.821729584097481,
+                    "acceleration": 4.821729584097481,
+                    "length": 4.597550846819048,
+                    "position": 16.557716296696984
+                }
+            ],
             "orientation": "W",
-            "probGenerateCars": 17,
+            "probGenerateCars": 69,
             "traffic_light": {
-                "color": "g",
-                "default_duration": 16.01091241820016
+                "color": "r",
+                "default_duration": 10
             }
         }
     ],
