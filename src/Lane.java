@@ -34,6 +34,10 @@ public class Lane extends Thread{
         return cars;
     }
 
+    public TrafficLight getTrafficLight() {
+        return trafficLight;
+    }
+
     public void addCar(Car car) {
 
         this.cars.add(car);
@@ -56,9 +60,10 @@ public class Lane extends Thread{
                             double deceleration = acceleration + 2;
                             double length =  (4 + r.nextDouble() * 1);
                             Car front_car = lane.getCars().size() == 0 ? null : lane.getCars().get(lane.getCars().size() - 1);
-                            Car car = new Car(acceleration, deceleration, 5, length, front_car, lane); //TODO: gerar posicao
+                            Car car = new Car(acceleration, deceleration, 50, length, front_car, lane); //TODO: gerar posicao. provavelmente o tamanho da lane
 
                             lane.addCar(car);
+                            car.start();
                         }
                     }
                 }, 0,10000
@@ -66,16 +71,14 @@ public class Lane extends Thread{
     }
 
     @Override
-    public void run() {
+    public void run() { //TODO: Nao para por causa da lane
 
-        // TODO Usar esta thread para gerar carros na lane tlvz
+        // TODO: Usar esta thread para gerar carros na lane tlvz
 
-        generateCars(this);
+        this.generateCars(this);
 
         while(true) {
-            if(this.getId() == 16) {
-                System.out.println("lane: " + this.getId() + " num_cars: " + this.cars.size());
-            }
+            System.out.println(this.getId() + " " + this.cars.size());
         }
 
         /*

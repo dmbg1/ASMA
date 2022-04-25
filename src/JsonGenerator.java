@@ -52,7 +52,7 @@ public class JsonGenerator {
         }
     }
 
-    //Aciciona número aleatório de carros (max 8) a uma lane
+    //Adiciona número aleatório de carros (max 8) a uma lane
     public void addCarsToLane(Lane lane, Random r) {
         int numCars = r.nextInt(8);
         double acceleration, deceleration, length;
@@ -68,6 +68,7 @@ public class JsonGenerator {
             Car front_car = lane.getCars().size() == 0 ? null : lane.getCars().get(lane.getCars().size() - 1);
 
             Car car = new Car(acceleration, deceleration, position, length, front_car, lane);
+            System.out.println("fewfewfew");
             lane.addCar(car);
         }
     }

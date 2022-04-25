@@ -1,5 +1,9 @@
 import org.json.JSONObject;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+
 public class Car extends Thread {
 
     private boolean forward;
@@ -12,7 +16,7 @@ public class Car extends Thread {
     private int id;
     private Lane lane;
 
-    private double velocity;
+    private double velocity; //TODO: Tlvs gerar velocidades diferentes para cada carro. Ter atencao ao comprimento da lane.
 
     private Car front_car;
 
@@ -23,7 +27,7 @@ public class Car extends Thread {
         this.position = position;
         this.length = length;
         this.front_car = front_car;
-        this.velocity = 0;
+        this.velocity = 4.0;
         this.id = ++count;
         this.lane = lane;
 
@@ -31,24 +35,35 @@ public class Car extends Thread {
         JSONcar.put("deceleration", deceleration);
         JSONcar.put("position", position);
         JSONcar.put("length", length);
-
     }
 
     public JSONObject getJSONCar() {
         return JSONcar;
     }
 
-    public void update_position() {
-        if(this.id == 1)
-            System.out.println(this.velocity);
-        if(forward)
-            this.velocity += this.acceleration;
-        else
-            this.velocity = this.velocity <= 0 ? 0 : this.velocity - this.deceleration;
-
-        this.position -= this.velocity;
+    public double getPosition() {
+        return position;
     }
 
+    public boolean checkColisionFrontCar() {
+
+        if (this.front_car != null) {
+            return this.front_car.getPosition() <= (this.position -= this.velocity);
+        }else {
+          //Talvez para quando tivermos os semaforos a funcionar
+        }
+
+        return true;
+    }
+
+    public synchronized void update_position() {
+
+        if(checkColisionFrontCar()) {
+            this.position -= this.velocity;
+        }
+    }
+
+    /*
     public double stopping_distance() {
         double distance = 0;
         double aux_velocity = this.velocity;
@@ -67,27 +82,29 @@ public class Car extends Thread {
     public synchronized boolean check_security_position(double max_distance) { //detetar colisao entre carros na mesma lane.
         double pos_after_stopping = this.position - this.length - stopping_distance();
         // TODO when green the position in front should be ~~ -inf and 0 if red so the car stops (maybe introduce yellow light)
-        double front_car_position = front_car == null ? -9999 : front_car.getPosition();
+        int value = 0;
+        if(lane.getTrafficLight().getCurr_color() == 'g') {
+            value = -99999999;
+        }
+        double front_car_position = front_car == null ? value : front_car.getPosition();
         // TODO solve race condition (solved?)
         return pos_after_stopping >= front_car_position &&
                 pos_after_stopping <= front_car_position + max_distance;
     }
+    */
 
-    public double getPosition() {
-        return position;
+    public void removeFromLane() {
+
+        this.lane.getCars().remove(this);
     }
 
     @Override
     public void run() {
+
         while(this.position >= 0) {
-            if(check_security_position(1.5))
-                forward = false;
-            else
-                if (!forward) forward = true;
-            if(this.id == 1)
-                System.out.println(this.id + " "+ this.lane.getId()+" car position: " + this.position + "\n" + "car forwardstate: " + this.forward);
             update_position();
-            // TODO Semaforo check
+            // TODO: Semaforo check
         }
+        removeFromLane();
     }
 }
