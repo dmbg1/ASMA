@@ -59,7 +59,7 @@ public class Car extends Thread {
     public synchronized void update_position() {
 
         if(checkColisionFrontCar()) {
-            this.position -= this.velocity;
+            this.position -= this.velocity / 60;
         }
     }
 
@@ -104,6 +104,11 @@ public class Car extends Thread {
         while(this.position >= 0) {
             update_position();
             // TODO: Semaforo check
+            try {
+                sleep(1000 / 60);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
         }
         removeFromLane();
     }
