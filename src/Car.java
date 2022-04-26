@@ -63,38 +63,7 @@ public class Car extends Thread {
         }
     }
 
-    /*
-    public double stopping_distance() {
-        double distance = 0;
-        double aux_velocity = this.velocity;
-
-        while(aux_velocity > 0) {
-            aux_velocity -= this.deceleration;
-            // velocidade não pode ser inferior a zero
-            if(aux_velocity <= 0 ) aux_velocity = 0;
-            distance += this.velocity;
-        }
-
-        return distance;
-    }
-
-
-    public synchronized boolean check_security_position(double max_distance) { //detetar colisao entre carros na mesma lane.
-        double pos_after_stopping = this.position - this.length - stopping_distance();
-        // TODO when green the position in front should be ~~ -inf and 0 if red so the car stops (maybe introduce yellow light)
-        int value = 0;
-        if(lane.getTrafficLight().getCurr_color() == 'g') {
-            value = -99999999;
-        }
-        double front_car_position = front_car == null ? value : front_car.getPosition();
-        // TODO solve race condition (solved?)
-        return pos_after_stopping >= front_car_position &&
-                pos_after_stopping <= front_car_position + max_distance;
-    }
-    */
-
     public void removeFromLane() {
-
         this.lane.getCars().remove(this);
     }
 
@@ -103,6 +72,7 @@ public class Car extends Thread {
 
         while(this.position >= 0) {
             update_position();
+            //System.out.println(this.position);
             // TODO: Semaforo check
         }
         removeFromLane();

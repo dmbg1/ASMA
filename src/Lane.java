@@ -66,7 +66,7 @@ public class Lane extends Thread{
                             car.start();
                         }
                     }
-                }, 0,10000
+                }, 0,1000
         );
     }
 
@@ -78,7 +78,9 @@ public class Lane extends Thread{
         this.generateCars(this);
 
         while(true) {
-            System.out.println(this.getId() + " " + this.cars.size());
+            if(this.getId() == 16) {
+                System.out.println(this.getId() + " " + this.cars.size());
+            }
         }
 
         /*
