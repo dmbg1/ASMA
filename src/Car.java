@@ -45,35 +45,52 @@ public class Car extends Thread {
         return position;
     }
 
-    public boolean checkColisionFrontCar() {
+    public Car getFront_car() {
+        return front_car;
+    }
+
+    public void setFront_car(Car front_car) {
+        this.front_car = front_car;
+    }
+
+    public synchronized boolean checkColisionFrontCar() {
 
         if (this.front_car != null) {
-            return this.front_car.getPosition() <= (this.position -= this.velocity);
-        }else {
-          //Talvez para quando tivermos os semaforos a funcionar
+            return this.front_car.getPosition() + 1 <= this.position;
+        }else { // Somaforo
+          return this.lane.getTrafficLight().getCurr_color() == 'g';
         }
-
-        return true;
     }
 
     public synchronized void update_position() {
 
         if(checkColisionFrontCar()) {
-            this.position -= this.velocity;
+            this.position -= this.velocity / 60;
         }
     }
 
     public void removeFromLane() {
+
         this.lane.getCars().remove(this);
+    }
+
+    public void removeFrontCar() {
+
+        if(this.lane.getCars().indexOf(this) == 0 && this.front_car != null) front_car = null;
     }
 
     @Override
     public void run() {
 
         while(this.position >= 0) {
+            removeFrontCar();
             update_position();
-            //System.out.println(this.position);
             // TODO: Semaforo check
+            try {
+                sleep(1000 / 60);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
         }
         removeFromLane();
     }

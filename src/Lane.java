@@ -59,6 +59,7 @@ public class Lane extends Thread{
                             double acceleration = (2.5 + r.nextDouble() * 2.5);
                             double deceleration = acceleration + 2;
                             double length =  (4 + r.nextDouble() * 1);
+
                             Car front_car = lane.getCars().size() == 0 ? null : lane.getCars().get(lane.getCars().size() - 1);
                             Car car = new Car(acceleration, deceleration, 50, length, front_car, lane); //TODO: gerar posicao. provavelmente o tamanho da lane
 
@@ -78,20 +79,12 @@ public class Lane extends Thread{
         this.generateCars(this);
 
         while(true) {
-            if(this.getId() == 16) {
+            /*
+            if(this.getId() == 16 && this.getTrafficLight().getCurr_color() == 'g') {
                 System.out.println(this.getId() + " " + this.cars.size());
             }
+            */
         }
 
-        /*
-        while(true) {
-            try {
-                sleep((long) (trafficLight.getCurr_duration() * 1000));
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
-            trafficLight.change_color();
-            // Alterar semaforos consoante o contexto (parte multiagente entra aqui)
-        }*/
     }
 }
