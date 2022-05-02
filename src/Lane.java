@@ -14,6 +14,7 @@ public class Lane extends Thread{
     private TrafficLight trafficLight;
     private char orientation;
     private int probGenerateCars;
+    private Car frontCar;
 
     public Lane(char orientation, TrafficLight trafficLight, int probGenerateCars) {
 
@@ -36,6 +37,18 @@ public class Lane extends Thread{
 
     public TrafficLight getTrafficLight() {
         return trafficLight;
+    }
+
+    public char getOrientation() {
+        return orientation;
+    }
+
+    public void setFrontCar(Car frontCar) {
+        this.frontCar = frontCar;
+    }
+
+    public void setTrafficLight(TrafficLight trafficLight) {
+        this.trafficLight = trafficLight;
     }
 
     public void addCar(Car car) {
@@ -71,20 +84,25 @@ public class Lane extends Thread{
         );
     }
 
+    public synchronized void frontCarUpdate() {
+
+        if(this.cars.size() > 0) {
+            this.frontCar = cars.get(0);
+        }
+    }
+
     @Override
     public void run() { //TODO: Nao para por causa da lane
 
         // TODO: Usar esta thread para gerar carros na lane tlvz
 
-        this.generateCars(this);
+        generateCars(this);
 
         while(true) {
-            /*
+            frontCarUpdate();
             if(this.getId() == 16 && this.getTrafficLight().getCurr_color() == 'g') {
-                System.out.println(this.getId() + " " + this.cars.size());
+                //System.out.println(this.frontCar.getId() + " " + this.frontCar.getPosition());
             }
-            */
         }
-
     }
 }

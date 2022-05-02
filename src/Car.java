@@ -69,7 +69,7 @@ public class Car extends Thread {
         }
     }
 
-    public void removeFromLane() {
+    public synchronized void removeFromLane() {
 
         this.lane.getCars().remove(this);
     }
@@ -85,7 +85,7 @@ public class Car extends Thread {
         while(this.position >= 0) {
             removeFrontCar();
             update_position();
-            // TODO: Semaforo check
+            //TODO: Semaforo check
             try {
                 sleep(1000 / 60);
             } catch (InterruptedException e) {

@@ -1,3 +1,8 @@
+import jade.core.Profile;
+import jade.core.ProfileImpl;
+import jade.wrapper.AgentController;
+import jade.wrapper.ContainerController;
+
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -9,10 +14,13 @@ public class JsonGenerator {
 
 
     private Intersection intersection;
+    private ArrayList<TrafficLight> trafficLight;
 
-    public JsonGenerator(String filename) throws IOException {
+    public JsonGenerator(ArrayList<TrafficLight> tl, String filename) throws IOException {
 
         BufferedWriter writer = new BufferedWriter(new FileWriter(filename));
+
+        this.trafficLight = tl;
 
         intersection = generateIntersection();
 
@@ -36,18 +44,24 @@ public class JsonGenerator {
     }
 
     public void addLanesToIntersection(Intersection intersection, Random r) {
-        HashMap<String, TrafficLight> trafficLights = generateTrafficLights(r);
+        //HashMap<String, TrafficLight> trafficLights = generateTrafficLights(r);
         char[] orientations = {'N', 'S', 'E', 'W'};
 
         //Adiciona lanes a intersecao
         for (char orientation : orientations) {
             // TODO Depois e preciso definir outros valores de orientacao.
             int probGenerateCars = r.nextInt(100);
-            Lane lane = new Lane(orientation, orientation == 'W' || orientation == 'E' ?
-                    trafficLights.get("WETrafficLight") : trafficLights.get("NSTrafficLight"), probGenerateCars);
+            TrafficLight trafficLight = null;
 
+            for(TrafficLight tl: this.trafficLight) {
+                if(orientation == tl.getOrientation()) {
+                    trafficLight = tl;
+                    break;
+                }
+            }
+
+            Lane lane = new Lane(orientation, trafficLight, probGenerateCars);
             addCarsToLane(lane, r);
-
             intersection.addLane(lane);
         }
     }
@@ -66,12 +80,15 @@ public class JsonGenerator {
             position += length + security_distance;
 
             Car front_car = lane.getCars().size() == 0 ? null : lane.getCars().get(lane.getCars().size() - 1);
-
+            if(j == 0) {
+                lane.setFrontCar(front_car);
+            }
             Car car = new Car(acceleration, deceleration, position, length, front_car, lane);
             lane.addCar(car);
         }
     }
 
+    /*
     public HashMap<String, TrafficLight> generateTrafficLights(Random r) {
         HashMap<String, TrafficLight> trafficLights = new HashMap<String, TrafficLight>();
         // Gerar aleatoriamente (entre r/g) a cor do semáforo das lanes com orientações N/S e
@@ -81,11 +98,20 @@ public class JsonGenerator {
 
         // Duração inicial dos semáforos entre 10 e 20 segundos
         int initialTrafLightDur = r.nextInt(11) + 10;
-        trafficLights.put("NSTrafficLight", new TrafficLight(nsTrafficLightColor, initialTrafLightDur));
-        trafficLights.put("WETrafficLight", new TrafficLight(weTrafficLightColor, initialTrafLightDur));
+
+        TrafficLight NSTrafficLight = new TrafficLight();
+        TrafficLight WETrafficLight = new TrafficLight();
+
+        NSTrafficLight.setCurr_color(nsTrafficLightColor);
+        WETrafficLight.setCurr_color(weTrafficLightColor);
+
+
+        trafficLights.put("NSTrafficLight", NSTrafficLight);
+        trafficLights.put("WETrafficLight", WETrafficLight);
 
         return trafficLights;
     }
+    */
 
     public Intersection getIntersection() {
         return intersection;
