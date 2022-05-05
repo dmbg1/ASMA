@@ -69,13 +69,11 @@ public class JsonGenerator {
     //Adiciona número aleatório de carros (max 8) a uma lane
     public void addCarsToLane(Lane lane, Random r) {
         int numCars = r.nextInt(8);
-        double acceleration, deceleration, length;
+        double length;
         double position = 0;
         double security_distance = 1; // representa o espaço inicial entre dois carros ou entre o carro e o semaforo
 
         for (int j = 0; j < numCars; j++) {
-            acceleration = (2.5 + r.nextDouble() * 2.5);
-            deceleration = acceleration + 2;
             length = (4 + r.nextDouble() * 1);
             position += length + security_distance;
 

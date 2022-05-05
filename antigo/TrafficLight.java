@@ -14,6 +14,11 @@ public class TrafficLight extends Agent {
         JSONTrafficLight.put("default_duration", curr_duration);
 
         System.out.println("Traffic Light Setup!");
+
+        // TODO Negotiate green light duration (20 seg total soma do tempo em que os semaforos estao verdes) with other traffic light
+        // according to amount (and flow maybe) of cars in lane
+
+        // TODO Delaying sequential actions for traffic light color alternation (after each negotiation?)
     }
 
     public void setCurr_color(char curr_color) {

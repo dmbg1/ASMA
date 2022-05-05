@@ -31,6 +31,7 @@ public class World extends Agent {
             }
         }
 
+        // TODO Comunicar com traffic lights para dar o numero de carros numa lane
         System.out.println("World setup done.");
     }
 }
