@@ -48,7 +48,10 @@ public class Lane {
     public void moveVehiclesForward() {
         for (int i = 0; i < 8; i++) {
             if (i == 0) {
-                // TODO Verificar semaforo
+                if (this.trafficLight.getColor() == 'g' && laneVehicles.get(i)) {
+                    laneVehicles.set(i, false);
+                    System.out.println("Vehicle entered intersection");
+                }
             }
             else {
                 if(!laneVehicles.get(i - 1) && laneVehicles.get(i)) {
