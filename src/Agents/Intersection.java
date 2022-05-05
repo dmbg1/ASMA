@@ -50,6 +50,11 @@ public class Intersection extends Agent {
 
     }
 
+    public void alternateTrafficLights() {
+        for(Lane lane: lanes) {
+            lane.getTrafficLight().alternateColor();
+        }
+    }
     public void takeDown() {
         System.out.println(getLocalName() + ": done working.");
     }

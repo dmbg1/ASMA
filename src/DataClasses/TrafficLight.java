@@ -9,6 +9,9 @@ public class TrafficLight {
         this.duration = duration;
     }
 
+    public void alternateColor() {
+        this.color = this.color == 'g' ? 'r' : 'g';
+    }
     public char getColor() {
         return color;
     }

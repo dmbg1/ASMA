@@ -33,18 +33,6 @@ public class Lane {
             laneVehicles.set(7, true);
     }
 
-    public int getProbGenerateLane() {
-        return probGenerateLane;
-    }
-
-    public char getOrientation() {
-        return orientation;
-    }
-
-    public ArrayList<Boolean> getLaneVehicles() {
-        return laneVehicles;
-    }
-
     public void moveVehiclesForward() {
         for (int i = 0; i < 8; i++) {
             if (i == 0) {
@@ -60,5 +48,20 @@ public class Lane {
                 }
             }
         }
+    }
+
+    public int getProbGenerateLane() {
+        return probGenerateLane;
+    }
+
+    public char getOrientation() {
+        return orientation;
+    }
+
+    public ArrayList<Boolean> getLaneVehicles() {
+        return laneVehicles;
+    }
+    public TrafficLight getTrafficLight() {
+        return trafficLight;
     }
 }
