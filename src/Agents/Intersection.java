@@ -1,6 +1,7 @@
 package Agents;
 
 import Behaviour.GenerateVehicles;
+import Behaviour.UpdateVehicles;
 import DataClasses.Lane;
 import DataClasses.TrafficLight;
 import jade.core.Agent;
@@ -16,6 +17,7 @@ public class Intersection extends Agent {
     protected void setup() {
         addLanesToIntersection();
         addBehaviour(new GenerateVehicles(this, 5000));
+        addBehaviour(new UpdateVehicles(this, 1000));
     }
 
     public ArrayList<Lane> getLanes() {
@@ -41,11 +43,11 @@ public class Intersection extends Agent {
                 trafficLight = new TrafficLight(weTrafficLightColor, initialTrafLightDur);
 
             Lane lane = new Lane(orientation, trafficLight, r.nextInt(100));
-            System.out.println(orientation + ": " + lane.getProbGenerateLane());
             System.out.println(orientation + ": " + lane.getLaneVehicles());
-
             lanes.add(lane);
         }
+        System.out.println("==============================================================================");
+
     }
 
     public void takeDown() {

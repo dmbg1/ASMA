@@ -5,22 +5,23 @@ import DataClasses.Lane;
 import jade.core.behaviours.TickerBehaviour;
 
 import java.util.ArrayList;
-import java.util.Random;
 
-public class GenerateVehicles extends TickerBehaviour {
+public class UpdateVehicles extends TickerBehaviour {
+
     private Intersection intersection;
-    public GenerateVehicles(Intersection intersection, long period) {
+
+    public UpdateVehicles(Intersection intersection, long period) {
         super(intersection, period);
         this.intersection = intersection;
     }
+
     @Override
     protected void onTick() {
         ArrayList<Lane> lanes = intersection.getLanes();
-        Random r = new Random();
-
-        for (Lane lane: lanes) {
-            if(r.nextInt(1, 101) <= lane.getProbGenerateLane())
-                lane.addCarToLane();
+        for(Lane lane: lanes) {
+            lane.moveVehiclesForward();
+            System.out.println(lane.getOrientation() + ":" + lane.getLaneVehicles());
         }
+        System.out.println("======================================================");
     }
 }
