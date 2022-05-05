@@ -67,7 +67,7 @@ public class Main {
         }
 
         try {
-            AgentController world1 = container.createNewAgent("World", "World", agentArgs);
+            AgentController world1 = container.createNewAgent("Agents.World", "Agents.World", agentArgs);
             world1.start();
         } catch (StaleProxyException e) {
             e.printStackTrace();
