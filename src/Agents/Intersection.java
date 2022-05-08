@@ -1,6 +1,7 @@
 package Agents;
 
 import Behaviour.GenerateVehicles;
+import Behaviour.ListeningInform;
 import Behaviour.UpdateVehicles;
 import DataClasses.Lane;
 import DataClasses.TrafficLight;
@@ -18,6 +19,7 @@ public class Intersection extends Agent {
         addLanesToIntersection();
         addBehaviour(new GenerateVehicles(this, 5000));
         addBehaviour(new UpdateVehicles(this, 1000));
+        addBehaviour(new ListeningInform(this));
     }
 
     public ArrayList<Lane> getLanes() {
@@ -36,12 +38,16 @@ public class Intersection extends Agent {
         // Add lanes to intersection
         // TODO Depois e preciso definir outros valores de orientacao.
         //TODO: Esta parte vai ter de ser feita na criacao dos agentes semaforos
+
         for (char orientation : orientations) {
-            TrafficLight trafficLight;
+
+            TrafficLight trafficLight = new TrafficLight(orientation);
+            /*
             if(orientation == 'N' || orientation == 'S')
                 trafficLight = new TrafficLight(nsTrafficLightColor, initialTrafLightDur);
             else
                 trafficLight = new TrafficLight(weTrafficLightColor, initialTrafLightDur);
+            */
 
             Lane lane = new Lane(orientation, trafficLight, r.nextInt(100));
             System.out.println(orientation + ": " + lane.getLaneVehicles());

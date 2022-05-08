@@ -1,9 +1,9 @@
 package Agents;
 
 import Behaviour.ChangeTrafficLightColor;
-import Behaviour.GenerateVehicles;
-import Behaviour.UpdateVehicles;
+import jade.core.AID;
 import jade.core.Agent;
+import jade.lang.acl.ACLMessage;
 
 public class TrafficLight extends Agent {
 
@@ -14,14 +14,28 @@ public class TrafficLight extends Agent {
     @Override
     protected void setup() {
 
-        //TODO: É preciso adicionar os argumentos na criacao dos agentes
+        //É preciso adicionar os argumentos na criacao dos agentes
+
         Object[] agentArgs = getArguments();
 
-        this.color = (char)agentArgs[0];
-        this.duration = (int)agentArgs[1];
-        this.orientation = (char)agentArgs[2];
+        this.color = ((String)agentArgs[0]).charAt(1);
+        this.duration = Integer.parseInt((String)agentArgs[1]);
+        this.orientation = ((String)agentArgs[2]).charAt(1);
+
+        String message = "color: " + this.color + " duration: " + this.duration + " orientation: " + this.orientation;
+
+        sendMessage(message, "Intersection", ACLMessage.INFORM);
 
         addBehaviour(new ChangeTrafficLightColor(this, 2000));
+    }
+
+    public void sendMessage(String message, String receiver, int performative) {
+
+        ACLMessage msg = new ACLMessage(performative);
+
+        msg.setContent(message);
+        msg.addReceiver(new AID(receiver, AID.ISLOCALNAME));
+        send(msg);
     }
 
     public int getDuration() {
