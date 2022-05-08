@@ -14,6 +14,7 @@ public class TrafficLight extends Agent {
     @Override
     protected void setup() {
 
+        //TODO: É preciso adicionar os argumentos na criacao dos agentes
         Object[] agentArgs = getArguments();
 
         this.color = (char)agentArgs[0];
