@@ -14,6 +14,12 @@ public class TrafficLight extends Agent {
     @Override
     protected void setup() {
 
+        Object[] agentArgs = getArguments();
+
+        this.color = (char)agentArgs[0];
+        this.duration = (int)agentArgs[1];
+        this.orientation = (char)agentArgs[2];
+
         addBehaviour(new ChangeTrafficLightColor(this, 2000));
     }
 

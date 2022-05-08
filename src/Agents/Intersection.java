@@ -35,6 +35,7 @@ public class Intersection extends Agent {
 
         // Add lanes to intersection
         // TODO Depois e preciso definir outros valores de orientacao.
+        //TODO: Esta parte vai ter de ser feita na criacao dos agentes semaforos
         for (char orientation : orientations) {
             TrafficLight trafficLight;
             if(orientation == 'N' || orientation == 'S')
