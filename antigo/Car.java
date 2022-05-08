@@ -1,5 +1,5 @@
-import org.json.JSONObject;
 
+/*
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -7,7 +7,6 @@ import java.io.IOException;
 public class Car extends Thread {
 
     private boolean forward;
-    private JSONObject JSONcar = new JSONObject();
     private double acceleration;
     private double deceleration;
     private double position;
@@ -31,14 +30,6 @@ public class Car extends Thread {
         this.id = ++count;
         this.lane = lane;
 
-        JSONcar.put("acceleration", acceleration);
-        JSONcar.put("deceleration", deceleration);
-        JSONcar.put("position", position);
-        JSONcar.put("length", length);
-    }
-
-    public JSONObject getJSONCar() {
-        return JSONcar;
     }
 
     public double getPosition() {
@@ -95,3 +86,4 @@ public class Car extends Thread {
         removeFromLane();
     }
 }
+*/

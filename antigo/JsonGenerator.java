@@ -1,3 +1,4 @@
+/*
 import jade.core.Profile;
 import jade.core.ProfileImpl;
 import jade.wrapper.AgentController;
@@ -86,7 +87,6 @@ public class JsonGenerator {
         }
     }
 
-    /*
     public HashMap<String, TrafficLight> generateTrafficLights(Random r) {
         HashMap<String, TrafficLight> trafficLights = new HashMap<String, TrafficLight>();
         // Gerar aleatoriamente (entre r/g) a cor do semáforo das lanes com orientações N/S e
@@ -109,9 +109,10 @@ public class JsonGenerator {
 
         return trafficLights;
     }
-    */
+
 
     public Intersection getIntersection() {
         return intersection;
     }
 }
+*/

@@ -1,6 +1,5 @@
-import org.json.JSONArray;
-import org.json.JSONObject;
 
+/*
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.Timer;
@@ -8,9 +7,8 @@ import java.util.TimerTask;
 
 public class Lane extends Thread{
 
-    private JSONObject JSONlane = new JSONObject();
     private ArrayList<Car> cars = new ArrayList<>();
-    private JSONArray JSONCars = new JSONArray();
+
     private TrafficLight trafficLight;
     private char orientation;
     private int probGenerateCars;
@@ -21,14 +19,6 @@ public class Lane extends Thread{
         this.orientation = orientation;
         this.trafficLight = trafficLight;
         this.probGenerateCars = probGenerateCars;
-        JSONlane.put("orientation", Character.toString(this.orientation));
-        JSONlane.put("cars", this.JSONCars);
-        JSONlane.put("traffic_light", this.trafficLight.getJSONTrafficLight());
-        JSONlane.put("probGenerateCars", this.probGenerateCars);
-    }
-
-    public JSONObject getJSONLane() {
-        return JSONlane;
     }
 
     public ArrayList<Car> getCars() {
@@ -52,9 +42,7 @@ public class Lane extends Thread{
     }
 
     public void addCar(Car car) {
-
         this.cars.add(car);
-        this.JSONCars.put(car.getJSONCar());
     }
 
     private synchronized void generateCars(Lane lane) {
@@ -106,3 +94,4 @@ public class Lane extends Thread{
         }
     }
 }
+*/

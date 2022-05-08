@@ -1,3 +1,4 @@
+/*
 import jade.core.Agent;
 import org.json.JSONObject;
 
@@ -49,3 +50,4 @@ public class TrafficLight extends Agent {
         curr_color = curr_color == 'g' ? 'r' : 'g';
     }
 }
+*/

@@ -1,3 +1,4 @@
+/*
 import jade.core.Agent;
 import java.io.IOException;
 import java.lang.reflect.Array;
@@ -35,3 +36,4 @@ public class World extends Agent {
         System.out.println("Agents.World setup done.");
     }
 }
+*/

@@ -1,3 +1,4 @@
+/*
 import jade.core.Agent;
 import jade.core.Profile;
 import jade.core.ProfileImpl;
@@ -74,3 +75,4 @@ public class Main {
         }
     }
 }
+*/
