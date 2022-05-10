@@ -1,13 +1,10 @@
-import DataClasses.Intersection;
-import DataClasses.Lane;
+import Agents.World;
 import jade.core.Profile;
 import jade.core.ProfileImpl;
 import jade.core.Runtime;
 import jade.wrapper.AgentController;
 import jade.wrapper.ContainerController;
 import jade.wrapper.StaleProxyException;
-
-import java.util.ArrayList;
 
 public class Main {
     public static void main(String[] args) {
@@ -17,9 +14,9 @@ public class Main {
         ContainerController mainContainer = rt.createMainContainer(p);
 
         AgentController ac;
-        Intersection intersection = new Intersection();
+        World world = new World();
         try {
-            ac = mainContainer.acceptNewAgent("Intersection", intersection);
+            ac = mainContainer.acceptNewAgent("World", world);
             ac.start();
         } catch (StaleProxyException e) {
             e.printStackTrace();
@@ -34,8 +31,9 @@ public class Main {
         }
 
         // Wait until intersection agent is created
-        ArrayList<Lane> lanes = intersection.getLanes();
-        while(lanes.size() == 0) lanes = intersection.getLanes();
+        /*
+        ArrayList<Lane> lanes = world.getLanes();
+        while(lanes.size() == 0) lanes = world.getLanes();
 
         for(int i = 0; i < 4; i++) {
 
@@ -56,6 +54,6 @@ public class Main {
             } catch (StaleProxyException e) {
                 e.printStackTrace();
             }
-        }
+        }*/
     }
 }

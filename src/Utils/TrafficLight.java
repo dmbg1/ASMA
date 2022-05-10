@@ -1,4 +1,4 @@
-package DataClasses;
+package Utils;
 
 public class TrafficLight {
     private char color;

@@ -1,61 +1,67 @@
-package DataClasses;
+package Utils;
 
-import Behaviour.GenerateVehicles;
-import Behaviour.ListeningInform;
-import Behaviour.UpdateVehicles;
-import DataClasses.Lane;
-import DataClasses.TrafficLight;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
 
 public class Intersection {
 
-    private ArrayList<Lane> lanes = new ArrayList<>();
+    private HashMap<Character, Lane> lanes = new HashMap<>();
     private int id;
 
-    protected void Intersection(int id, HashMap<Character, char[]> orientations) {
+    public Intersection(int id) {
         this.id = id;
-        addLanesToIntersection(orientations);
+        addLanesToIntersection();
     }
 
-    public void addLanesToIntersection(HashMap<Character, char[]> orientations) {
+    public void addLanesToIntersection() {
         Random r = new Random();
+
+        char[] orientations = null;
+        if (this.id == 1)
+            orientations = new char[]{'N', 'E', 'W'};
+        else if (this.id == 2)
+            orientations = new char[]{'N', 'W'};
+
         char nsTrafficLightColor = r.nextBoolean() ? 'r' : 'g';
         char weTrafficLightColor = nsTrafficLightColor == 'r' ? 'g' : 'r';
         // Initial duration between 10 e 20 seconds
         int initialTrafLightDur = r.nextInt(11) + 10;
 
-        // Add lanes to intersection
-        // TODO Depois e preciso definir outros valores de orientacao.
-        //TODO: Esta parte vai ter de ser feita na criacao dos agentes semaforos
-
-        for (char orientation : orientations.keySet()) {
-
+        for (char orientation : orientations) {
             TrafficLight trafficLight;
-            if(orientation == 'N' || orientation == 'S')
+            if(orientation == 'N' || orientation == 'S') {
                 trafficLight = new TrafficLight(nsTrafficLightColor, initialTrafLightDur, orientation);
+            }
             else
                 trafficLight = new TrafficLight(weTrafficLightColor, initialTrafLightDur, orientation);
 
             Lane lane = new Lane(orientation, trafficLight, r.nextInt(100));
-            System.out.println(orientation + ": " + lane.getLaneVehicles());
-            lanes.add(lane);
+            lanes.put(orientation, lane);
         }
+        logIntersection();
         System.out.println("==============================================================================");
-
     }
 
     public void alternateTrafficLights(int duration) {
-        for(Lane lane: lanes) {
+        for(char laneOrientation: lanes.keySet()) {
+            Lane lane = lanes.get(laneOrientation);
             lane.getTrafficLight().alternateColor(duration);
         }
     }
-    public void takeDown() {
-        System.out.println(getLocalName() + ": done working.");
+
+    public HashMap<Character, Lane> getLanes() {
+        return lanes;
     }
 
-    public ArrayList<Lane> getLanes() {
-        return lanes;
+    public void logIntersection() {
+        ArrayList<Lane> lanes =  new ArrayList<>(this.lanes.values());
+        System.out.println("Intersection " + id);
+        for(Lane lane: lanes)
+            System.out.println(lane.getOrientation() + ": " + lane.getLaneVehicles());
+    }
+
+    public int getId() {
+        return id;
     }
 }

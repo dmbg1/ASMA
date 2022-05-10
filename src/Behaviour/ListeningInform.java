@@ -1,13 +1,9 @@
 package Behaviour;
 
-import DataClasses.Intersection;
 import jade.core.Agent;
 import jade.core.behaviours.CyclicBehaviour;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
-import jade.lang.acl.UnreadableException;
-
-import java.util.ArrayList;
 
 public class ListeningInform extends CyclicBehaviour {
 
@@ -21,7 +17,7 @@ public class ListeningInform extends CyclicBehaviour {
 
     @Override
     public void action() {
-
+    /*
         ACLMessage msg = this.getAgent().receive(mt);
         // TODO ['Alternate traffic light', 'duration', duration]
         // TODO ['Alternate traffic light', 'duration:', duration, 'orientation:', orientation]
@@ -36,7 +32,7 @@ public class ListeningInform extends CyclicBehaviour {
                 switch(msg_type) {
                     case "Alternate traffic light":
                         Intersection intersection = (Intersection) agent;
-                        intersection.alternateTrafficLights(d);
+                        intersection.alternateTrafficLights();
                 }
 
             } catch (UnreadableException e) {
@@ -45,6 +41,6 @@ public class ListeningInform extends CyclicBehaviour {
             //TODO: Receber msg e alterar valores dos semaforos
         }else {
             block();
-        }
+        }*/
     }
 }
