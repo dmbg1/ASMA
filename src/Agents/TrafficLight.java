@@ -18,13 +18,14 @@ public class TrafficLight extends Agent {
 
         Object[] agentArgs = getArguments();
 
-        this.color = ((String)agentArgs[0]).charAt(1);
-        this.duration = Integer.parseInt((String)agentArgs[1]);
-        this.orientation = ((String)agentArgs[2]).charAt(1);
+        this.color = agentArgs[0].toString().charAt(0);
+        this.duration =  (int) agentArgs[1];
+        this.orientation = agentArgs[2].toString().charAt(0);
 
         String message = "color: " + this.color + " duration: " + this.duration + " orientation: " + this.orientation;
 
-        sendMessage(message, "Intersection", ACLMessage.INFORM);
+        System.out.println(message);
+        sendMessage(message, "Mediator", ACLMessage.INFORM);
 
         addBehaviour(new ChangeTrafficLightColor(this, 2000));
     }

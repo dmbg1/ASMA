@@ -1,6 +1,6 @@
 package Behaviour;
 
-import Agents.Intersection;
+import DataClasses.Intersection;
 import DataClasses.Lane;
 import jade.core.behaviours.TickerBehaviour;
 

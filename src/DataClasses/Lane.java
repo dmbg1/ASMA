@@ -11,8 +11,10 @@ public class Lane {
     private char orientation;
     private TrafficLight trafficLight;
     private int probGenerateLane;
+    // Possible directions vehicle can take on intersection (either r for right or f for front)
+    private char[] directions;
 
-    public Lane(char orientation, TrafficLight trafficLight, int probGenerateLane) {
+    public Lane(char orientation, TrafficLight trafficLight, int probGenerateLane, Intersection intersection) {
         generateLaneVehicles();
         this.orientation = orientation;
         this.trafficLight = trafficLight;
@@ -33,12 +35,34 @@ public class Lane {
             laneVehicles.set(7, true);
     }
 
-    public void moveVehiclesForward() {
+    public boolean can_turn_right() {
+        for (char direction : directions) {
+            if(direction == 'r')
+                return true;
+        }
+        return false;
+    }
+
+    public void updateVehicles() {
+        Random r = new Random();
+        String
         for (int i = 0; i < 8; i++) {
             if (i == 0) {
                 if (this.trafficLight.getColor() == 'g' && laneVehicles.get(i)) {
-                    laneVehicles.set(i, false);
-                    System.out.println("Vehicle entered intersection");
+                    if(can_turn_right()) {
+                        if () {
+                            //TODO Comunicar com outra interseção para verificar
+                        } else { // Em frente
+                            laneVehicles.set(i, false);
+                            System.out.println("Vehicle entered intersection");
+                        }
+                    }
+                    else {
+                        if () {// Verificar lane da frente
+                            laneVehicles.set(i, false);
+                            System.out.println("Vehicle entered intersection");
+                        }
+                    }
                 }
             }
             else {
@@ -50,6 +74,9 @@ public class Lane {
         }
     }
 
+    public Lane getFrontLane() {
+        if
+    }
     public int getProbGenerateLane() {
         return probGenerateLane;
     }
@@ -64,4 +91,5 @@ public class Lane {
     public TrafficLight getTrafficLight() {
         return trafficLight;
     }
+
 }

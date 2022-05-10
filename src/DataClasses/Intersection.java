@@ -1,37 +1,28 @@
-package Agents;
+package DataClasses;
 
 import Behaviour.GenerateVehicles;
 import Behaviour.ListeningInform;
 import Behaviour.UpdateVehicles;
 import DataClasses.Lane;
 import DataClasses.TrafficLight;
-import jade.core.Agent;
-
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Random;
 
-public class Intersection extends Agent {
+public class Intersection {
 
-    ArrayList<Lane> lanes = new ArrayList<>();
+    private ArrayList<Lane> lanes = new ArrayList<>();
+    private int id;
 
-    @Override
-    protected void setup() {
-        addLanesToIntersection();
-        addBehaviour(new GenerateVehicles(this, 5000));
-        addBehaviour(new UpdateVehicles(this, 1000));
-        addBehaviour(new ListeningInform(this));
+    protected void Intersection(int id, HashMap<Character, char[]> orientations) {
+        this.id = id;
+        addLanesToIntersection(orientations);
     }
 
-    public ArrayList<Lane> getLanes() {
-        return lanes;
-    }
-
-    public void addLanesToIntersection() {
+    public void addLanesToIntersection(HashMap<Character, char[]> orientations) {
         Random r = new Random();
-        char[] orientations = {'N', 'S', 'E', 'W'};
         char nsTrafficLightColor = r.nextBoolean() ? 'r' : 'g';
         char weTrafficLightColor = nsTrafficLightColor == 'r' ? 'g' : 'r';
-
         // Initial duration between 10 e 20 seconds
         int initialTrafLightDur = r.nextInt(11) + 10;
 
@@ -39,15 +30,13 @@ public class Intersection extends Agent {
         // TODO Depois e preciso definir outros valores de orientacao.
         //TODO: Esta parte vai ter de ser feita na criacao dos agentes semaforos
 
-        for (char orientation : orientations) {
+        for (char orientation : orientations.keySet()) {
 
-            TrafficLight trafficLight = new TrafficLight(orientation);
-            /*
+            TrafficLight trafficLight;
             if(orientation == 'N' || orientation == 'S')
-                trafficLight = new TrafficLight(nsTrafficLightColor, initialTrafLightDur);
+                trafficLight = new TrafficLight(nsTrafficLightColor, initialTrafLightDur, orientation);
             else
-                trafficLight = new TrafficLight(weTrafficLightColor, initialTrafLightDur);
-            */
+                trafficLight = new TrafficLight(weTrafficLightColor, initialTrafLightDur, orientation);
 
             Lane lane = new Lane(orientation, trafficLight, r.nextInt(100));
             System.out.println(orientation + ": " + lane.getLaneVehicles());
@@ -57,13 +46,16 @@ public class Intersection extends Agent {
 
     }
 
-    public void alternateTrafficLights() {
+    public void alternateTrafficLights(int duration) {
         for(Lane lane: lanes) {
-            lane.getTrafficLight().alternateColor();
+            lane.getTrafficLight().alternateColor(duration);
         }
     }
     public void takeDown() {
         System.out.println(getLocalName() + ": done working.");
     }
 
+    public ArrayList<Lane> getLanes() {
+        return lanes;
+    }
 }
