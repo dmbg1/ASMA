@@ -1,6 +1,7 @@
 package Agents;
 
 import Behaviour.GenerateVehicles;
+import Behaviour.ListeningInform;
 import Behaviour.UpdateVehicles;
 import Utils.Intersection;
 import jade.core.Agent;
@@ -37,10 +38,13 @@ public class World extends Agent {
 
     private Intersection intersection1;
     private Intersection intersection2;
+
     public void setup() {
         generateWorld();
         addBehaviour(new GenerateVehicles(this, 5000));
         addBehaviour(new UpdateVehicles(this, 1000));
+        addBehaviour(new ListeningInform(this));
+
     }
 
     private void generateWorld() {
@@ -54,5 +58,11 @@ public class World extends Agent {
 
     public Intersection getIntersection2() {
         return intersection2;
+    }
+
+    public void changeColorTrafficLight(String nameId, int duration) {
+
+        intersection1.changeTrafficLightsColor(nameId, duration);
+        intersection2.changeTrafficLightsColor(nameId, duration);
     }
 }

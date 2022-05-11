@@ -2,6 +2,7 @@ package Utils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Objects;
 import java.util.Random;
 
 public class Intersection {
@@ -43,13 +44,6 @@ public class Intersection {
         System.out.println("==============================================================================");
     }
 
-    public void alternateTrafficLights(int duration) {
-        for(char laneOrientation: lanes.keySet()) {
-            Lane lane = lanes.get(laneOrientation);
-            lane.getTrafficLight().alternateColor(duration);
-        }
-    }
-
     public HashMap<Character, Lane> getLanes() {
         return lanes;
     }
@@ -58,10 +52,20 @@ public class Intersection {
         ArrayList<Lane> lanes =  new ArrayList<>(this.lanes.values());
         System.out.println("Intersection " + id);
         for(Lane lane: lanes)
-            System.out.println(lane.getOrientation() + ": " + lane.getLaneVehicles());
+            System.out.println(lane.getTrafficLight().getColor() + ": " + lane.getLaneVehicles());
     }
 
     public int getId() {
         return id;
+    }
+
+    public void changeTrafficLightsColor(String nameId, int duration) {
+
+        for(Lane lane: this.lanes.values()) {
+            System.out.println("Alternate color " + nameId);
+            if(Objects.equals(lane.getTrafficLight().getNameId(), nameId)) {
+                lane.alternateColorTrafficLight(duration);
+            }
+        }
     }
 }

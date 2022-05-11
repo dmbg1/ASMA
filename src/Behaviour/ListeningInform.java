@@ -1,9 +1,15 @@
 package Behaviour;
 
+import Agents.World;
+import Utils.Intersection;
 import jade.core.Agent;
 import jade.core.behaviours.CyclicBehaviour;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
+import jade.lang.acl.UnreadableException;
+
+import java.util.ArrayList;
+import java.util.HashMap;
 
 public class ListeningInform extends CyclicBehaviour {
 
@@ -17,30 +23,35 @@ public class ListeningInform extends CyclicBehaviour {
 
     @Override
     public void action() {
-    /*
+
         ACLMessage msg = this.getAgent().receive(mt);
         // TODO ['Alternate traffic light', 'duration', duration]
-        // TODO ['Alternate traffic light', 'duration:', duration, 'orientation:', orientation]
+        // TODO ['Alternate traffic light', 'name: ', name, 'duration:', duration, 'color:', color]
         // TODO ['Init', 'color', 'duration', 'orientation'] maybe
         if(msg != null) {
             try {
-                ArrayList<String> msg_array = (ArrayList) msg.getContentObject();
-                String msg_type = msg_array.get(0);
-                int durationNS = Integer.parseInt(msg_array.get(3));
-                int durationWE = Integer.parseInt(msg_array.get(5));
+                HashMap<String, String> msg_map = (HashMap<String, String>) msg.getContentObject();
+                String msg_type = msg_map.get("MsgType");
 
                 switch(msg_type) {
-                    case "Alternate traffic light":
-                        Intersection intersection = (Intersection) agent;
-                        intersection.alternateTrafficLights();
+                    case "Alternate color":
+                        String nameId = msg_map.get("NameId");
+                        int duration = Integer.parseInt(msg_map.get("Duration"));
+                        World world = (World) agent;
+
+                        world.changeColorTrafficLight(nameId, duration);
+                        break;
+                    default:
+                        break;
                 }
 
             } catch (UnreadableException e) {
                 throw new RuntimeException(e);
             }
+
             //TODO: Receber msg e alterar valores dos semaforos
         }else {
             block();
-        }*/
+        }
     }
 }

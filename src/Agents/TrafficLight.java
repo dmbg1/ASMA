@@ -5,6 +5,10 @@ import jade.core.AID;
 import jade.core.Agent;
 import jade.lang.acl.ACLMessage;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+
 public class TrafficLight extends Agent {
 
     private char color;
@@ -22,19 +26,27 @@ public class TrafficLight extends Agent {
         this.duration =  (int) agentArgs[1];
         this.orientation = agentArgs[2].toString().charAt(0);
 
-        String message = "color: " + this.color + " duration: " + this.duration + " orientation: " + this.orientation;
+        HashMap<String, String> message = new HashMap<>();
+        message.put("MsgType", "Alternate color");
+        message.put("NameId", this.getLocalName());
+        message.put("Duration", String.valueOf(this.duration));
 
-        System.out.println(message);
-        sendMessage(message, "Mediator", ACLMessage.INFORM);
+        sendMessage(message, "World", ACLMessage.INFORM);
 
-        addBehaviour(new ChangeTrafficLightColor(this, 2000));
+        addBehaviour(new ChangeTrafficLightColor(this, this.duration));
+
+        //System.out.println("ATL => " + this.getLocalName() + " ori: " + this.orientation + " color: " + this.color);
     }
 
-    public void sendMessage(String message, String receiver, int performative) {
+    public void sendMessage(HashMap<String, String> message, String receiver, int performative) {
 
         ACLMessage msg = new ACLMessage(performative);
 
-        msg.setContent(message);
+        try {
+            msg.setContentObject(message);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         msg.addReceiver(new AID(receiver, AID.ISLOCALNAME));
         send(msg);
     }
