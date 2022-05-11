@@ -49,23 +49,7 @@ public class Lane {
             if (i == 0) {
                 Lane laneToGoTo = chooseLaneToGoTo(laneWays);
                 if (trafficLight.getColor() == 'g' && laneVehicles.get(i)) {
-                    if(laneToGoTo == null) {for (Lane lane : lanesInter1.values()) {
-            char laneOrientation = lane.getOrientation();
-            // Possible lane ways in intersection
-            ArrayList<Lane> laneWays = new ArrayList<>();
-
-            if (laneOrientation == 'N' || lane.getOrientation() == 'W') {
-                // Right on intersection when lane orientation is W and front when lane orientation is N
-                laneWays.add(lanesInter2.get('N'));
-                // Front on intersection when lane orientation is W and front when lane orientation is N
-                // null because there will always be available space in the lane
-                laneWays.add(null);
-            } else if (laneOrientation == 'E')
-                // Front on intersection when lane orientation is E
-                laneWays.add(null);
-
-            lane.updateVehiclesInLane(laneWays, world.getIntersection1().getId());
-        }
+                    if(laneToGoTo == null) {
                         laneVehicles.set(i, false);
                         System.out.println("Vehicle entered intersection " + intersection_id + " from lane with " +
                                 "orientation " + orientation);
