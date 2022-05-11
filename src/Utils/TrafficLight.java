@@ -1,16 +1,19 @@
-package DataClasses;
+package Utils;
 
 public class TrafficLight {
     private char color;
     private int duration;
     private char orientation;
 
-    public TrafficLight(char orientation) {
+    public TrafficLight(char color, int duration, char orientation) {
+        this.color = color;
+        this.duration = duration;
         this.orientation = orientation;
     }
 
-    public void alternateColor() {
+    public void alternateColor(int duration) {
         this.color = this.color == 'g' ? 'r' : 'g';
+        this.duration = duration;
     }
 
     public char getColor() {

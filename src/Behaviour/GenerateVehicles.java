@@ -1,21 +1,26 @@
 package Behaviour;
 
-import Agents.Intersection;
-import DataClasses.Lane;
+import Agents.World;
+import Utils.Lane;
 import jade.core.behaviours.TickerBehaviour;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Random;
 
 public class GenerateVehicles extends TickerBehaviour {
-    private Intersection intersection;
-    public GenerateVehicles(Intersection intersection, long period) {
-        super(intersection, period);
-        this.intersection = intersection;
+    private World world;
+    public GenerateVehicles(World world, long period) {
+        super(world, period);
+        this.world = world;
     }
     @Override
     protected void onTick() {
-        ArrayList<Lane> lanes = intersection.getLanes();
+        ArrayList<Lane> lanes = new ArrayList<>(world.getIntersection1().getLanes().values());
+
+        // Not considering north one because it is fed by the other intersection
+        lanes.add(world.getIntersection2().getLanes().get('W'));
+
         Random r = new Random();
 
         for (Lane lane: lanes) {
