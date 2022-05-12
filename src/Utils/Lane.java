@@ -59,6 +59,7 @@ public class Lane {
                 if (trafficLight.getColor() == 'g' && laneVehicles.get(i)) {
                     if(laneToGoTo == null) {
                         laneVehicles.set(i, false);
+                        this.numCars--;
                         System.out.println("Vehicle entered intersection " + intersectionId + " from lane with " +
                                 "orientation " + orientation);
                         continue;
@@ -66,6 +67,7 @@ public class Lane {
                     if (!laneToGoTo.getLaneVehicles().get(7)) {
                         laneToGoTo.addCarToLane();
                         laneVehicles.set(i, false);
+                        this.numCars--;
                         System.out.println("Vehicle entered intersection " + intersectionId + " from lane with " +
                                 "orientation " + orientation);
                     }
@@ -74,6 +76,7 @@ public class Lane {
                 if (!laneVehicles.get(i - 1) && laneVehicles.get(i)) {
                     laneVehicles.set(i - 1, true);
                     laneVehicles.set(i, false);
+                    this.numCars--;
                 }
             }
         }
