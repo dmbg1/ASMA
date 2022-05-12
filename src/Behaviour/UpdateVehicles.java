@@ -50,7 +50,10 @@ public class UpdateVehicles extends TickerBehaviour {
                 laneWays.add(null);
 
             lane.updateVehiclesInLane(laneWays, world.getIntersection1().getId());
+
         }
+
+        this.world.informTLNumCars();
 
         this.world.getIntersection1().logIntersection();
         this.world.getIntersection2().logIntersection();

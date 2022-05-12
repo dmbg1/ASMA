@@ -11,6 +11,7 @@ public class Lane {
     private char orientation;
     private TrafficLight trafficLight;
     private int probGenerateLane;
+    private int numCars = 0;
 
     public Lane(char orientation, TrafficLight trafficLight, int probGenerateLane) {
         generateLaneVehicles();
@@ -23,16 +24,23 @@ public class Lane {
     public void generateLaneVehicles() {
         Random r = new Random();
         // Each lane will have 8 different positions
-        for (int i = 0; i < 8; i++)
-            laneVehicles.add(i, r.nextBoolean());
+        for (int i = 0; i < 8; i++) {
+            if (r.nextBoolean()) {
+                this.numCars++;
+                laneVehicles.add(i, true);
+            }else {
+                laneVehicles.add(i, false);
+            }
+        }
     }
 
     // Adds car to final position in lane if not occupied
     public void addCarToLane() {
-        if (!laneVehicles.get(7))
+        if (!laneVehicles.get(7)) {
+            this.numCars++;
             laneVehicles.set(7, true);
+        }
     }
-
 
     // Randomly chooses lane to go to after intersection (f, l, r)
     public Lane chooseLaneToGoTo(ArrayList<Lane> laneWays) {
@@ -85,6 +93,10 @@ public class Lane {
 
     public TrafficLight getTrafficLight() {
         return trafficLight;
+    }
+
+    public int getNumCars() {
+        return numCars;
     }
 
     public void alternateColorTrafficLight(int duration) {

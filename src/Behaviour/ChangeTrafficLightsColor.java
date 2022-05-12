@@ -24,9 +24,8 @@ public class ChangeTrafficLightsColor extends WakerBehaviour {
         message.put("Duration", String.valueOf(this.trafficLight.getDuration()));
         message.put("InterId", String.valueOf(this.trafficLight.getIntersectionId()));
 
-
         this.trafficLight.changeColor();
         this.trafficLight.sendMessage(message, "World", ACLMessage.INFORM);
-        this.trafficLight.addBehaviour(new ChangeTrafficLightsColor(trafficLight, trafficLight.getDuration() * 1000));
+        this.trafficLight.addBehaviour(new ChangeTrafficLightsColor(trafficLight, trafficLight.getDuration() * 1000L));
     }
 }

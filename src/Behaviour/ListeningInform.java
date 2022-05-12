@@ -1,5 +1,6 @@
 package Behaviour;
 
+import Agents.TrafficLight;
 import Agents.World;
 import Utils.Intersection;
 import jade.core.Agent;
@@ -40,6 +41,12 @@ public class ListeningInform extends CyclicBehaviour {
                         World world = (World) agent;
 
                         world.changeColorTrafficLight(duration, intersectionId);
+                        break;
+                    case "Inform num cars":
+                        int numCars = Integer.parseInt(msg_map.get("numCars"));
+                        TrafficLight trafficLight = (TrafficLight) agent;
+
+                        trafficLight.setNumCarsLane(numCars);
                         break;
                     default:
                         break;

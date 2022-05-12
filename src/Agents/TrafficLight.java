@@ -1,6 +1,7 @@
 package Agents;
 
 import Behaviour.ChangeTrafficLightsColor;
+import Behaviour.ListeningInform;
 import jade.core.AID;
 import jade.core.Agent;
 import jade.lang.acl.ACLMessage;
@@ -15,6 +16,7 @@ public class TrafficLight extends Agent {
     private char orientation;
     private boolean initiator;
     private int intersectionId;
+    private int numCarsLane;
 
     @Override
     protected void setup() {
@@ -30,7 +32,10 @@ public class TrafficLight extends Agent {
         this.intersectionId = (int) agentArgs[4];
 
         if(initiator)
-            addBehaviour(new ChangeTrafficLightsColor(this, this.duration * 1000));
+            addBehaviour(new ChangeTrafficLightsColor(this, this.duration * 1000L));
+
+        addBehaviour(new ListeningInform(this));
+
 
         //System.out.println("ATL => " + this.getLocalName() + " ori: " + this.orientation + " color: " + this.color);
     }
@@ -62,6 +67,10 @@ public class TrafficLight extends Agent {
 
     public int getIntersectionId() {
         return intersectionId;
+    }
+
+    public void setNumCarsLane(int numCarsLane) {
+        this.numCarsLane = numCarsLane;
     }
 
     public void changeColor() {
