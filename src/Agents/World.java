@@ -1,5 +1,6 @@
 package Agents;
 
+import Behaviour.CountdownWorldTrafficLights;
 import Behaviour.GenerateVehicles;
 import Behaviour.ListeningInform;
 import Behaviour.UpdateVehicles;
@@ -44,7 +45,7 @@ public class World extends Agent {
         addBehaviour(new GenerateVehicles(this, 5000));
         addBehaviour(new UpdateVehicles(this, 1000));
         addBehaviour(new ListeningInform(this));
-
+        addBehaviour(new CountdownWorldTrafficLights(this, 1000));
     }
 
     private void generateWorld() {
@@ -60,9 +61,11 @@ public class World extends Agent {
         return intersection2;
     }
 
-    public void changeColorTrafficLight(String nameId, int duration) {
+    public void changeColorTrafficLight(int duration, int intersectionId) {
 
-        intersection1.changeTrafficLightsColor(nameId, duration);
-        intersection2.changeTrafficLightsColor(nameId, duration);
+        if(intersectionId == 1)
+            intersection1.changeTrafficLightsColor(duration);
+        else
+            intersection2.changeTrafficLightsColor(duration);
     }
 }

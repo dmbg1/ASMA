@@ -51,21 +51,20 @@ public class Intersection {
     public void logIntersection() {
         ArrayList<Lane> lanes =  new ArrayList<>(this.lanes.values());
         System.out.println("Intersection " + id);
-        for(Lane lane: lanes)
-            System.out.println(lane.getTrafficLight().getColor() + ": " + lane.getLaneVehicles());
+        for(Lane lane: lanes) {
+            TrafficLight laneTrafficLight = lane.getTrafficLight();
+            System.out.println(laneTrafficLight.getColor() + "[" + laneTrafficLight.getDuration() + "]: " +
+                    lane.getLaneVehicles());
+        }
     }
 
     public int getId() {
         return id;
     }
 
-    public void changeTrafficLightsColor(String nameId, int duration) {
-
-        for(Lane lane: this.lanes.values()) {
-            System.out.println("Alternate color " + nameId);
-            if(Objects.equals(lane.getTrafficLight().getNameId(), nameId)) {
-                lane.alternateColorTrafficLight(duration);
-            }
-        }
+    public void changeTrafficLightsColor(int duration) {
+        System.out.println("Alternate intersection " + id + " traffic lights color");
+        for(Lane lane: this.lanes.values())
+            lane.alternateColorTrafficLight(duration);
     }
 }

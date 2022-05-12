@@ -1,12 +1,11 @@
 package Agents;
 
-import Behaviour.ChangeTrafficLightColor;
+import Behaviour.ChangeTrafficLightsColor;
 import jade.core.AID;
 import jade.core.Agent;
 import jade.lang.acl.ACLMessage;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
 
 public class TrafficLight extends Agent {
@@ -14,6 +13,8 @@ public class TrafficLight extends Agent {
     private char color;
     private int duration;
     private char orientation;
+    private boolean initiator;
+    private int intersectionId;
 
     @Override
     protected void setup() {
@@ -25,15 +26,11 @@ public class TrafficLight extends Agent {
         this.color = agentArgs[0].toString().charAt(0);
         this.duration =  (int) agentArgs[1];
         this.orientation = agentArgs[2].toString().charAt(0);
+        this.initiator = (boolean) agentArgs[3];
+        this.intersectionId = (int) agentArgs[4];
 
-        HashMap<String, String> message = new HashMap<>();
-        message.put("MsgType", "Alternate color");
-        message.put("NameId", this.getLocalName());
-        message.put("Duration", String.valueOf(this.duration));
-
-        sendMessage(message, "World", ACLMessage.INFORM);
-
-        addBehaviour(new ChangeTrafficLightColor(this, this.duration));
+        if(initiator)
+            addBehaviour(new ChangeTrafficLightsColor(this, this.duration * 1000));
 
         //System.out.println("ATL => " + this.getLocalName() + " ori: " + this.orientation + " color: " + this.color);
     }
@@ -63,9 +60,11 @@ public class TrafficLight extends Agent {
         return color;
     }
 
-    public void changeColor() {
+    public int getIntersectionId() {
+        return intersectionId;
+    }
 
-        if(color == 'r') this.color = 'g';
-        else this.color = 'r';
+    public void changeColor() {
+        this.color = this.color == 'r' ? 'g' : 'r';
     }
 }

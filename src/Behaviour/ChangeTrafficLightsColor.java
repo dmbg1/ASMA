@@ -1,18 +1,16 @@
 package Behaviour;
 
 import Agents.TrafficLight;
-import jade.core.Agent;
-import jade.core.behaviours.TickerBehaviour;
 import jade.core.behaviours.WakerBehaviour;
 import jade.lang.acl.ACLMessage;
 
 import java.util.HashMap;
 
-public class ChangeTrafficLightColor extends WakerBehaviour {
+public class ChangeTrafficLightsColor extends WakerBehaviour {
 
     private TrafficLight trafficLight;
 
-    public ChangeTrafficLightColor(TrafficLight trafficLight, long timeout) {
+    public ChangeTrafficLightsColor(TrafficLight trafficLight, long timeout) {
         super(trafficLight, timeout);
 
         this.trafficLight = trafficLight;
@@ -23,12 +21,12 @@ public class ChangeTrafficLightColor extends WakerBehaviour {
 
         HashMap<String, String> message = new HashMap<>();
         message.put("MsgType", "Alternate color");
-        message.put("NameId", this.trafficLight.getLocalName());
         message.put("Duration", String.valueOf(this.trafficLight.getDuration()));
+        message.put("InterId", String.valueOf(this.trafficLight.getIntersectionId()));
 
 
         this.trafficLight.changeColor();
-        this.trafficLight.sendMessage(message, "", ACLMessage.INFORM);
-        this.trafficLight.addBehaviour(new ChangeTrafficLightColor(trafficLight, trafficLight.getDuration()));
+        this.trafficLight.sendMessage(message, "World", ACLMessage.INFORM);
+        this.trafficLight.addBehaviour(new ChangeTrafficLightsColor(trafficLight, trafficLight.getDuration() * 1000));
     }
 }

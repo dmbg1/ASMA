@@ -44,21 +44,21 @@ public class Lane {
     // Updates vehicles positions in a lane
     // Possible turns
     // If vehicle can go forward in position 0 it verifies if the lane it turns to is free
-    public void updateVehiclesInLane(ArrayList<Lane> laneWays, int intersection_id) {
+    public void updateVehiclesInLane(ArrayList<Lane> laneWays, int intersectionId) {
         for (int i = 0; i < 8; i++) {
             if (i == 0) {
                 Lane laneToGoTo = chooseLaneToGoTo(laneWays);
                 if (trafficLight.getColor() == 'g' && laneVehicles.get(i)) {
                     if(laneToGoTo == null) {
                         laneVehicles.set(i, false);
-                        System.out.println("Vehicle entered intersection " + intersection_id + " from lane with " +
+                        System.out.println("Vehicle entered intersection " + intersectionId + " from lane with " +
                                 "orientation " + orientation);
                         continue;
                     }
                     if (!laneToGoTo.getLaneVehicles().get(7)) {
                         laneToGoTo.addCarToLane();
                         laneVehicles.set(i, false);
-                        System.out.println("Vehicle entered intersection " + intersection_id + " from lane with " +
+                        System.out.println("Vehicle entered intersection " + intersectionId + " from lane with " +
                                 "orientation " + orientation);
                     }
                 }
