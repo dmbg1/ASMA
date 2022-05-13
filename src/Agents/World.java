@@ -80,15 +80,17 @@ public class World extends Agent {
 
         for(Lane lane: this.intersection1.getLanes().values()) {
             HashMap<String, String> message = new HashMap<>();
-            message.put("MsgType", "Inform num cars");
+            message.put("MsgType", "Inform Lane State");
             message.put("numCars", String.valueOf(lane.getNumCars()));
+            message.put("closestCarDistance", String.valueOf(lane.proximityToTheTrafficLight()));
             sendMessage(message, lane.getTrafficLight().getNameId(), ACLMessage.INFORM);
         }
 
         for(Lane lane: this.intersection2.getLanes().values()) {
             HashMap<String, String> message = new HashMap<>();
-            message.put("MsgType", "Inform num cars");
+            message.put("MsgType", "Inform Lane State");
             message.put("numCars", String.valueOf(lane.getNumCars()));
+            message.put("closestCarDistance", String.valueOf(lane.proximityToTheTrafficLight()));
             sendMessage(message, lane.getTrafficLight().getNameId(), ACLMessage.INFORM);
         }
     }

@@ -39,11 +39,12 @@ public class ListeningInform extends CyclicBehaviour {
                         // duration + 1 because update behaviour makes it -1 immediately when color is alternated
                         world.changeColorTrafficLight(intersectionId);
                         break;
-                    case "Inform num cars":
+                    case "Inform Lane State":
                         int numCars = Integer.parseInt(msg_map.get("numCars"));
+                        int closestCarDistance = Integer.parseInt(msg_map.get("closestCarDistance"));
                         TrafficLight trafficLight = (TrafficLight) agent;
-
                         trafficLight.setNumCarsLane(numCars);
+                        trafficLight.setClosestCarDistance(closestCarDistance);
                         break;
                     default:
                         block();

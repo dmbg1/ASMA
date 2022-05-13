@@ -93,6 +93,14 @@ public class Lane {
         }
     }
 
+    public int proximityToTheTrafficLight() {
+        for (int i = 0; i < laneVehicles.size(); i++)
+            if(laneVehicles.get(i))
+                return i;
+
+        return 8;
+    }
+
     public int getProbGenerateLane() {
         return probGenerateLane;
     }

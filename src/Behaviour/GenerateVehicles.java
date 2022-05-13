@@ -27,7 +27,5 @@ public class GenerateVehicles extends TickerBehaviour {
             if(r.nextInt(1, 101) <= lane.getProbGenerateLane())
                 lane.addCarToLaneQueue();
         }
-
-        this.world.informTLNumCars();
     }
 }

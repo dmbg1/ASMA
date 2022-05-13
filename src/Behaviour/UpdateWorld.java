@@ -58,7 +58,6 @@ public class UpdateWorld extends TickerBehaviour {
         }
 
         this.world.informTLNumCars();
-
         this.world.getIntersection1().logIntersection();
         this.world.getIntersection2().logIntersection();
         System.out.println("==============================================================================");
