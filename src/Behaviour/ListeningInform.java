@@ -33,12 +33,11 @@ public class ListeningInform extends CyclicBehaviour {
 
                 switch(msg_type) {
                     case "Alternate color":
-                        int duration = Integer.parseInt(msg_map.get("Duration"));
                         int intersectionId = Integer.parseInt(msg_map.get("InterId"));
                         World world = (World) agent;
 
                         // duration + 1 because update behaviour makes it -1 immediately when color is alternated
-                        world.changeColorTrafficLight(duration + 1, intersectionId);
+                        world.changeColorTrafficLight(intersectionId);
                         break;
                     case "Inform num cars":
                         int numCars = Integer.parseInt(msg_map.get("numCars"));

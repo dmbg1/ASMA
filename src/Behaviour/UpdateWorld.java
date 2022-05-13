@@ -34,7 +34,7 @@ public class UpdateWorld extends TickerBehaviour {
             }
             lane.updateVehiclesInLane(laneWays, world.getIntersection2().getId());
             TrafficLight laneTrafficLight = lane.getTrafficLight();
-            laneTrafficLight.setDuration(laneTrafficLight.getDuration() - 1);
+            //laneTrafficLight.setElapsedTime(laneTrafficLight.getElapsedTime() - 1);
         }
 
         for (Lane lane : lanesInter1.values()) {
@@ -54,7 +54,7 @@ public class UpdateWorld extends TickerBehaviour {
 
             lane.updateVehiclesInLane(laneWays, world.getIntersection1().getId());
             TrafficLight laneTrafficLight = lane.getTrafficLight();
-            laneTrafficLight.setDuration(laneTrafficLight.getDuration() - 1);
+            //laneTrafficLight.setElapsedTime(laneTrafficLight.getElapsedTime() - 1);
         }
 
         this.world.informTLNumCars();

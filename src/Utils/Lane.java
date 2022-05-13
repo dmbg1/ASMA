@@ -113,8 +113,8 @@ public class Lane {
         return numCars;
     }
 
-    public void alternateColorTrafficLight(int duration) {
-        this.trafficLight.alternateColor(duration);
+    public void alternateColorTrafficLight() {
+        this.trafficLight.alternateColor();
     }
 
 }

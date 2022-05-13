@@ -4,6 +4,7 @@ import Behaviour.ChangeTrafficLightsColor;
 import Behaviour.ListeningInform;
 import jade.core.AID;
 import jade.core.Agent;
+import jade.core.behaviours.TickerBehaviour;
 import jade.lang.acl.ACLMessage;
 
 import java.io.IOException;
@@ -12,7 +13,7 @@ import java.util.HashMap;
 public class TrafficLight extends Agent {
 
     private char color;
-    private int duration;
+    private int elapsedTime = 0;
     private char orientation;
     private boolean initiator;
     private int intersectionId;
@@ -21,21 +22,25 @@ public class TrafficLight extends Agent {
     @Override
     protected void setup() {
 
-        //É preciso adicionar os argumentos na criacao dos agentes
-
         Object[] agentArgs = getArguments();
 
         this.color = agentArgs[0].toString().charAt(0);
-        this.duration =  (int) agentArgs[1];
-        this.orientation = agentArgs[2].toString().charAt(0);
-        this.initiator = (boolean) agentArgs[3];
-        this.intersectionId = (int) agentArgs[4];
+        this.orientation = agentArgs[1].toString().charAt(0);
+        this.initiator = (boolean) agentArgs[2];
+        this.intersectionId = (int) agentArgs[3];
 
+        //TODO: Temporario, o semaforo vai mudar apenas durante a negociação
         if(initiator)
-            addBehaviour(new ChangeTrafficLightsColor(this, this.duration * 1000L));
+            addBehaviour(new ChangeTrafficLightsColor(this, 3000));
 
         addBehaviour(new ListeningInform(this));
-
+        addBehaviour(new TickerBehaviour(this, 1000) {
+            @Override
+            protected void onTick() {
+                elapsedTime++;
+                System.out.println("====> " + getLocalName() + " " + elapsedTime);
+            }
+        });
 
         //System.out.println("ATL => " + this.getLocalName() + " ori: " + this.orientation + " color: " + this.color);
     }
@@ -49,12 +54,13 @@ public class TrafficLight extends Agent {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
         msg.addReceiver(new AID(receiver, AID.ISLOCALNAME));
         send(msg);
     }
 
-    public int getDuration() {
-        return duration;
+    public int getElapsedTime() {
+        return elapsedTime;
     }
 
     public char getOrientation() {
@@ -71,6 +77,10 @@ public class TrafficLight extends Agent {
 
     public void setNumCarsLane(int numCarsLane) {
         this.numCarsLane = numCarsLane;
+    }
+
+    public void setElapsedTime(int elapsedTime) {
+        this.elapsedTime = elapsedTime;
     }
 
     public void changeColor() {

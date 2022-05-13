@@ -21,11 +21,11 @@ public class ChangeTrafficLightsColor extends WakerBehaviour {
 
         HashMap<String, String> message = new HashMap<>();
         message.put("MsgType", "Alternate color");
-        message.put("Duration", String.valueOf(this.trafficLight.getDuration()));
         message.put("InterId", String.valueOf(this.trafficLight.getIntersectionId()));
 
+        this.trafficLight.setElapsedTime(0);
         this.trafficLight.changeColor();
         this.trafficLight.sendMessage(message, "World", ACLMessage.INFORM);
-        this.trafficLight.addBehaviour(new ChangeTrafficLightsColor(trafficLight, trafficLight.getDuration() * 1000L));
+        this.trafficLight.addBehaviour(new ChangeTrafficLightsColor(trafficLight, 3000));
     }
 }

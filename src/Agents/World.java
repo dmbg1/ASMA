@@ -68,12 +68,12 @@ public class World extends Agent {
         return intersection2;
     }
 
-    public void changeColorTrafficLight(int duration, int intersectionId) {
+    public void changeColorTrafficLight(int intersectionId) {
 
         if(intersectionId == 1)
-            intersection1.changeTrafficLightsColor(duration);
+            intersection1.changeTrafficLightsColor();
         else
-            intersection2.changeTrafficLightsColor(duration);
+            intersection2.changeTrafficLightsColor();
     }
 
     public void informTLNumCars() { // TODO Maybe make this behaviour
