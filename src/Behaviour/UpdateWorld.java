@@ -2,16 +2,17 @@ package Behaviour;
 
 import Agents.World;
 import Utils.Lane;
+import Utils.TrafficLight;
 import jade.core.behaviours.TickerBehaviour;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class UpdateVehicles extends TickerBehaviour {
+public class UpdateWorld extends TickerBehaviour {
 
     private final World world;
 
-    public UpdateVehicles(World world, long period) {
+    public UpdateWorld(World world, long period) {
         super(world, period);
         this.world = world;
     }
@@ -32,6 +33,8 @@ public class UpdateVehicles extends TickerBehaviour {
                 laneWays.add(null);
             }
             lane.updateVehiclesInLane(laneWays, world.getIntersection2().getId());
+            TrafficLight laneTrafficLight = lane.getTrafficLight();
+            laneTrafficLight.setDuration(laneTrafficLight.getDuration() - 1);
         }
 
         for (Lane lane : lanesInter1.values()) {
@@ -50,7 +53,8 @@ public class UpdateVehicles extends TickerBehaviour {
                 laneWays.add(null);
 
             lane.updateVehiclesInLane(laneWays, world.getIntersection1().getId());
-
+            TrafficLight laneTrafficLight = lane.getTrafficLight();
+            laneTrafficLight.setDuration(laneTrafficLight.getDuration() - 1);
         }
 
         this.world.informTLNumCars();

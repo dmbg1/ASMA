@@ -1,17 +1,16 @@
 package Agents;
 
-import Behaviour.CountdownWorldTrafficLights;
 import Behaviour.GenerateVehicles;
 import Behaviour.ListeningInform;
-import Behaviour.UpdateVehicles;
+import Behaviour.UpdateWorld;
 import Utils.Intersection;
 import Utils.Lane;
 import jade.core.AID;
 import jade.core.Agent;
 import jade.lang.acl.ACLMessage;
+import jade.wrapper.ContainerController;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
 
 public class World extends Agent {
@@ -41,20 +40,24 @@ public class World extends Agent {
    I2 -> Intersection 2
    */
 
+    private ContainerController cc;
     private Intersection intersection1;
     private Intersection intersection2;
 
     public void setup() {
+        Object[] agentArgs = getArguments();
+        this.cc = (ContainerController) agentArgs[0];
         generateWorld();
+        addBehaviour(new UpdateWorld(this, 1000));
         addBehaviour(new GenerateVehicles(this, 5000));
-        addBehaviour(new UpdateVehicles(this, 1000));
         addBehaviour(new ListeningInform(this));
-        addBehaviour(new CountdownWorldTrafficLights(this, 1000));
     }
 
     private void generateWorld() {
         intersection1 = new Intersection(1);
+        intersection1.addLanesToIntersection(new char[]{'N', 'E', 'W'}, cc);
         intersection2 = new Intersection(2);
+        intersection2.addLanesToIntersection(new char[]{'N', 'W'}, cc);
     }
 
     public Intersection getIntersection1() {
@@ -73,7 +76,7 @@ public class World extends Agent {
             intersection2.changeTrafficLightsColor(duration);
     }
 
-    public void informTLNumCars() {
+    public void informTLNumCars() { // TODO Maybe make this behaviour
 
         for(Lane lane: this.intersection1.getLanes().values()) {
             HashMap<String, String> message = new HashMap<>();

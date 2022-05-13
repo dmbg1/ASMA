@@ -18,14 +18,14 @@ public class GenerateVehicles extends TickerBehaviour {
     protected void onTick() {
         ArrayList<Lane> lanes = new ArrayList<>(world.getIntersection1().getLanes().values());
 
-        // Not considering north one because it is fed by the other intersection
+        // Not considering north lane of intersection 2 because it is fed by the other intersection
         lanes.add(world.getIntersection2().getLanes().get('W'));
 
         Random r = new Random();
 
         for (Lane lane: lanes) {
             if(r.nextInt(1, 101) <= lane.getProbGenerateLane())
-                lane.addCarToLane();
+                lane.addCarToLaneQueue();
         }
 
         this.world.informTLNumCars();

@@ -1,7 +1,6 @@
 package Utils;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Random;
 
 public class Lane {
@@ -11,6 +10,7 @@ public class Lane {
     private char orientation;
     private TrafficLight trafficLight;
     private int probGenerateLane;
+    private int carsInQueue = 0;
     private int numCars = 0;
 
     public Lane(char orientation, TrafficLight trafficLight, int probGenerateLane) {
@@ -34,12 +34,20 @@ public class Lane {
         }
     }
 
-    // Adds car to final position in lane if not occupied
-    public void addCarToLane() {
-        if (!laneVehicles.get(7)) {
-            this.numCars++;
-            laneVehicles.set(7, true);
-        }
+    // Adds car to final position in lane from generated cars queue
+    public void addCarToLane(){
+        laneVehicles.set(7, true);
+    }
+
+    // Adds car to final position in lane from generated cars queue
+    public void addCarToLaneFromQueue() {
+        addCarToLane();
+        carsInQueue--;
+    }
+
+    // Adds car to car queue to enter lane so that in update behaviour car is generated
+    public void addCarToLaneQueue() {
+        carsInQueue++;
     }
 
     // Randomly chooses lane to go to after intersection (f, l, r)
@@ -54,7 +62,7 @@ public class Lane {
     // If vehicle can go forward in position 0 it verifies if the lane it turns to is free
     public void updateVehiclesInLane(ArrayList<Lane> laneWays, int intersectionId) {
         for (int i = 0; i < 8; i++) {
-            if (i == 0) {
+            if (i == 0) { // Entering intersection and leaving lane
                 Lane laneToGoTo = chooseLaneToGoTo(laneWays);
                 if (trafficLight.getColor() == 'g' && laneVehicles.get(i)) {
                     if(laneToGoTo == null) {
@@ -76,9 +84,12 @@ public class Lane {
                 if (!laneVehicles.get(i - 1) && laneVehicles.get(i)) {
                     laneVehicles.set(i - 1, true);
                     laneVehicles.set(i, false);
-                    this.numCars--;
                 }
             }
+        }
+        // Add cars in waiting queue before lane if any
+        if (!laneVehicles.get(7) && carsInQueue > 0) {
+            addCarToLaneFromQueue();
         }
     }
 

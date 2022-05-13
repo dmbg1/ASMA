@@ -26,9 +26,6 @@ public class ListeningInform extends CyclicBehaviour {
     public void action() {
 
         ACLMessage msg = this.getAgent().receive(mt);
-        // TODO ['Alternate traffic light', 'duration', duration]
-        // TODO ['Alternate traffic light', 'name: ', name, 'duration:', duration, 'color:', color]
-        // TODO ['Init', 'color', 'duration', 'orientation'] maybe
         if(msg != null) {
             try {
                 HashMap<String, String> msg_map = (HashMap<String, String>) msg.getContentObject();
@@ -40,7 +37,8 @@ public class ListeningInform extends CyclicBehaviour {
                         int intersectionId = Integer.parseInt(msg_map.get("InterId"));
                         World world = (World) agent;
 
-                        world.changeColorTrafficLight(duration, intersectionId);
+                        // duration + 1 because update behaviour makes it -1 immediately when color is alternated
+                        world.changeColorTrafficLight(duration + 1, intersectionId);
                         break;
                     case "Inform num cars":
                         int numCars = Integer.parseInt(msg_map.get("numCars"));
@@ -49,6 +47,7 @@ public class ListeningInform extends CyclicBehaviour {
                         trafficLight.setNumCarsLane(numCars);
                         break;
                     default:
+                        block();
                         break;
                 }
 
