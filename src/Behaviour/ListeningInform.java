@@ -46,6 +46,11 @@ public class ListeningInform extends CyclicBehaviour {
                         trafficLight.setNumCarsLane(numCars);
                         trafficLight.setClosestCarDistance(closestCarDistance);
                         break;
+                    case "Parallel Utility":
+                        double utility = Double.parseDouble(msg_map.get("Utility"));
+                        TrafficLight tl = (TrafficLight) agent;
+                        tl.setParallelUtility(utility);
+                        break;
                     default:
                         block();
                         break;

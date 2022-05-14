@@ -1,9 +1,9 @@
 package Agents;
 
 import Behaviour.*;
+import Utils.Utils;
 import jade.core.AID;
 import jade.core.Agent;
-import jade.core.behaviours.TickerBehaviour;
 import jade.domain.DFService;
 import jade.domain.FIPAAgentManagement.DFAgentDescription;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
@@ -13,12 +13,13 @@ import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
 
 public class TrafficLight extends Agent {
 
     private AID worldAID;
+    private AID parallelTLAID = null;
+
     private char color;
     private int elapsedTime = 0;
     private char orientation;
@@ -26,6 +27,7 @@ public class TrafficLight extends Agent {
     private int intersectionId;
     private int numCarsLane;
     private int closestCarDistance;
+    private double parallelUtility = 0;
 
     @Override
     protected void setup() {
@@ -41,10 +43,16 @@ public class TrafficLight extends Agent {
         registerTrafficLight();
         // Get world AID from DF
         worldAID = getWorldAIDFromDF();
+        // Get parallel traffic light AID from DF if any
+        parallelTLAID = getParallelTLAIDFromDF();
 
         addBehaviour(new ListeningInform(this));
         addBehaviour(new UpdateTlElapsedTime(this, 1000));
 
+        if(intersectionId == 1 && (orientation == 'E' || orientation == 'W')) {
+            addBehaviour(new InformUtilityToParallelTL(this, 1000));
+        }
+        /*
         try {
             Thread.sleep(2000);
         } catch (InterruptedException e) {
@@ -64,22 +72,8 @@ public class TrafficLight extends Agent {
                 addBehaviour(new FIPARequestTlResponder(this, template));
             }
 
-        }
+        }*/
         //System.out.println("ATL => " + this.getLocalName() + " ori: " + this.orientation + " color: " + this.color);
-    }
-
-    public void sendMessage(HashMap<String, String> message, String receiver, int performative) {
-
-        ACLMessage msg = new ACLMessage(performative);
-
-        try {
-            msg.setContentObject(message);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        msg.addReceiver(new AID(receiver, AID.ISLOCALNAME));
-        send(msg);
     }
 
     private ACLMessage buildChangeTlColorReqMsg(AID trafficLightAID) {
@@ -100,7 +94,7 @@ public class TrafficLight extends Agent {
         DFAgentDescription dfd = new DFAgentDescription();
         dfd.setName(getAID());
         ServiceDescription sd = new ServiceDescription();
-        sd.setType("Traffic Light Intersection " + intersectionId);
+        sd.setType("Traffic Light Intersection " + intersectionId + " Orientation " + orientation);
         sd.setName(getLocalName());
         dfd.addServices(sd);
         try {
@@ -118,7 +112,7 @@ public class TrafficLight extends Agent {
         template.addServices(sd);
         try {
             DFAgentDescription[] result = DFService.search(this, template);
-           return result[0].getName();
+            return result[0].getName();
         } catch(FIPAException fe) {
             fe.printStackTrace();
         }
@@ -127,11 +121,33 @@ public class TrafficLight extends Agent {
 
     // utility function to switch traffic light from red to green
     public double utilityFunction() {
-        // tl1 <-> tl2 (se cor de tl1 for vermelha e diferente de tl2)
-        // nr carros (+)
-        // proximidade ao semaforo (mais proximo +)
         // TODO Adicionar quantidade de carros seguidos a partir do mais proximo
-        return numCarsLane + (8 - closestCarDistance) ;
+
+        if(orientation == 'E' || orientation == 'W')
+            return (numCarsLane + (8 - closestCarDistance) + parallelUtility)/ 2;
+        else
+            return numCarsLane + (8 - closestCarDistance);
+    }
+
+    public AID getParallelTLAIDFromDF() {
+        if(intersectionId == 1 && (orientation == 'E' || orientation == 'W')) {
+            DFAgentDescription template = new DFAgentDescription();
+            ServiceDescription sd = new ServiceDescription();
+            sd.setType("Traffic Light Intersection " + intersectionId + " Orientation " +
+                    (orientation == 'E' ? 'W' : 'E'));
+            template.addServices(sd);
+            try {
+                DFAgentDescription[] result = DFService.search(this, template);
+                return result[0].getName();
+            } catch (FIPAException fe) {
+                fe.printStackTrace();
+            }
+        }
+        return null;
+    }
+
+    public AID getParallelTLAID() {
+        return parallelTLAID;
     }
 
     public int getElapsedTime() {
@@ -145,7 +161,6 @@ public class TrafficLight extends Agent {
     public AID getWorldAID() {
         return worldAID;
     }
-
 
     public boolean isInitiator() {
         return initiator;
@@ -165,6 +180,11 @@ public class TrafficLight extends Agent {
 
     public void setClosestCarDistance(int closestCarDistance) {
         this.closestCarDistance = closestCarDistance;
+    }
+
+    public void setParallelUtility(double parallelUtility) {
+        System.out.println(parallelUtility);
+        this.parallelUtility = parallelUtility;
     }
 
     public void changeColor() {

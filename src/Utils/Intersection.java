@@ -38,13 +38,18 @@ public class Intersection {
                 trafficLight = new TrafficLight(weTrafficLightColor, orientation);
 
             Lane lane = new Lane(orientation, trafficLight, r.nextInt(100));
+            lanes.put(orientation, lane);
+
+            if(trafficLight.getColor() == 'g') {
+                generateTrafficLightAgent(cc, trafficLight.getColor(), orientation,
+                        false, lane.getTrafficLight().getNameId());
+                continue;
+            }
 
             generateTrafficLightAgent(cc, trafficLight.getColor(), orientation,
                     initiator, lane.getTrafficLight().getNameId());
-            // Only one traffic light can be initiator in one intersection
+            // Only one red traffic light can be initiator in one intersection
             if (initiator) initiator = false;
-
-            lanes.put(orientation, lane);
         }
     }
 

@@ -1,6 +1,7 @@
 package Behaviour;
 
 import Agents.TrafficLight;
+import Utils.Utils;
 import jade.core.behaviours.SimpleBehaviour;
 import jade.core.behaviours.WakerBehaviour;
 import jade.lang.acl.ACLMessage;
@@ -25,7 +26,9 @@ public class ChangeTrafficLightsColor extends SimpleBehaviour {
             HashMap<String, String> message = new HashMap<>();
             message.put("MsgType", "Alternate color");
             message.put("InterId", String.valueOf(this.trafficLight.getIntersectionId()));
-            this.trafficLight.sendMessage(message, "World", ACLMessage.INFORM);
+            this.trafficLight.send(Utils.getACLMessage(message,
+                    String.valueOf(trafficLight.getWorldAID()),
+                    ACLMessage.INFORM));
         }
     }
 

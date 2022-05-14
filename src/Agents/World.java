@@ -5,6 +5,7 @@ import Behaviour.ListeningInform;
 import Behaviour.UpdateWorld;
 import Utils.Intersection;
 import Utils.Lane;
+import Utils.Utils;
 import jade.core.AID;
 import jade.core.Agent;
 import jade.domain.DFService;
@@ -91,14 +92,14 @@ public class World extends Agent {
             intersection2.changeTrafficLightsColor();
     }
 
-    public void informTLNumCars() { // TODO Maybe make this behaviour
+    public void informTLNumCars() {
 
         for(Lane lane: this.intersection1.getLanes().values()) {
             HashMap<String, String> message = new HashMap<>();
             message.put("MsgType", "Inform Lane State");
             message.put("numCars", String.valueOf(lane.getNumCars()));
             message.put("closestCarDistance", String.valueOf(lane.proximityToTheTrafficLight()));
-            sendMessage(message, lane.getTrafficLight().getNameId(), ACLMessage.INFORM);
+            send(Utils.getACLMessage(message, lane.getTrafficLight().getNameId(), ACLMessage.INFORM));
         }
 
         for(Lane lane: this.intersection2.getLanes().values()) {
@@ -106,7 +107,7 @@ public class World extends Agent {
             message.put("MsgType", "Inform Lane State");
             message.put("numCars", String.valueOf(lane.getNumCars()));
             message.put("closestCarDistance", String.valueOf(lane.proximityToTheTrafficLight()));
-            sendMessage(message, lane.getTrafficLight().getNameId(), ACLMessage.INFORM);
+            send(Utils.getACLMessage(message, lane.getTrafficLight().getNameId(), ACLMessage.INFORM));
         }
     }
 
@@ -123,19 +124,5 @@ public class World extends Agent {
         } catch(FIPAException fe) {
             fe.printStackTrace();
         }
-    }
-
-    public void sendMessage(HashMap<String, String> message, String receiver, int performative) {
-
-        ACLMessage msg = new ACLMessage(performative);
-
-        try {
-            msg.setContentObject(message);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        msg.addReceiver(new AID(receiver, AID.ISLOCALNAME));
-        send(msg);
     }
 }
