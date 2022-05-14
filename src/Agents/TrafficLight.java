@@ -129,6 +129,14 @@ public class TrafficLight extends Agent {
             return numCarsLane + (8 - closestCarDistance);
     }
 
+    public int getClosestCarDistance() {
+        return closestCarDistance;
+    }
+
+    public double getParallelUtility() {
+        return parallelUtility;
+    }
+
     public AID getParallelTLAIDFromDF() {
         if(intersectionId == 1 && (orientation == 'E' || orientation == 'W')) {
             DFAgentDescription template = new DFAgentDescription();
@@ -160,6 +168,10 @@ public class TrafficLight extends Agent {
 
     public AID getWorldAID() {
         return worldAID;
+    }
+
+    public int getNumCarsLane() {
+        return numCarsLane;
     }
 
     public boolean isInitiator() {

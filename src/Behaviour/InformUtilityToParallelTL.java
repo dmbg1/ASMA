@@ -20,7 +20,7 @@ public class InformUtilityToParallelTL extends TickerBehaviour {
     protected void onTick() {
         HashMap<String, String> message = new HashMap<>();
         message.put("MsgType", "Parallel Utility");
-        message.put("Utility", String.valueOf(trafficLight.utilityFunction()));
+        message.put("Utility", String.valueOf((trafficLight.getNumCarsLane() + (8 - trafficLight.getClosestCarDistance()))));
         this.trafficLight.send(Utils.getACLMessage(message,
                 String.valueOf(trafficLight.getParallelTLAID()),
                 ACLMessage.INFORM));
