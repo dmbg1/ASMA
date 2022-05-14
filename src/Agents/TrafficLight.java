@@ -4,15 +4,21 @@ import Behaviour.*;
 import jade.core.AID;
 import jade.core.Agent;
 import jade.core.behaviours.TickerBehaviour;
+import jade.domain.DFService;
+import jade.domain.FIPAAgentManagement.DFAgentDescription;
+import jade.domain.FIPAAgentManagement.ServiceDescription;
+import jade.domain.FIPAException;
 import jade.domain.FIPANames;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class TrafficLight extends Agent {
 
+    private AID worldAID;
     private char color;
     private int elapsedTime = 0;
     private char orientation;
@@ -30,6 +36,11 @@ public class TrafficLight extends Agent {
         this.orientation = agentArgs[1].toString().charAt(0);
         this.initiator = (boolean) agentArgs[2];
         this.intersectionId = (int) agentArgs[3];
+
+        // Register traffic light in DF
+        registerTrafficLight();
+        // Get world AID from DF
+        worldAID = getWorldAIDFromDF();
 
         addBehaviour(new ListeningInform(this));
         addBehaviour(new UpdateTlElapsedTime(this, 1000));
@@ -85,30 +96,56 @@ public class TrafficLight extends Agent {
         return msg;
     }
 
+    public void registerTrafficLight() {
+        DFAgentDescription dfd = new DFAgentDescription();
+        dfd.setName(getAID());
+        ServiceDescription sd = new ServiceDescription();
+        sd.setType("Traffic Light Intersection " + intersectionId);
+        sd.setName(getLocalName());
+        dfd.addServices(sd);
+        try {
+            DFService.register(this, dfd);
+            System.out.println("Traffic Light " + this.getLocalName() + " registered in DF successfully");
+        } catch(FIPAException fe) {
+            fe.printStackTrace();
+        }
+    }
+
+    public AID getWorldAIDFromDF() {
+        DFAgentDescription template = new DFAgentDescription();
+        ServiceDescription sd = new ServiceDescription();
+        sd.setType("World");
+        template.addServices(sd);
+        try {
+            DFAgentDescription[] result = DFService.search(this, template);
+           return result[0].getName();
+        } catch(FIPAException fe) {
+            fe.printStackTrace();
+        }
+        return null;
+    }
+
     // utility function to switch traffic light from red to green
     public double utilityFunction() {
         // tl1 <-> tl2 (se cor de tl1 for vermelha e diferente de tl2)
         // nr carros (+)
         // proximidade ao semaforo (mais proximo +)
         // TODO Adicionar quantidade de carros seguidos a partir do mais proximo
-        return (numCarsLane * 0.4 + (8 - closestCarDistance) * 0.6) / 8;
+        return numCarsLane + (8 - closestCarDistance) ;
     }
 
     public int getElapsedTime() {
         return elapsedTime;
     }
 
-    public char getOrientation() {
-        return orientation;
-    }
-
-    public char getColor() {
-        return color;
-    }
-
     public int getIntersectionId() {
         return intersectionId;
     }
+
+    public AID getWorldAID() {
+        return worldAID;
+    }
+
 
     public boolean isInitiator() {
         return initiator;

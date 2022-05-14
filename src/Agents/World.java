@@ -7,6 +7,10 @@ import Utils.Intersection;
 import Utils.Lane;
 import jade.core.AID;
 import jade.core.Agent;
+import jade.domain.DFService;
+import jade.domain.FIPAAgentManagement.DFAgentDescription;
+import jade.domain.FIPAAgentManagement.ServiceDescription;
+import jade.domain.FIPAException;
 import jade.lang.acl.ACLMessage;
 import jade.wrapper.ContainerController;
 
@@ -47,7 +51,18 @@ public class World extends Agent {
     public void setup() {
         Object[] agentArgs = getArguments();
         this.cc = (ContainerController) agentArgs[0];
+        registerWorld();
         generateWorld();
+        // Guarantee world generation finished
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+
+        intersection1.logIntersection();
+        intersection2.logIntersection();
+        System.out.println("==============================================================================");
         addBehaviour(new UpdateWorld(this, 1000));
         addBehaviour(new GenerateVehicles(this, 5000));
         addBehaviour(new ListeningInform(this));
@@ -92,6 +107,21 @@ public class World extends Agent {
             message.put("numCars", String.valueOf(lane.getNumCars()));
             message.put("closestCarDistance", String.valueOf(lane.proximityToTheTrafficLight()));
             sendMessage(message, lane.getTrafficLight().getNameId(), ACLMessage.INFORM);
+        }
+    }
+
+    public void registerWorld() {
+        DFAgentDescription dfd = new DFAgentDescription();
+        dfd.setName(getAID());
+        ServiceDescription sd = new ServiceDescription();
+        sd.setType("World");
+        sd.setName(getLocalName());
+        dfd.addServices(sd);
+        try {
+            DFService.register(this, dfd);
+            System.out.println("World registered in DF successfully");
+        } catch(FIPAException fe) {
+            fe.printStackTrace();
         }
     }
 

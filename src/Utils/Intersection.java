@@ -46,8 +46,6 @@ public class Intersection {
 
             lanes.put(orientation, lane);
         }
-        logIntersection();
-        System.out.println("==============================================================================");
     }
 
     public void generateTrafficLightAgent(ContainerController cc, char color, char ori, boolean initiator, String nameId) {
