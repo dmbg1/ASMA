@@ -54,12 +54,6 @@ public class World extends Agent {
         this.cc = (ContainerController) agentArgs[0];
         registerWorld();
         generateWorld();
-        // Guarantee world generation finished
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
 
         intersection1.logIntersection();
         intersection2.logIntersection();
@@ -99,6 +93,17 @@ public class World extends Agent {
             message.put("MsgType", "Inform Lane State");
             message.put("numCars", String.valueOf(lane.getNumCars()));
             message.put("closestCarDistance", String.valueOf(lane.proximityToTheTrafficLight()));
+            if(lane.getOrientation() == 'W') {
+                Lane parallelLane = intersection1.getLanes().get('E');
+                message.put("parallelNumCars", String.valueOf(parallelLane.getNumCars()));
+                message.put("parallelClosestCarDistance", String.valueOf(parallelLane.proximityToTheTrafficLight()));
+            }
+            else if(lane.getOrientation() == 'E') {
+                Lane parallelLane = intersection1.getLanes().get('W');
+                message.put("parallelNumCars", String.valueOf(parallelLane.getNumCars()));
+                message.put("parallelClosestCarDistance", String.valueOf(parallelLane.proximityToTheTrafficLight()));
+            }
+
             send(Utils.getACLMessage(message, lane.getTrafficLight().getNameId(), ACLMessage.INFORM));
         }
 

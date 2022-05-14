@@ -27,7 +27,8 @@ public class TrafficLight extends Agent {
     private int intersectionId;
     private int numCarsLane;
     private int closestCarDistance;
-    private double parallelUtility = 0;
+    private int parallelNumCarsLane = -1;
+    private int parallelClosestCarDistance = -1;
 
     @Override
     protected void setup() {
@@ -49,9 +50,6 @@ public class TrafficLight extends Agent {
         addBehaviour(new ListeningInform(this));
         addBehaviour(new UpdateTlElapsedTime(this, 1000));
 
-        if(intersectionId == 1 && (orientation == 'E' || orientation == 'W')) {
-            addBehaviour(new InformUtilityToParallelTL(this, 1000));
-        }
         /*
         try {
             Thread.sleep(2000);
@@ -123,19 +121,21 @@ public class TrafficLight extends Agent {
     public double utilityFunction() {
         // TODO Adicionar quantidade de carros seguidos a partir do mais proximo
 
-        if(orientation == 'E' || orientation == 'W')
-            return (numCarsLane + (8 - closestCarDistance) + parallelUtility)/ 2;
+        if(intersectionId == 1 && (orientation == 'E' || orientation == 'W'))
+        if(intersectionId == 1 && (orientation == 'E' || orientation == 'W'))
+            return (calculateUtility(numCarsLane, closestCarDistance) +
+                    calculateUtility(parallelNumCarsLane, parallelClosestCarDistance)) / 2;
         else
-            return numCarsLane + (8 - closestCarDistance);
+            return calculateUtility(numCarsLane, closestCarDistance);
     }
 
+    public double calculateUtility(int numCars, int closestCarDistance) {
+        return numCars + (8 - closestCarDistance);
+    }
     public int getClosestCarDistance() {
         return closestCarDistance;
     }
 
-    public double getParallelUtility() {
-        return parallelUtility;
-    }
 
     public AID getParallelTLAIDFromDF() {
         if(intersectionId == 1 && (orientation == 'E' || orientation == 'W')) {
@@ -174,6 +174,10 @@ public class TrafficLight extends Agent {
         return numCarsLane;
     }
 
+    public char getOrientation() {
+        return orientation;
+    }
+
     public boolean isInitiator() {
         return initiator;
     }
@@ -194,9 +198,12 @@ public class TrafficLight extends Agent {
         this.closestCarDistance = closestCarDistance;
     }
 
-    public void setParallelUtility(double parallelUtility) {
-        System.out.println(parallelUtility);
-        this.parallelUtility = parallelUtility;
+    public void setParallelNumCarsLane(int parallelNumCarsLane) {
+        this.parallelNumCarsLane = parallelNumCarsLane;
+    }
+
+    public void setParallelClosestCarDistance(int parallelClosestCarDistance) {
+        this.parallelClosestCarDistance = parallelClosestCarDistance;
     }
 
     public void changeColor() {

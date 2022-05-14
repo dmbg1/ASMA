@@ -40,16 +40,18 @@ public class ListeningInform extends CyclicBehaviour {
                         world.changeColorTrafficLight(intersectionId);
                         break;
                     case "Inform Lane State":
+                        TrafficLight trafficLight = (TrafficLight) agent;
                         int numCars = Integer.parseInt(msg_map.get("numCars"));
                         int closestCarDistance = Integer.parseInt(msg_map.get("closestCarDistance"));
-                        TrafficLight trafficLight = (TrafficLight) agent;
+                        if(trafficLight.getIntersectionId() == 1 &&
+                                (trafficLight.getOrientation() == 'W' || trafficLight.getOrientation() == 'E')) {
+                            int parallelNumCars = Integer.parseInt(msg_map.get("parallelNumCars"));
+                            trafficLight.setParallelNumCarsLane(parallelNumCars);
+                            int parallelClosestCarDistance = Integer.parseInt(msg_map.get("parallelClosestCarDistance"));
+                            trafficLight.setParallelClosestCarDistance(parallelClosestCarDistance);
+                        }
                         trafficLight.setNumCarsLane(numCars);
                         trafficLight.setClosestCarDistance(closestCarDistance);
-                        break;
-                    case "Parallel Utility":
-                        double utility = Double.parseDouble(msg_map.get("Utility"));
-                        TrafficLight tl = (TrafficLight) agent;
-                        tl.setParallelUtility(utility);
                         break;
                     default:
                         block();
