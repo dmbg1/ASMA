@@ -12,6 +12,10 @@ public class Lane {
     private int probGenerateLane;
     private int carsInQueue = 0;
     private int numCars = 0;
+    private double redTime = 0.0;
+    private double greenTime = 0.0;
+    private int numTimesOnRed = 0;
+    private int numTimesOnGreen = 0;
 
     public Lane(char orientation, TrafficLight trafficLight, int probGenerateLane) {
         generateLaneVehicles();
@@ -121,8 +125,34 @@ public class Lane {
         return numCars;
     }
 
-    public void alternateColorTrafficLight() {
-        this.trafficLight.alternateColor();
+    public double getRedTime() {
+        return redTime;
     }
 
+    public double getGreenTime() {
+        return greenTime;
+    }
+
+    public int getNumTimesOnRed() {
+        return numTimesOnRed;
+    }
+
+    public int getNumTimesOnGreen() {
+        return numTimesOnGreen;
+    }
+
+    public void alternateColorTrafficLight() {
+        this.trafficLight.alternateColor();
+        if(this.trafficLight.getColor() == 'r') {
+            this.numTimesOnRed++;
+        }
+    }
+
+    public void incrementRedTime() {
+        this.redTime++;
+    }
+
+    public void incrementGreenTime() {
+        this.greenTime++;
+    }
 }

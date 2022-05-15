@@ -18,6 +18,6 @@ public class UpdateTlElapsedTime extends TickerBehaviour {
         if(trafficLight.getElapsedTime() >= 100)
             trafficLight.addBehaviour(new ChangeTLColor(trafficLight));
 
-        System.out.println("====> " + trafficLight.getLocalName() + " " + trafficLight.getElapsedTime() + " u" + trafficLight.utilityFunction());
+        //System.out.println("====> " + trafficLight.getLocalName() + " " + trafficLight.getElapsedTime() + " u" + trafficLight.utilityFunction());
     }
 }

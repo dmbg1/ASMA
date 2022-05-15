@@ -83,7 +83,7 @@ public class Intersection {
         System.out.println("Intersection " + id);
         for(Lane lane: lanes) {
             TrafficLight laneTrafficLight = lane.getTrafficLight();
-            System.out.println(laneTrafficLight.getColor() + "[" + "]: " +
+            System.out.println(laneTrafficLight.getColor() + "[" + lane.getOrientation() + "]: " +
                     lane.getLaneVehicles());
         }
     }

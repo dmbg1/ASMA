@@ -1,11 +1,13 @@
 package Agents;
 
+import Behaviour.UtilsToCalculateStatistics;
 import Behaviour.GenerateVehicles;
 import Behaviour.ListeningInform;
 import Behaviour.UpdateWorld;
 import Utils.Intersection;
 import Utils.Lane;
 import Utils.Utils;
+import Utils.Pair;
 import jade.core.AID;
 import jade.core.Agent;
 import jade.domain.DFService;
@@ -16,7 +18,9 @@ import jade.lang.acl.ACLMessage;
 import jade.wrapper.ContainerController;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Vector;
 
 public class World extends Agent {
     /*
@@ -61,6 +65,86 @@ public class World extends Agent {
         addBehaviour(new UpdateWorld(this, 1000));
         addBehaviour(new GenerateVehicles(this, 5000));
         addBehaviour(new ListeningInform(this));
+        addBehaviour(new UtilsToCalculateStatistics(this, 1000));
+    }
+
+    @Override
+    protected void takeDown() {
+
+        ArrayList<Pair<Double, Integer>> times = totalRedAndGreenTime();
+        double averageWaitingTime = times.get(0).getNum1() / times.get(0).getNum2();
+        double totalRedWaitingTime = times.get(0).getNum1();
+        double totalGreenWaitingTime = times.get(1).getNum1();
+
+        System.out.println("TtafficLight Active Green Time: " + totalRedWaitingTime);
+        System.out.println("TtafficLight Active Red Time: " + totalGreenWaitingTime);
+        System.out.println("Vehicles Average Waiting time: " + averageWaitingTime);
+
+        System.out.println("Flow of vehicles: ");
+        System.out.println("Density of vehicles: ");
+
+        try {
+            DFService.deregister(this);
+        } catch (FIPAException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /*
+    public double calculateAverageWaitingTime() {
+
+        double sum = 0.0;
+        int numTimesOnRed = 0;
+
+        for(Lane lane: this.intersection1.getLanes().values()) {
+            sum += lane.getRedTime();
+            numTimesOnRed += lane.getNumTimesOnRed();
+        }
+
+        for(Lane lane: this.intersection2.getLanes().values()) {
+            sum += lane.getRedTime();
+            numTimesOnRed += lane.getNumTimesOnRed();
+        }
+
+        return sum/numTimesOnRed;
+    }
+    */
+
+    public ArrayList<Pair<Double, Integer>> totalRedAndGreenTime() {
+
+        double redTime = 0.0;
+        int numRed = 0;
+        double greenTime = 0.0;
+        int numGreen = 0;
+        ArrayList<Pair<Double, Integer>> times = new ArrayList<>();
+
+        for(Lane lane: this.intersection1.getLanes().values()) {
+            redTime += lane.getRedTime();
+            numRed += lane.getNumTimesOnRed();
+        }
+
+        for(Lane lane: this.intersection2.getLanes().values()) {
+            redTime += lane.getRedTime();
+            numRed += lane.getNumTimesOnRed();
+        }
+
+        Pair<Double, Integer> p1 = new Pair<>(redTime, numRed);
+
+        for(Lane lane: this.intersection1.getLanes().values()) {
+            greenTime += lane.getGreenTime();
+            numGreen += lane.getNumTimesOnGreen();
+        }
+
+        for(Lane lane: this.intersection2.getLanes().values()) {
+            greenTime += lane.getGreenTime();
+            numGreen += lane.getNumTimesOnGreen();
+        }
+
+        Pair<Double, Integer> p2 = new Pair<>(greenTime, numGreen);
+        times.add(p1);
+        times.add(p2);
+
+        return times;
     }
 
     private void generateWorld() {

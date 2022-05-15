@@ -67,8 +67,6 @@ public class ListeningInform extends CyclicBehaviour {
             }
             catch (ClassCastException e) {
             }
-
-            //TODO: Receber msg e alterar valores dos semaforos
         }else {
             block();
         }
