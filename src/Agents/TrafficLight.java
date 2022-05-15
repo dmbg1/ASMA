@@ -4,6 +4,7 @@ import Behaviour.*;
 import Utils.Utils;
 import jade.core.AID;
 import jade.core.Agent;
+import jade.core.behaviours.Behaviour;
 import jade.domain.DFService;
 import jade.domain.FIPAAgentManagement.DFAgentDescription;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
@@ -51,9 +52,6 @@ public class TrafficLight extends Agent {
         parallelTLAID = getParallelTLAIDFromDF();
 
         addBehaviour(new ListeningInform(this));
-        addBehaviour(new UpdateTlElapsedTime(this, 1000));
-        // TODO Verificar quais semáforos serão initiators e como fazer no caso dos 3 semaforos
-        // TODO Quando fazer a negociação?
 
         // For potential color change requests
         MessageTemplate template = MessageTemplate.and(
@@ -61,8 +59,9 @@ public class TrafficLight extends Agent {
                 MessageTemplate.MatchPerformative(ACLMessage.REQUEST));
         addBehaviour(new ChangeTLColorRequestResp(this, template));
 
-        addBehaviour(new ChangeTLColorRequest(this, 4000));
-        //System.out.println("ATL => " + this.getLocalName() + " ori: " + this.orientation + " color: " + this.color);
+
+         // For sending color change requests through elapsed time checking
+         addBehaviour(new ChangeTLColorRequest(this, 1000));
     }
 
     @Override
@@ -181,6 +180,10 @@ public class TrafficLight extends Agent {
 
     public int getNumCarsLane() {
         return numCarsLane;
+    }
+
+    public char getColor() {
+        return color;
     }
 
     public char getOrientation() {

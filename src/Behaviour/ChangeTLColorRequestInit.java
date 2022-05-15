@@ -35,21 +35,6 @@ public class ChangeTLColorRequestInit extends AchieveREInitiator {
             String ok = (String) oMsg[1];
 
             if (req.equals("REQ") && ok.equals("OK")) { // Traffic Light change made successfully on responder side
-                //System.out.println("Agent " + inform.getSender().getLocalName() + " changed its traffic light color");
-
-                char TLOrientation = trafficLight.getOrientation();
-                if ((TLOrientation == 'W' || TLOrientation == 'E') && trafficLight.getIntersectionId() == 1) {
-                    HashMap<String, String> msg_map = new HashMap<>();
-                    msg_map.put("MsgType", "Change Color");
-
-                    trafficLight.send(Utils.getACLMessage(
-                            msg_map,
-                            trafficLight.getTLAIDFromDF(trafficLight.getIntersectionId(),
-                                    TLOrientation == 'W' ? 'E' : 'W')
-                            , ACLMessage.INFORM
-                        )
-                    );
-                }
                 trafficLight.addBehaviour(new ChangeTLColor(trafficLight));
                 trafficLight.setInitiator(false);
             }
