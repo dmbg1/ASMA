@@ -122,7 +122,6 @@ public class TrafficLight extends Agent {
         // TODO Adicionar quantidade de carros seguidos a partir do mais proximo
 
         if(intersectionId == 1 && (orientation == 'E' || orientation == 'W'))
-        if(intersectionId == 1 && (orientation == 'E' || orientation == 'W'))
             return (calculateUtility(numCarsLane, closestCarDistance) +
                     calculateUtility(parallelNumCarsLane, parallelClosestCarDistance)) / 2;
         else
