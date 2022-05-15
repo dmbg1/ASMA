@@ -36,6 +36,7 @@ public class Lane {
 
     // Adds car to final position in lane from generated cars queue
     public void addCarToLane(){
+        numCars++;
         laneVehicles.set(7, true);
     }
 

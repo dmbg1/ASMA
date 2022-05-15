@@ -19,6 +19,7 @@ public class ChangeTLColor extends SimpleBehaviour {
 
     @Override
     public void action() {
+        System.out.println(trafficLight.getLocalName());
         this.trafficLight.setElapsedTime(0);
         this.trafficLight.changeColor();
         if(trafficLight.isInitiator()) {

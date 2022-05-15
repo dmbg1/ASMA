@@ -21,8 +21,7 @@ public class ChangeTLColorRequest extends TickerBehaviour {
                 msg = trafficLight.buildChangeTlColorReqMsg(
                         trafficLight.getTLAIDFromDF(
                                 trafficLight.getIntersectionId(),
-                                'N'
-                        )
+                                'N')
                 );
             else if (trafficLight.getOrientation() == 'N')
                 msg = trafficLight.buildChangeTlColorReqMsg(

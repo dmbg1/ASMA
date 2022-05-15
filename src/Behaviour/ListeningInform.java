@@ -5,6 +5,7 @@ import Agents.World;
 import Utils.Intersection;
 import jade.core.Agent;
 import jade.core.behaviours.CyclicBehaviour;
+import jade.domain.FIPANames;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 import jade.lang.acl.UnreadableException;
@@ -12,11 +13,14 @@ import jade.lang.acl.UnreadableException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import static jade.lang.acl.MessageTemplate.MatchProtocol;
+
 public class ListeningInform extends CyclicBehaviour {
 
     private Agent agent;
 
-    MessageTemplate mt = MessageTemplate.MatchPerformative(ACLMessage.INFORM);
+    MessageTemplate mt = MessageTemplate.and(MessageTemplate.not(MatchProtocol(FIPANames.InteractionProtocol.FIPA_REQUEST)),
+            MessageTemplate.MatchPerformative(ACLMessage.INFORM));
 
     public ListeningInform(Agent agent) {
         this.agent = agent;
@@ -65,8 +69,7 @@ public class ListeningInform extends CyclicBehaviour {
             } catch (UnreadableException e) {
                 throw new RuntimeException(e);
             }
-            catch (ClassCastException e) {
-            }
+
 
             //TODO: Receber msg e alterar valores dos semaforos
         }else {

@@ -59,7 +59,7 @@ public class World extends Agent {
         intersection2.logIntersection();
         System.out.println("==============================================================================");
         addBehaviour(new UpdateWorld(this, 1000));
-        addBehaviour(new GenerateVehicles(this, 5000));
+        addBehaviour(new GenerateVehicles(this, 3000));
         addBehaviour(new ListeningInform(this));
     }
 

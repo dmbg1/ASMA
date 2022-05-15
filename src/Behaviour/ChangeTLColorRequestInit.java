@@ -33,6 +33,8 @@ public class ChangeTLColorRequestInit extends AchieveREInitiator {
             Object[] oMsg= (Object[]) inform.getContentObject();
             String req = (String) oMsg[0];
             String ok = (String) oMsg[1];
+            System.out.println(ok);
+            System.out.println(req);
             if (req.equals("REQ") && ok.equals("OK")) { // Traffic Light change made successfully on responder side
                 System.out.println("Agent " + inform.getSender().getLocalName() + " changed its traffic light color");
 
