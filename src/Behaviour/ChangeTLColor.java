@@ -19,6 +19,7 @@ public class ChangeTLColor extends SimpleBehaviour {
 
     @Override
     public void action() {
+        //System.out.println(trafficLight.getLocalName());
         this.trafficLight.setElapsedTime(0);
         this.trafficLight.changeColor();
         if(trafficLight.isInitiator()) {
@@ -33,8 +34,8 @@ public class ChangeTLColor extends SimpleBehaviour {
 
     @Override
     public boolean done() {
-        if(trafficLight.isInitiator())
-            System.out.println("Changed traffic light colors on intersection " + trafficLight.getIntersectionId());
+        //if(trafficLight.isInitiator())
+        //    System.out.println("Changed traffic light colors on intersection " + trafficLight.getIntersectionId());
         return true;
     }
 }

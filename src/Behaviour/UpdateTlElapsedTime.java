@@ -15,7 +15,7 @@ public class UpdateTlElapsedTime extends TickerBehaviour {
     @Override
     protected void onTick() {
         trafficLight.incrementElapsedTime();
-        if(trafficLight.getElapsedTime() >= 100)
+        if(trafficLight.getElapsedTime() > 12)
             trafficLight.addBehaviour(new ChangeTLColor(trafficLight));
 
         //System.out.println("====> " + trafficLight.getLocalName() + " " + trafficLight.getElapsedTime() + " u" + trafficLight.utilityFunction());

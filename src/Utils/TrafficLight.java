@@ -13,8 +13,6 @@ public class TrafficLight {
         this.orientation = orientation;
         current_id++;
         this.nameId = "tl" + current_id;
-
-        //System.out.println("TL => " + this.nameId + " ori: " + this.orientation + " color: " + this.color);
     }
 
     public void alternateColor() {

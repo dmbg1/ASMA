@@ -18,12 +18,12 @@ public class ChangeTLColorRequestInit extends AchieveREInitiator {
     }
 
     protected void handleAgree(ACLMessage agree) {
-        System.out.println("Agent " + agree.getSender().getLocalName() + " accepted request to " +
+        System.out.println(Utils.green + "\u2713" + Utils.reset + "Agent " + agree.getSender().getLocalName() + " accepted request to " +
                 "change traffic light color");
     }
 
     protected void handleRefuse(ACLMessage refuse) {
-        System.out.println("Agent " + refuse.getSender().getLocalName() + " refused request to " +
+        System.out.println(Utils.red + "\u2A2F" + Utils.reset + "Agent " + refuse.getSender().getLocalName() + " refused request to " +
                 "change traffic light color");
         trafficLight.setInNegotiation(false);
     }
@@ -33,8 +33,9 @@ public class ChangeTLColorRequestInit extends AchieveREInitiator {
             Object[] oMsg= (Object[]) inform.getContentObject();
             String req = (String) oMsg[0];
             String ok = (String) oMsg[1];
+
             if (req.equals("REQ") && ok.equals("OK")) { // Traffic Light change made successfully on responder side
-                System.out.println("Agent " + inform.getSender().getLocalName() + " changed its traffic light color");
+                //System.out.println("Agent " + inform.getSender().getLocalName() + " changed its traffic light color");
 
                 char TLOrientation = trafficLight.getOrientation();
                 if ((TLOrientation == 'W' || TLOrientation == 'E') && trafficLight.getIntersectionId() == 1) {

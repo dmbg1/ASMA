@@ -23,6 +23,8 @@ public class UpdateWorld extends TickerBehaviour {
         HashMap<Character, Lane> lanesInter1 = world.getIntersection1().getLanes();
         HashMap<Character, Lane> lanesInter2 = world.getIntersection2().getLanes();
 
+        this.world.incrementTimePassed();
+
         for (Lane lane : lanesInter2.values()) {
             char laneOrientation = lane.getOrientation();
             // Possible lane ways in intersection

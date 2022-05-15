@@ -57,7 +57,6 @@ public class ChangeTLColorRequestResp extends AchieveREResponder {
             );
         }
         trafficLight.addBehaviour(new ChangeTLColor(trafficLight));
-        trafficLight.setInitiator(true);
         return true;
     }
 
@@ -76,6 +75,7 @@ public class ChangeTLColorRequestResp extends AchieveREResponder {
             }
 
             result.setPerformative(ACLMessage.INFORM);
+            trafficLight.setInitiator(true);
         } else {
             trafficLight.setInNegotiation(false);
             throw new FailureException("unexpected failure");

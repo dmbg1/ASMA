@@ -4,15 +4,13 @@ import jade.wrapper.AgentController;
 import jade.wrapper.ContainerController;
 import jade.wrapper.StaleProxyException;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Objects;
-import java.util.Random;
+import java.util.*;
 
 public class Intersection {
 
     private HashMap<Character, Lane> lanes = new HashMap<>();
     private int id;
+    private int numVehiclesPassed = 0;
 
     public Intersection(int id) {
         this.id = id;
@@ -83,8 +81,14 @@ public class Intersection {
         System.out.println("Intersection " + id);
         for(Lane lane: lanes) {
             TrafficLight laneTrafficLight = lane.getTrafficLight();
-            System.out.println(laneTrafficLight.getColor() + "[" + lane.getOrientation() + "]: " +
-                    lane.getLaneVehicles());
+
+            if(laneTrafficLight.getColor() == 'r') {
+                System.out.println(Utils.red + "■" + Utils.reset + "[" + lane.getTrafficLight().getNameId().toUpperCase(Locale.ROOT) + "]: " +
+                        lane.getLaneVehicles());
+            }else {
+                System.out.println(Utils.green + "■" + Utils.reset + "[" + lane.getTrafficLight().getNameId().toUpperCase(Locale.ROOT) + "]: " +
+                        lane.getLaneVehicles());
+            }
         }
     }
 
@@ -93,7 +97,7 @@ public class Intersection {
     }
 
     public void changeTrafficLightsColor() {
-        System.out.println("Alternate intersection " + id + " traffic lights color");
+        //System.out.println("Alternate intersection " + id + " traffic lights color");
         for(Lane lane: this.lanes.values())
             lane.alternateColorTrafficLight();
     }

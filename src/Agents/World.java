@@ -7,8 +7,6 @@ import Behaviour.UpdateWorld;
 import Utils.Intersection;
 import Utils.Lane;
 import Utils.Utils;
-import Utils.Pair;
-import jade.core.AID;
 import jade.core.Agent;
 import jade.domain.DFService;
 import jade.domain.FIPAAgentManagement.DFAgentDescription;
@@ -17,10 +15,8 @@ import jade.domain.FIPAException;
 import jade.lang.acl.ACLMessage;
 import jade.wrapper.ContainerController;
 
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Vector;
+import java.util.Locale;
 
 public class World extends Agent {
     /*
@@ -52,6 +48,7 @@ public class World extends Agent {
     private ContainerController cc;
     private Intersection intersection1;
     private Intersection intersection2;
+    private int timePassed = 0;
 
     public void setup() {
         Object[] agentArgs = getArguments();
@@ -63,7 +60,7 @@ public class World extends Agent {
         intersection2.logIntersection();
         System.out.println("==============================================================================");
         addBehaviour(new UpdateWorld(this, 1000));
-        addBehaviour(new GenerateVehicles(this, 5000));
+        addBehaviour(new GenerateVehicles(this, 3000));
         addBehaviour(new ListeningInform(this));
         addBehaviour(new UtilsToCalculateStatistics(this, 1000));
     }
@@ -71,80 +68,37 @@ public class World extends Agent {
     @Override
     protected void takeDown() {
 
-        ArrayList<Pair<Double, Integer>> times = totalRedAndGreenTime();
-        double averageWaitingTime = times.get(0).getNum1() / times.get(0).getNum2();
-        double totalRedWaitingTime = times.get(0).getNum1();
-        double totalGreenWaitingTime = times.get(1).getNum1();
+        int totalCarsLeaving = 0;
 
-        System.out.println("TtafficLight Active Green Time: " + totalRedWaitingTime);
-        System.out.println("TtafficLight Active Red Time: " + totalGreenWaitingTime);
-        System.out.println("Vehicles Average Waiting time: " + averageWaitingTime);
+        System.out.println("*********Intersection1*********");
+        for(Lane lane: this.intersection1.getLanes().values()) {
+            totalCarsLeaving += lane.getNumCarsLeaving();
+            System.out.println("\t======" + lane.getTrafficLight().getNameId().toUpperCase(Locale.ROOT) + "======");
+            System.out.println("\tTrafficLight Active Green Time: " + " " + lane.getGreenTime() + " s");
+            System.out.println("\tTrafficLight Active Red Time: " + " " + lane.getRedTime() + " s");
+            System.out.println("\t>Vehicles Average Waiting time: " + " " + lane.getRedTime()/lane.getNumTimesOnRed() + " s");
+            System.out.println("\t>Flow of vehicles: " + lane.getTotalNumCarsPassedInLane() * 60 / (float)this.timePassed + " vehicles/min");
+        }
+        System.out.println("\t===============");
+        System.out.println(">Flow in intersection: " + totalCarsLeaving * 60/ (float)this.timePassed + " vehicles/min\n");
 
-        System.out.println("Flow of vehicles: ");
-        System.out.println("Density of vehicles: ");
+        totalCarsLeaving = 0;
+        System.out.println("************Intersection2************");
+        for(Lane lane: this.intersection2.getLanes().values()) {
+            totalCarsLeaving += lane.getNumCarsLeaving();
+            System.out.println("\t======" + lane.getTrafficLight().getNameId().toUpperCase(Locale.ROOT) + "======");
+            System.out.println("\tTrafficLight Active Green Time: " + lane.getTrafficLight().getNameId() + " " + lane.getGreenTime() + " s");
+            System.out.println("\tTrafficLight Active Red Time: " + lane.getTrafficLight().getNameId() + " " + lane.getRedTime() + " s");
+            System.out.println("\t>Vehicles Average Waiting time: " + lane.getTrafficLight().getNameId() + " " + lane.getRedTime()/lane.getNumTimesOnRed() + " s");
+            System.out.println("\t>Flow of vehicles: " + lane.getTotalNumCarsPassedInLane() * 60 / (float)this.timePassed + " vehicles/min");
+        }
+        System.out.println(">Flow in intersection: " + totalCarsLeaving * 60/ (float)this.timePassed + " vehicles/min");
 
         try {
             DFService.deregister(this);
         } catch (FIPAException e) {
             e.printStackTrace();
         }
-    }
-
-    /*
-    public double calculateAverageWaitingTime() {
-
-        double sum = 0.0;
-        int numTimesOnRed = 0;
-
-        for(Lane lane: this.intersection1.getLanes().values()) {
-            sum += lane.getRedTime();
-            numTimesOnRed += lane.getNumTimesOnRed();
-        }
-
-        for(Lane lane: this.intersection2.getLanes().values()) {
-            sum += lane.getRedTime();
-            numTimesOnRed += lane.getNumTimesOnRed();
-        }
-
-        return sum/numTimesOnRed;
-    }
-    */
-
-    public ArrayList<Pair<Double, Integer>> totalRedAndGreenTime() {
-
-        double redTime = 0.0;
-        int numRed = 0;
-        double greenTime = 0.0;
-        int numGreen = 0;
-        ArrayList<Pair<Double, Integer>> times = new ArrayList<>();
-
-        for(Lane lane: this.intersection1.getLanes().values()) {
-            redTime += lane.getRedTime();
-            numRed += lane.getNumTimesOnRed();
-        }
-
-        for(Lane lane: this.intersection2.getLanes().values()) {
-            redTime += lane.getRedTime();
-            numRed += lane.getNumTimesOnRed();
-        }
-
-        Pair<Double, Integer> p1 = new Pair<>(redTime, numRed);
-
-        for(Lane lane: this.intersection1.getLanes().values()) {
-            greenTime += lane.getGreenTime();
-            numGreen += lane.getNumTimesOnGreen();
-        }
-
-        for(Lane lane: this.intersection2.getLanes().values()) {
-            greenTime += lane.getGreenTime();
-            numGreen += lane.getNumTimesOnGreen();
-        }
-
-        Pair<Double, Integer> p2 = new Pair<>(greenTime, numGreen);
-        times.add(p1);
-        times.add(p2);
-
-        return times;
     }
 
     private void generateWorld() {
@@ -162,6 +116,10 @@ public class World extends Agent {
         return intersection2;
     }
 
+    public void incrementTimePassed() {
+        this.timePassed++;
+    }
+
     public void changeColorTrafficLight(int intersectionId) {
 
         if(intersectionId == 1)
@@ -169,6 +127,7 @@ public class World extends Agent {
         else
             intersection2.changeTrafficLightsColor();
     }
+
 
     public void informTLNumCars() {
 

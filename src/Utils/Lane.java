@@ -12,10 +12,12 @@ public class Lane {
     private int probGenerateLane;
     private int carsInQueue = 0;
     private int numCars = 0;
+    private int totalNumCarsPassedInLane = 0;
     private double redTime = 0.0;
     private double greenTime = 0.0;
     private int numTimesOnRed = 0;
     private int numTimesOnGreen = 0;
+    private int numCarsLeaving = 0;
 
     public Lane(char orientation, TrafficLight trafficLight, int probGenerateLane) {
         generateLaneVehicles();
@@ -40,7 +42,9 @@ public class Lane {
 
     // Adds car to final position in lane from generated cars queue
     public void addCarToLane(){
-        laneVehicles.set(7, true);
+        this.numCars++;
+        this.totalNumCarsPassedInLane++;
+        this.laneVehicles.set(7, true);
     }
 
     // Adds car to final position in lane from generated cars queue
@@ -71,17 +75,15 @@ public class Lane {
                 if (trafficLight.getColor() == 'g' && laneVehicles.get(i)) {
                     if(laneToGoTo == null) {
                         laneVehicles.set(i, false);
+                        this.numCarsLeaving++;
                         this.numCars--;
-                        System.out.println("Vehicle entered intersection " + intersectionId + " from lane with " +
-                                "orientation " + orientation);
                         continue;
                     }
                     if (!laneToGoTo.getLaneVehicles().get(7)) {
                         laneToGoTo.addCarToLane();
                         laneVehicles.set(i, false);
+                        this.numCarsLeaving++;
                         this.numCars--;
-                        System.out.println("Vehicle entered intersection " + intersectionId + " from lane with " +
-                                "orientation " + orientation);
                     }
                 }
             } else {
@@ -103,6 +105,10 @@ public class Lane {
                 return i;
 
         return 8;
+    }
+
+    public int getTotalNumCarsPassedInLane() {
+        return totalNumCarsPassedInLane;
     }
 
     public int getProbGenerateLane() {
@@ -141,10 +147,16 @@ public class Lane {
         return numTimesOnGreen;
     }
 
+    public int getNumCarsLeaving() {
+        return numCarsLeaving;
+    }
+
     public void alternateColorTrafficLight() {
         this.trafficLight.alternateColor();
         if(this.trafficLight.getColor() == 'r') {
             this.numTimesOnRed++;
+        }else {
+            this.numTimesOnGreen++;
         }
     }
 
