@@ -22,10 +22,11 @@ public class ChangeTLColorRequestResp extends AchieveREResponder {
     }
 
     protected ACLMessage handleRequest(ACLMessage request) throws RefuseException {
-        trafficLight.setInNegotiation(true);
         ACLMessage reply = request.createReply();
-        if (checkUtilities(request))
+        if (checkUtilities(request) && !trafficLight.isInNegotiation()){
+            trafficLight.setInNegotiation(true);
             reply.setPerformative(ACLMessage.AGREE);
+        }
         else {
             trafficLight.setInNegotiation(false);
             throw new RefuseException("check-failed");
@@ -44,18 +45,6 @@ public class ChangeTLColorRequestResp extends AchieveREResponder {
     }
 
     private boolean performAction() {
-        char TLOrientation = trafficLight.getOrientation();
-        if ((TLOrientation == 'W' || TLOrientation == 'E') && trafficLight.getIntersectionId() == 1) {
-            HashMap<String, String> msg_map = new HashMap<>();
-            msg_map.put("MsgType", "Change Color");
-            trafficLight.send(Utils.getACLMessage(
-                            msg_map,
-                            trafficLight.getTLAIDFromDF(trafficLight.getIntersectionId(),
-                                    TLOrientation == 'W' ? 'E' : 'W')
-                            , ACLMessage.INFORM
-                    )
-            );
-        }
         trafficLight.addBehaviour(new ChangeTLColor(trafficLight));
         return true;
     }
@@ -80,7 +69,6 @@ public class ChangeTLColorRequestResp extends AchieveREResponder {
             trafficLight.setInNegotiation(false);
             throw new FailureException("unexpected failure");
         }
-
         trafficLight.setInNegotiation(false);
         return result;
     }

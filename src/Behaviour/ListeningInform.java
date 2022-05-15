@@ -38,10 +38,14 @@ public class ListeningInform extends CyclicBehaviour {
                 switch(msg_type) {
                     case "Alternate color":
                         int intersectionId = Integer.parseInt(msg_map.get("InterId"));
-                        World world = (World) agent;
-
-                        // duration + 1 because update behaviour makes it -1 immediately when color is alternated
-                        world.changeColorTrafficLight(intersectionId);
+                        try {
+                            World world = (World) agent;
+                            world.changeColorTrafficLight(intersectionId);
+                        }
+                        catch (ClassCastException e) {
+                            TrafficLight trafficLight = (TrafficLight) agent;
+                            trafficLight.addBehaviour(new ChangeTLColor(trafficLight));
+                        }
                         break;
                     case "Inform Lane State":
                         TrafficLight trafficLight = (TrafficLight) agent;
@@ -56,10 +60,6 @@ public class ListeningInform extends CyclicBehaviour {
                         }
                         trafficLight.setNumCarsLane(numCars);
                         trafficLight.setClosestCarDistance(closestCarDistance);
-                        break;
-                    case "Change Color": // For changing color in agent
-                        TrafficLight TL = (TrafficLight) agent;
-                        TL.addBehaviour(new ChangeTLColor(TL));
                         break;
                     default:
                         block();
