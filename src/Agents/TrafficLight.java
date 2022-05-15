@@ -29,6 +29,7 @@ public class TrafficLight extends Agent {
     private int closestCarDistance;
     private int parallelNumCarsLane = -1;
     private int parallelClosestCarDistance = -1;
+    private boolean inNegotiation = false; // if in request handling or making true
 
     @Override
     protected void setup() {
@@ -60,7 +61,7 @@ public class TrafficLight extends Agent {
                 MessageTemplate.MatchPerformative(ACLMessage.REQUEST));
         addBehaviour(new ChangeTLColorRequestResp(this, template));
 
-        addBehaviour(new ChangeTLColorRequest(this));
+        addBehaviour(new ChangeTLColorRequest(this, 4000));
         //System.out.println("ATL => " + this.getLocalName() + " ori: " + this.orientation + " color: " + this.color);
     }
 
@@ -185,6 +186,14 @@ public class TrafficLight extends Agent {
         return initiator;
     }
 
+    public boolean isInNegotiation() {
+        return inNegotiation;
+    }
+
+    public void setInNegotiation(boolean inNegotiation) {
+        this.inNegotiation = inNegotiation;
+    }
+
     public void incrementElapsedTime() {
         elapsedTime++;
     }
@@ -207,6 +216,10 @@ public class TrafficLight extends Agent {
 
     public void setParallelClosestCarDistance(int parallelClosestCarDistance) {
         this.parallelClosestCarDistance = parallelClosestCarDistance;
+    }
+
+    public void setInitiator(boolean initiator) {
+        this.initiator = initiator;
     }
 
     public void changeColor() {

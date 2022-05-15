@@ -2,9 +2,12 @@ package Behaviour;
 
 
 import Agents.TrafficLight;
+import Utils.Utils;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.UnreadableException;
 import jade.proto.AchieveREInitiator;
+
+import java.util.HashMap;
 
 public class ChangeTLColorRequestInit extends AchieveREInitiator {
 
@@ -22,6 +25,7 @@ public class ChangeTLColorRequestInit extends AchieveREInitiator {
     protected void handleRefuse(ACLMessage refuse) {
         System.out.println("Agent " + refuse.getSender().getLocalName() + " refused request to " +
                 "change traffic light color");
+        trafficLight.setInNegotiation(false);
     }
 
     protected void handleInform(ACLMessage inform) {
@@ -31,11 +35,27 @@ public class ChangeTLColorRequestInit extends AchieveREInitiator {
             String ok = (String) oMsg[1];
             if (req.equals("REQ") && ok.equals("OK")) { // Traffic Light change made successfully on responder side
                 System.out.println("Agent " + inform.getSender().getLocalName() + " changed its traffic light color");
+
+                char TLOrientation = trafficLight.getOrientation();
+                if ((TLOrientation == 'W' || TLOrientation == 'E') && trafficLight.getIntersectionId() == 1) {
+                    HashMap<String, String> msg_map = new HashMap<>();
+                    msg_map.put("MsgType", "Change Color");
+
+                    trafficLight.send(Utils.getACLMessage(
+                            msg_map,
+                            trafficLight.getTLAIDFromDF(trafficLight.getIntersectionId(),
+                                    TLOrientation == 'W' ? 'E' : 'W')
+                            , ACLMessage.INFORM
+                        )
+                    );
+                }
                 trafficLight.addBehaviour(new ChangeTLColor(trafficLight));
+                trafficLight.setInitiator(false);
             }
         } catch (UnreadableException e) {
             e.printStackTrace();
         }
+        trafficLight.setInNegotiation(false);
     }
 
     protected void handleFailure(ACLMessage failure) {
@@ -46,6 +66,7 @@ public class ChangeTLColorRequestInit extends AchieveREInitiator {
         }
         else
             System.out.println("Agent " + failure.getSender().getLocalName() + " failed to change traffic light color");
+        trafficLight.setInNegotiation(false);
     }
 
 }

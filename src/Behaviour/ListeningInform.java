@@ -18,7 +18,7 @@ public class ListeningInform extends CyclicBehaviour {
 
     MessageTemplate mt = MessageTemplate.MatchPerformative(ACLMessage.INFORM);
 
-    public ListeningInform(Agent agent) { // TODO Maybe add performative
+    public ListeningInform(Agent agent) {
         this.agent = agent;
     }
 
@@ -53,6 +53,10 @@ public class ListeningInform extends CyclicBehaviour {
                         trafficLight.setNumCarsLane(numCars);
                         trafficLight.setClosestCarDistance(closestCarDistance);
                         break;
+                    case "Change Color": // For changing color in agent
+                        TrafficLight TL = (TrafficLight) agent;
+                        TL.addBehaviour(new ChangeTLColor(TL));
+                        break;
                     default:
                         block();
                         break;
@@ -60,6 +64,8 @@ public class ListeningInform extends CyclicBehaviour {
 
             } catch (UnreadableException e) {
                 throw new RuntimeException(e);
+            }
+            catch (ClassCastException e) {
             }
 
             //TODO: Receber msg e alterar valores dos semaforos

@@ -1,39 +1,39 @@
 package Behaviour;
 
 import Agents.TrafficLight;
-import jade.core.behaviours.SimpleBehaviour;
 import jade.core.behaviours.TickerBehaviour;
 import jade.lang.acl.ACLMessage;
 
-public class ChangeTLColorRequest extends SimpleBehaviour {
+public class ChangeTLColorRequest extends TickerBehaviour {
     private TrafficLight trafficLight;
 
-    public ChangeTLColorRequest(TrafficLight trafficLight) {
-        super(trafficLight);
+    public ChangeTLColorRequest(TrafficLight trafficLight, long period) {
+        super(trafficLight, period);
         this.trafficLight = trafficLight;
     }
 
     @Override
-    public void action() {
-        if(trafficLight.getNumCarsLane() > 0 && trafficLight.getClosestCarDistance() == 0
-                && trafficLight.isInitiator()) {
-            System.out.println(132);
-            if(trafficLight.getOrientation() == 'E' || trafficLight.getOrientation() == 'W') {
-                ACLMessage msg = trafficLight.buildChangeTlColorReqMsg(
+    protected void onTick() {
+        if(trafficLight.isInitiator() && !trafficLight.isInNegotiation()) {
+            ACLMessage msg = null;
+            // For the world simulated the following conditions on the message building is enough
+            if (trafficLight.getOrientation() == 'E' || trafficLight.getOrientation() == 'W')
+                msg = trafficLight.buildChangeTlColorReqMsg(
                         trafficLight.getTLAIDFromDF(
                                 trafficLight.getIntersectionId(),
                                 'N'
                         )
                 );
+            else if (trafficLight.getOrientation() == 'N')
+                msg = trafficLight.buildChangeTlColorReqMsg(
+                        trafficLight.getTLAIDFromDF(
+                                trafficLight.getIntersectionId(),
+                                'W'
+                        )
+                );
 
-                trafficLight.addBehaviour(new ChangeTLColorRequestInit(trafficLight, msg));
-                trafficLight.addBehaviour(new ChangeTLColorRequestInit(trafficLight, msg));
-            }
+            trafficLight.setInNegotiation(true);
+            trafficLight.addBehaviour(new ChangeTLColorRequestInit(trafficLight, msg));
         }
-    }
-
-    @Override
-    public boolean done() {
-        return true;
     }
 }

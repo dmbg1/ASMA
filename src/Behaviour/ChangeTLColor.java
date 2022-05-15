@@ -26,7 +26,7 @@ public class ChangeTLColor extends SimpleBehaviour {
             message.put("MsgType", "Alternate color");
             message.put("InterId", String.valueOf(this.trafficLight.getIntersectionId()));
             this.trafficLight.send(Utils.getACLMessage(message,
-                    String.valueOf(trafficLight.getWorldAID()),
+                    trafficLight.getWorldAID(),
                     ACLMessage.INFORM));
         }
     }

@@ -7,6 +7,7 @@ public class TrafficLight {
     private char color;
     private char orientation;
 
+
     public TrafficLight(char color, char orientation) {
         this.color = color;
         this.orientation = orientation;
