@@ -65,11 +65,6 @@ public class TrafficLight extends Agent {
         //System.out.println("ATL => " + this.getLocalName() + " ori: " + this.orientation + " color: " + this.color);
     }
 
-    @Override
-    protected void takeDown() {
-
-    }
-
     public ACLMessage buildChangeTlColorReqMsg(AID trafficLightAID) {
         ACLMessage msg = new ACLMessage(ACLMessage.REQUEST);
         msg.addReceiver(trafficLightAID);
