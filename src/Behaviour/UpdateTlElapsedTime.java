@@ -1,7 +1,6 @@
 package Behaviour;
 
 import Agents.TrafficLight;
-import jade.core.Agent;
 import jade.core.behaviours.TickerBehaviour;
 
 public class UpdateTlElapsedTime extends TickerBehaviour {
@@ -17,7 +16,7 @@ public class UpdateTlElapsedTime extends TickerBehaviour {
     protected void onTick() {
         trafficLight.incrementElapsedTime();
         if(trafficLight.getElapsedTime() >= 100)
-            trafficLight.addBehaviour(new ChangeTrafficLightsColor(trafficLight));
+            trafficLight.addBehaviour(new ChangeTLColor(trafficLight));
 
         System.out.println("====> " + trafficLight.getLocalName() + " " + trafficLight.getElapsedTime() + " u" + trafficLight.utilityFunction());
     }

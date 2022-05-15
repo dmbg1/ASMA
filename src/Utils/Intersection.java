@@ -42,23 +42,28 @@ public class Intersection {
 
             if(trafficLight.getColor() == 'g') {
                 generateTrafficLightAgent(cc, trafficLight.getColor(), orientation,
-                        false, lane.getTrafficLight().getNameId());
+                        false, lane.getTrafficLight().getNameId(),
+                        lane.getNumCars(), lane.proximityToTheTrafficLight());
                 continue;
             }
 
             generateTrafficLightAgent(cc, trafficLight.getColor(), orientation,
-                    initiator, lane.getTrafficLight().getNameId());
+                    initiator, lane.getTrafficLight().getNameId(),
+                    lane.getNumCars(), lane.proximityToTheTrafficLight());
             // Only one red traffic light can be initiator in one intersection
             if (initiator) initiator = false;
         }
     }
 
-    public void generateTrafficLightAgent(ContainerController cc, char color, char ori, boolean initiator, String nameId) {
-        Object[] agentArgs = new Object[5];
+    public void generateTrafficLightAgent(ContainerController cc, char color, char ori, boolean initiator,
+                                          String nameId, int numCars, int closestCar) {
+        Object[] agentArgs = new Object[7];
         agentArgs[0] = color;
         agentArgs[1] = ori;
         agentArgs[2] = initiator;
         agentArgs[3] = id;
+        agentArgs[4] = numCars;
+        agentArgs[5] = closestCar;
 
         AgentController agentController;
         try {

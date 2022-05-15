@@ -3,16 +3,15 @@ package Behaviour;
 import Agents.TrafficLight;
 import Utils.Utils;
 import jade.core.behaviours.SimpleBehaviour;
-import jade.core.behaviours.WakerBehaviour;
 import jade.lang.acl.ACLMessage;
 
 import java.util.HashMap;
 
-public class ChangeTrafficLightsColor extends SimpleBehaviour {
+public class ChangeTLColor extends SimpleBehaviour {
 
     private TrafficLight trafficLight;
 
-    public ChangeTrafficLightsColor(TrafficLight trafficLight) {
+    public ChangeTLColor(TrafficLight trafficLight) {
         super(trafficLight);
 
         this.trafficLight = trafficLight;

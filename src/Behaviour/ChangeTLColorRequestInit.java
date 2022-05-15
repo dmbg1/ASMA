@@ -6,24 +6,13 @@ import jade.lang.acl.ACLMessage;
 import jade.lang.acl.UnreadableException;
 import jade.proto.AchieveREInitiator;
 
-public class FIPARequestTlInitiator extends AchieveREInitiator {
+public class ChangeTLColorRequestInit extends AchieveREInitiator {
 
     private TrafficLight trafficLight;
-    public FIPARequestTlInitiator(TrafficLight trafficLight, ACLMessage msg) {
+    public ChangeTLColorRequestInit(TrafficLight trafficLight, ACLMessage msg) {
         super(trafficLight, msg);
         this.trafficLight = trafficLight;
     }
-
-    /*
-    protected Vector<ACLMessage> prepareRequests(ACLMessage msg) {
-        // add behaviours
-        MessageTemplate template = MessageTemplate.and(
-                MessageTemplate.MatchProtocol(FIPANames.InteractionProtocol.FIPA_REQUEST),
-                MessageTemplate.MatchPerformative(ACLMessage.REQUEST));
-        Vector<ACLMessage> v = new Vector<ACLMessage>();
-        // ...
-        return v;
-    }*/
 
     protected void handleAgree(ACLMessage agree) {
         System.out.println("Agent " + agree.getSender().getLocalName() + " accepted request to " +
@@ -42,10 +31,9 @@ public class FIPARequestTlInitiator extends AchieveREInitiator {
             String ok = (String) oMsg[1];
             if (req.equals("REQ") && ok.equals("OK")) { // Traffic Light change made successfully on responder side
                 System.out.println("Agent " + inform.getSender().getLocalName() + " changed its traffic light color");
-                trafficLight.addBehaviour(new ChangeTrafficLightsColor(trafficLight));
+                trafficLight.addBehaviour(new ChangeTLColor(trafficLight));
             }
         } catch (UnreadableException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
     }

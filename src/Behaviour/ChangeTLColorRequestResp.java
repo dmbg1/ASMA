@@ -3,7 +3,6 @@ package Behaviour;
 import Agents.TrafficLight;
 import jade.domain.FIPAAgentManagement.FailureException;
 import jade.domain.FIPAAgentManagement.RefuseException;
-import jade.domain.FIPANames;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 import jade.lang.acl.UnreadableException;
@@ -12,10 +11,10 @@ import jade.proto.AchieveREResponder;
 import java.io.IOException;
 import java.util.HashMap;
 
-public class FIPARequestTlResponder extends AchieveREResponder {
+public class ChangeTLColorRequestResp extends AchieveREResponder {
 
     private TrafficLight trafficLight;
-    public FIPARequestTlResponder(TrafficLight trafficLight, MessageTemplate mt) {
+    public ChangeTLColorRequestResp(TrafficLight trafficLight, MessageTemplate mt) {
         super(trafficLight, mt);
         this.trafficLight = trafficLight;
     }
@@ -40,7 +39,7 @@ public class FIPARequestTlResponder extends AchieveREResponder {
     }
 
     private boolean performAction() {
-        trafficLight.addBehaviour(new ChangeTrafficLightsColor(trafficLight));
+        trafficLight.addBehaviour(new ChangeTLColor(trafficLight));
         return true;
     }
 

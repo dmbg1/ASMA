@@ -39,6 +39,8 @@ public class TrafficLight extends Agent {
         this.orientation = agentArgs[1].toString().charAt(0);
         this.initiator = (boolean) agentArgs[2];
         this.intersectionId = (int) agentArgs[3];
+        this.numCarsLane = (int) agentArgs[4];
+        this.closestCarDistance = (int) agentArgs[5];
 
         // Register traffic light in DF
         registerTrafficLight();
@@ -49,32 +51,20 @@ public class TrafficLight extends Agent {
 
         addBehaviour(new ListeningInform(this));
         addBehaviour(new UpdateTlElapsedTime(this, 1000));
-
-        /*
-        try {
-            Thread.sleep(2000);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
         // TODO Verificar quais semáforos serão initiators e como fazer no caso dos 3 semaforos
         // TODO Quando fazer a negociação?
-        if(intersectionId == 2) {
-            if(getLocalName().equals("tl4")){
-                ACLMessage msg = buildChangeTlColorReqMsg(new AID("tl5", AID.ISLOCALNAME));
-                addBehaviour(new FIPARequestTlInitiator(this, msg));
-            }
-            else {
-                MessageTemplate template = MessageTemplate.and(
-                        MessageTemplate.MatchProtocol(FIPANames.InteractionProtocol.FIPA_REQUEST),
-                        MessageTemplate.MatchPerformative(ACLMessage.REQUEST));
-                addBehaviour(new FIPARequestTlResponder(this, template));
-            }
 
-        }*/
+        // For potential color change requests
+        MessageTemplate template = MessageTemplate.and(
+                MessageTemplate.MatchProtocol(FIPANames.InteractionProtocol.FIPA_REQUEST),
+                MessageTemplate.MatchPerformative(ACLMessage.REQUEST));
+        addBehaviour(new ChangeTLColorRequestResp(this, template));
+
+        addBehaviour(new ChangeTLColorRequest(this));
         //System.out.println("ATL => " + this.getLocalName() + " ori: " + this.orientation + " color: " + this.color);
     }
 
-    private ACLMessage buildChangeTlColorReqMsg(AID trafficLightAID) {
+    public ACLMessage buildChangeTlColorReqMsg(AID trafficLightAID) {
         ACLMessage msg = new ACLMessage(ACLMessage.REQUEST);
         msg.addReceiver(trafficLightAID);
         msg.setProtocol(FIPANames.InteractionProtocol.FIPA_REQUEST);
@@ -107,6 +97,20 @@ public class TrafficLight extends Agent {
         DFAgentDescription template = new DFAgentDescription();
         ServiceDescription sd = new ServiceDescription();
         sd.setType("World");
+        template.addServices(sd);
+        try {
+            DFAgentDescription[] result = DFService.search(this, template);
+            return result[0].getName();
+        } catch(FIPAException fe) {
+            fe.printStackTrace();
+        }
+        return null;
+    }
+
+    public AID getTLAIDFromDF(int intersectionId, char orientation) {
+        DFAgentDescription template = new DFAgentDescription();
+        ServiceDescription sd = new ServiceDescription();
+        sd.setType("Traffic Light Intersection " + intersectionId + " Orientation " + orientation);
         template.addServices(sd);
         try {
             DFAgentDescription[] result = DFService.search(this, template);
