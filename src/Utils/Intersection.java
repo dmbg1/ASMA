@@ -81,14 +81,9 @@ public class Intersection {
         System.out.println("Intersection " + id);
         for(Lane lane: lanes) {
             TrafficLight laneTrafficLight = lane.getTrafficLight();
-
-            if(laneTrafficLight.getColor() == 'r') {
-                System.out.println(Utils.red + "■" + Utils.reset + "[" + lane.getTrafficLight().getNameId().toUpperCase(Locale.ROOT) + "]: " +
-                        lane.getLaneVehicles());
-            }else {
-                System.out.println(Utils.green + "■" + Utils.reset + "[" + lane.getTrafficLight().getNameId().toUpperCase(Locale.ROOT) + "]: " +
-                        lane.getLaneVehicles());
-            }
+            System.out.println((laneTrafficLight.getColor() != 'r' ? Utils.green : Utils.red) + "■ " + Utils.reset +
+                    lane.getOrientation() +"[" + lane.getTrafficLight().getNameId().toUpperCase(Locale.ROOT) + "]: "
+                    + lane.getLaneVehicles());
         }
     }
 

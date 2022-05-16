@@ -7,8 +7,6 @@ import jade.lang.acl.ACLMessage;
 import jade.lang.acl.UnreadableException;
 import jade.proto.AchieveREInitiator;
 
-import java.util.HashMap;
-
 public class ChangeTLColorRequestInit extends AchieveREInitiator {
 
     private TrafficLight trafficLight;

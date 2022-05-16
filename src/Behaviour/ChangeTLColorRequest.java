@@ -1,6 +1,7 @@
 package Behaviour;
 
 import Agents.TrafficLight;
+import Utils.Utils;
 import jade.core.behaviours.TickerBehaviour;
 import jade.lang.acl.ACLMessage;
 
@@ -23,6 +24,8 @@ public class ChangeTLColorRequest extends TickerBehaviour {
         if(trafficLight.isInitiator() && !trafficLight.isInNegotiation()
                 && trafficLight.getElapsedTime() % 4 == 0 && trafficLight.getElapsedTime() > 0) {
             sendColorChangeRequest();
+            System.out.println(Utils.yellow + "\uE319 " + Utils.reset + "Agent " + trafficLight.getLocalName() +
+                    " sent request to change traffic light color");
         }
     }
 
