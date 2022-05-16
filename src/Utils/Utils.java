@@ -38,7 +38,7 @@ public class Utils {
             e.printStackTrace();
         }
 
-        for(AID aid: receiverList)
+        for (AID aid : receiverList)
             msg.addReceiver(aid);
 
         return msg;
@@ -56,12 +56,6 @@ public class Utils {
 
         msg.addReceiver(new AID(receiver, AID.ISLOCALNAME));
         return msg;
-    }
-
-    public static double vehiclesAverageWaitingTime() {
-
-
-        return 0.0;
     }
 
 }

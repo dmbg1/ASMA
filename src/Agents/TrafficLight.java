@@ -1,10 +1,8 @@
 package Agents;
 
 import Behaviour.*;
-import Utils.Utils;
 import jade.core.AID;
 import jade.core.Agent;
-import jade.core.behaviours.Behaviour;
 import jade.domain.DFService;
 import jade.domain.FIPAAgentManagement.DFAgentDescription;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
@@ -13,18 +11,14 @@ import jade.domain.FIPANames;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 
-import java.io.IOException;
-import java.util.HashMap;
-
 public class TrafficLight extends Agent {
 
     private AID worldAID;
-    private AID parallelTLAID = null;
 
     private char color;
     private int elapsedTime = 0;
     private char orientation;
-    private boolean initiator; // TODO Alternar após negociação aceite
+    private boolean initiator;
     private int intersectionId;
     private int numCarsLane;
     private int closestCarDistance;
@@ -48,8 +42,6 @@ public class TrafficLight extends Agent {
         registerTrafficLight();
         // Get world AID from DF
         worldAID = getWorldAIDFromDF();
-        // Get parallel traffic light AID from DF if any
-        parallelTLAID = getParallelTLAIDFromDF();
 
         addBehaviour(new ListeningInform(this));
 
@@ -59,28 +51,12 @@ public class TrafficLight extends Agent {
                 MessageTemplate.MatchPerformative(ACLMessage.REQUEST));
         addBehaviour(new ChangeTLColorRequestResp(this, template));
 
-
-         // For sending color change requests through elapsed time checking
-         addBehaviour(new ChangeTLColorRequest(this, 1000));
+        // For sending color change requests through elapsed time checking
+        addBehaviour(new ChangeTLColorRequest(this, 1000));
     }
 
-    @Override
-    protected void takeDown() {
-
-    }
-
-    public ACLMessage buildChangeTlColorReqMsg(AID trafficLightAID) {
-        ACLMessage msg = new ACLMessage(ACLMessage.REQUEST);
-        msg.addReceiver(trafficLightAID);
-        msg.setProtocol(FIPANames.InteractionProtocol.FIPA_REQUEST);
-        HashMap<String, String> msg_map = new HashMap<>();
-        msg_map.put("Utility", String.valueOf(utilityFunction()));
-        try {
-            msg.setContentObject(msg_map);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return msg;
+    public void changeColor() {
+        this.color = this.color == 'r' ? 'g' : 'r';
     }
 
     public void registerTrafficLight() {
@@ -93,9 +69,22 @@ public class TrafficLight extends Agent {
         try {
             DFService.register(this, dfd);
             System.out.println("Traffic Light " + this.getLocalName() + " registered in DF successfully");
-        } catch(FIPAException fe) {
+        } catch (FIPAException fe) {
             fe.printStackTrace();
         }
+    }
+
+    // utility function to switch traffic light from red to green
+    public double calculateUtility(int numCars, int closestCarDistance) {
+        return numCars + (8 - closestCarDistance);
+    }
+
+    public double utilityFunction() {
+        if (intersectionId == 1 && (orientation == 'E' || orientation == 'W'))
+            return (calculateUtility(numCarsLane, closestCarDistance) +
+                    calculateUtility(parallelNumCarsLane, parallelClosestCarDistance)) / 2;
+        else
+            return calculateUtility(numCarsLane, closestCarDistance);
     }
 
     public AID getWorldAIDFromDF() {
@@ -106,7 +95,7 @@ public class TrafficLight extends Agent {
         try {
             DFAgentDescription[] result = DFService.search(this, template);
             return result[0].getName();
-        } catch(FIPAException fe) {
+        } catch (FIPAException fe) {
             fe.printStackTrace();
         }
         return null;
@@ -120,50 +109,10 @@ public class TrafficLight extends Agent {
         try {
             DFAgentDescription[] result = DFService.search(this, template);
             return result[0].getName();
-        } catch(FIPAException fe) {
+        } catch (FIPAException fe) {
             fe.printStackTrace();
         }
         return null;
-    }
-
-    // utility function to switch traffic light from red to green
-    public double utilityFunction() {
-        // TODO Adicionar quantidade de carros seguidos a partir do mais proximo
-
-        if(intersectionId == 1 && (orientation == 'E' || orientation == 'W'))
-            return (calculateUtility(numCarsLane, closestCarDistance) +
-                    calculateUtility(parallelNumCarsLane, parallelClosestCarDistance)) / 2;
-        else
-            return calculateUtility(numCarsLane, closestCarDistance);
-    }
-
-    public double calculateUtility(int numCars, int closestCarDistance) {
-        return numCars + (8 - closestCarDistance);
-    }
-    public int getClosestCarDistance() {
-        return closestCarDistance;
-    }
-
-
-    public AID getParallelTLAIDFromDF() {
-        if(intersectionId == 1 && (orientation == 'E' || orientation == 'W')) {
-            DFAgentDescription template = new DFAgentDescription();
-            ServiceDescription sd = new ServiceDescription();
-            sd.setType("Traffic Light Intersection " + intersectionId + " Orientation " +
-                    (orientation == 'E' ? 'W' : 'E'));
-            template.addServices(sd);
-            try {
-                DFAgentDescription[] result = DFService.search(this, template);
-                return result[0].getName();
-            } catch (FIPAException fe) {
-                fe.printStackTrace();
-            }
-        }
-        return null;
-    }
-
-    public AID getParallelTLAID() {
-        return parallelTLAID;
     }
 
     public int getElapsedTime() {
@@ -176,10 +125,6 @@ public class TrafficLight extends Agent {
 
     public AID getWorldAID() {
         return worldAID;
-    }
-
-    public int getNumCarsLane() {
-        return numCarsLane;
     }
 
     public char getColor() {
@@ -228,9 +173,5 @@ public class TrafficLight extends Agent {
 
     public void setInitiator(boolean initiator) {
         this.initiator = initiator;
-    }
-
-    public void changeColor() {
-        this.color = this.color == 'r' ? 'g' : 'r';
     }
 }

@@ -10,7 +10,6 @@ public class Intersection {
 
     private HashMap<Character, Lane> lanes = new HashMap<>();
     private int id;
-    private int numVehiclesPassed = 0;
 
     public Intersection(int id) {
         this.id = id;
@@ -22,23 +21,21 @@ public class Intersection {
         // Choose initial traffic light attributes randomly (color, duration)
         char nsTrafficLightColor = r.nextBoolean() ? 'r' : 'g';
         char weTrafficLightColor = nsTrafficLightColor == 'r' ? 'g' : 'r';
-        //int initialTrafLightElapsedTime = r.nextInt(11) + 10;
 
         // Variable tells if traffic light agent is responsible for communicating with world when alternating color
         boolean initiator = true;
 
         for (char orientation : laneOrientations) {
             TrafficLight trafficLight;
-            if(orientation == 'N' || orientation == 'S') {
-                trafficLight = new TrafficLight(nsTrafficLightColor, orientation);
-            }
-            else
-                trafficLight = new TrafficLight(weTrafficLightColor, orientation);
+            if (orientation == 'N' || orientation == 'S') {
+                trafficLight = new TrafficLight(nsTrafficLightColor);
+            } else
+                trafficLight = new TrafficLight(weTrafficLightColor);
 
             Lane lane = new Lane(orientation, trafficLight, r.nextInt(100));
             lanes.put(orientation, lane);
 
-            if(trafficLight.getColor() == 'g') {
+            if (trafficLight.getColor() == 'g') {
                 generateTrafficLightAgent(cc, trafficLight.getColor(), orientation,
                         false, lane.getTrafficLight().getNameId(),
                         lane.getNumCars(), lane.proximityToTheTrafficLight());
@@ -77,12 +74,12 @@ public class Intersection {
     }
 
     public void logIntersection() {
-        ArrayList<Lane> lanes =  new ArrayList<>(this.lanes.values());
+        ArrayList<Lane> lanes = new ArrayList<>(this.lanes.values());
         System.out.println("Intersection " + id);
-        for(Lane lane: lanes) {
+        for (Lane lane : lanes) {
             TrafficLight laneTrafficLight = lane.getTrafficLight();
             System.out.println((laneTrafficLight.getColor() != 'r' ? Utils.green : Utils.red) + "■ " + Utils.reset +
-                    lane.getOrientation() +"[" + lane.getTrafficLight().getNameId().toUpperCase(Locale.ROOT) + "]: "
+                    lane.getOrientation() + "[" + lane.getTrafficLight().getNameId().toUpperCase(Locale.ROOT) + "]: "
                     + lane.getLaneVehicles());
         }
     }
@@ -93,7 +90,7 @@ public class Intersection {
 
     public void changeTrafficLightsColor() {
         //System.out.println("Alternate intersection " + id + " traffic lights color");
-        for(Lane lane: this.lanes.values())
+        for (Lane lane : this.lanes.values())
             lane.alternateColorTrafficLight();
     }
 }

@@ -23,11 +23,10 @@ public class ChangeTLColorRequestResp extends AchieveREResponder {
 
     protected ACLMessage handleRequest(ACLMessage request) throws RefuseException {
         ACLMessage reply = request.createReply();
-        if (checkUtilities(request) && !trafficLight.isInNegotiation()){
+        if (checkUtilities(request) && !trafficLight.isInNegotiation()) {
             trafficLight.setInNegotiation(true);
             reply.setPerformative(ACLMessage.AGREE);
-        }
-        else {
+        } else {
             trafficLight.setInNegotiation(false);
             throw new RefuseException("check-failed");
         }
@@ -45,7 +44,7 @@ public class ChangeTLColorRequestResp extends AchieveREResponder {
     }
 
     private boolean performAction() {
-        trafficLight.addBehaviour(new ChangeTLColor(trafficLight));
+        trafficLight.addBehaviour(new ChangeTLColor(trafficLight, false));
         return true;
     }
 

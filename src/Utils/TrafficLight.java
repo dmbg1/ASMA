@@ -3,14 +3,12 @@ package Utils;
 public class TrafficLight {
 
     private static int current_id;
-    private String nameId;
+    private final String nameId;
     private char color;
-    private char orientation;
 
 
-    public TrafficLight(char color, char orientation) {
+    public TrafficLight(char color) {
         this.color = color;
-        this.orientation = orientation;
         current_id++;
         this.nameId = "tl" + current_id;
     }
@@ -25,9 +23,5 @@ public class TrafficLight {
 
     public char getColor() {
         return color;
-    }
-
-    public void setColor(char color) {
-        this.color = color;
     }
 }

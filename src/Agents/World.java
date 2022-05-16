@@ -71,28 +71,28 @@ public class World extends Agent {
         int totalCarsLeaving = 0;
 
         System.out.println("*********Intersection1*********");
-        for(Lane lane: this.intersection1.getLanes().values()) {
+        for (Lane lane : this.intersection1.getLanes().values()) {
             totalCarsLeaving += lane.getNumCarsLeaving();
             System.out.println("\t======" + lane.getTrafficLight().getNameId().toUpperCase(Locale.ROOT) + "======");
             System.out.println("\tTrafficLight Active Green Time: " + " " + lane.getGreenTime() + " s");
             System.out.println("\tTrafficLight Active Red Time: " + " " + lane.getRedTime() + " s");
-            System.out.println("\t>Vehicles Average Waiting time: " + " " + lane.getRedTime()/lane.getNumTimesOnRed() + " s");
-            System.out.println("\t>Flow of vehicles: " + lane.getTotalNumCarsPassedInLane() * 60 / (float)this.timePassed + " vehicles/min");
+            System.out.println("\t>Vehicles Average Waiting time: " + " " + lane.getRedTime() / lane.getNumTimesOnRed() + " s");
+            System.out.println("\t>Flow of vehicles: " + lane.getTotalNumCarsPassedInLane() * 60 / (float) this.timePassed + " vehicles/min");
         }
         System.out.println("\t===============");
-        System.out.println(">Flow in intersection: " + totalCarsLeaving * 60/ (float)this.timePassed + " vehicles/min\n");
+        System.out.println(">Flow in intersection: " + totalCarsLeaving * 60 / (float) this.timePassed + " vehicles/min\n");
 
         totalCarsLeaving = 0;
         System.out.println("************Intersection2************");
-        for(Lane lane: this.intersection2.getLanes().values()) {
+        for (Lane lane : this.intersection2.getLanes().values()) {
             totalCarsLeaving += lane.getNumCarsLeaving();
             System.out.println("\t======" + lane.getTrafficLight().getNameId().toUpperCase(Locale.ROOT) + "======");
             System.out.println("\tTrafficLight Active Green Time: " + lane.getTrafficLight().getNameId() + " " + lane.getGreenTime() + " s");
             System.out.println("\tTrafficLight Active Red Time: " + lane.getTrafficLight().getNameId() + " " + lane.getRedTime() + " s");
-            System.out.println("\t>Vehicles Average Waiting time: " + lane.getTrafficLight().getNameId() + " " + lane.getRedTime()/lane.getNumTimesOnRed() + " s");
-            System.out.println("\t>Flow of vehicles: " + lane.getTotalNumCarsPassedInLane() * 60 / (float)this.timePassed + " vehicles/min");
+            System.out.println("\t>Vehicles Average Waiting time: " + lane.getTrafficLight().getNameId() + " " + lane.getRedTime() / lane.getNumTimesOnRed() + " s");
+            System.out.println("\t>Flow of vehicles: " + lane.getTotalNumCarsPassedInLane() * 60 / (float) this.timePassed + " vehicles/min");
         }
-        System.out.println(">Flow in intersection: " + totalCarsLeaving * 60/ (float)this.timePassed + " vehicles/min");
+        System.out.println(">Flow in intersection: " + totalCarsLeaving * 60 / (float) this.timePassed + " vehicles/min");
 
         try {
             DFService.deregister(this);
@@ -122,7 +122,7 @@ public class World extends Agent {
 
     public void changeColorTrafficLight(int intersectionId) {
 
-        if(intersectionId == 1)
+        if (intersectionId == 1)
             intersection1.changeTrafficLightsColor();
         else
             intersection2.changeTrafficLightsColor();
@@ -131,17 +131,16 @@ public class World extends Agent {
 
     public void informTLNumCars() {
 
-        for(Lane lane: this.intersection1.getLanes().values()) {
+        for (Lane lane : this.intersection1.getLanes().values()) {
             HashMap<String, String> message = new HashMap<>();
             message.put("MsgType", "Inform Lane State");
             message.put("numCars", String.valueOf(lane.getNumCars()));
             message.put("closestCarDistance", String.valueOf(lane.proximityToTheTrafficLight()));
-            if(lane.getOrientation() == 'W') {
+            if (lane.getOrientation() == 'W') {
                 Lane parallelLane = intersection1.getLanes().get('E');
                 message.put("parallelNumCars", String.valueOf(parallelLane.getNumCars()));
                 message.put("parallelClosestCarDistance", String.valueOf(parallelLane.proximityToTheTrafficLight()));
-            }
-            else if(lane.getOrientation() == 'E') {
+            } else if (lane.getOrientation() == 'E') {
                 Lane parallelLane = intersection1.getLanes().get('W');
                 message.put("parallelNumCars", String.valueOf(parallelLane.getNumCars()));
                 message.put("parallelClosestCarDistance", String.valueOf(parallelLane.proximityToTheTrafficLight()));
@@ -150,7 +149,7 @@ public class World extends Agent {
             send(Utils.getACLMessage(message, lane.getTrafficLight().getNameId(), ACLMessage.INFORM));
         }
 
-        for(Lane lane: this.intersection2.getLanes().values()) {
+        for (Lane lane : this.intersection2.getLanes().values()) {
             HashMap<String, String> message = new HashMap<>();
             message.put("MsgType", "Inform Lane State");
             message.put("numCars", String.valueOf(lane.getNumCars()));
@@ -169,7 +168,7 @@ public class World extends Agent {
         try {
             DFService.register(this, dfd);
             System.out.println("World registered in DF successfully");
-        } catch(FIPAException fe) {
+        } catch (FIPAException fe) {
             fe.printStackTrace();
         }
     }

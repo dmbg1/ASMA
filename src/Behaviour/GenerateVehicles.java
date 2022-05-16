@@ -9,10 +9,12 @@ import java.util.Random;
 
 public class GenerateVehicles extends TickerBehaviour {
     private World world;
+
     public GenerateVehicles(World world, long period) {
         super(world, period);
         this.world = world;
     }
+
     @Override
     protected void onTick() {
         ArrayList<Lane> lanes = new ArrayList<>(world.getIntersection1().getLanes().values());
@@ -22,8 +24,8 @@ public class GenerateVehicles extends TickerBehaviour {
 
         Random r = new Random();
 
-        for (Lane lane: lanes) {
-            if(r.nextInt(1, 101) <= lane.getProbGenerateLane())
+        for (Lane lane : lanes) {
+            if (r.nextInt(1, 101) <= lane.getProbGenerateLane())
                 lane.addCarToLaneQueue();
         }
     }

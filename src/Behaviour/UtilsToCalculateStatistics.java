@@ -18,24 +18,23 @@ public class UtilsToCalculateStatistics extends TickerBehaviour {
 
     @Override
     protected void onTick() {
-
         this.incrementLanesLightTime();
     }
 
     public void incrementLanesLightTime() {
 
-        for(Lane lane: this.world.getIntersection1().getLanes().values()) {
-            if(lane.getTrafficLight().getColor() == 'r') {
+        for (Lane lane : this.world.getIntersection1().getLanes().values()) {
+            if (lane.getTrafficLight().getColor() == 'r') {
                 lane.incrementRedTime();
-            }else {
+            } else {
                 lane.incrementGreenTime();
             }
         }
 
-        for(Lane lane: this.world.getIntersection2().getLanes().values()) {
-            if(lane.getTrafficLight().getColor() == 'r') {
+        for (Lane lane : this.world.getIntersection2().getLanes().values()) {
+            if (lane.getTrafficLight().getColor() == 'r') {
                 lane.incrementRedTime();
-            }else {
+            } else {
                 lane.incrementGreenTime();
             }
         }

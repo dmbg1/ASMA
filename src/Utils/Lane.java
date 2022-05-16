@@ -34,14 +34,14 @@ public class Lane {
             if (r.nextBoolean()) {
                 this.numCars++;
                 laneVehicles.add(i, true);
-            }else {
+            } else {
                 laneVehicles.add(i, false);
             }
         }
     }
 
     // Adds car to final position in lane from generated cars queue
-    public void addCarToLane(){
+    public void addCarToLane() {
         this.numCars++;
         this.totalNumCarsPassedInLane++;
         this.laneVehicles.set(7, true);
@@ -58,7 +58,7 @@ public class Lane {
         carsInQueue++;
     }
 
-    // Randomly chooses lane to go to after intersection (f, l, r)
+    // Randomly chooses lane to go to after intersection (front, left, right)
     public Lane chooseLaneToGoTo(ArrayList<Lane> laneWays) {
         Random r = new Random();
         Lane laneToGoTo = laneWays.get(r.nextInt(laneWays.size()));
@@ -73,7 +73,7 @@ public class Lane {
             if (i == 0) { // Entering intersection and leaving lane
                 Lane laneToGoTo = chooseLaneToGoTo(laneWays);
                 if (trafficLight.getColor() == 'g' && laneVehicles.get(i)) {
-                    if(laneToGoTo == null) {
+                    if (laneToGoTo == null) {
                         laneVehicles.set(i, false);
                         this.numCarsLeaving++;
                         this.numCars--;
@@ -101,7 +101,7 @@ public class Lane {
 
     public int proximityToTheTrafficLight() {
         for (int i = 0; i < laneVehicles.size(); i++)
-            if(laneVehicles.get(i))
+            if (laneVehicles.get(i))
                 return i;
 
         return 8;
@@ -149,9 +149,9 @@ public class Lane {
 
     public void alternateColorTrafficLight() {
         this.trafficLight.alternateColor();
-        if(this.trafficLight.getColor() == 'r') {
+        if (this.trafficLight.getColor() == 'r') {
             this.numTimesOnRed++;
-        }else {
+        } else {
             this.numTimesOnGreen++;
         }
     }

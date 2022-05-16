@@ -30,28 +30,27 @@ public class ListeningInform extends CyclicBehaviour {
     public void action() {
 
         ACLMessage msg = this.getAgent().receive(mt);
-        if(msg != null) {
+        if (msg != null) {
             try {
                 HashMap<String, String> msg_map = (HashMap<String, String>) msg.getContentObject();
                 String msg_type = msg_map.get("MsgType");
 
-                switch(msg_type) {
+                switch (msg_type) {
                     case "Alternate color":
                         int intersectionId = Integer.parseInt(msg_map.get("InterId"));
                         try {
                             World world = (World) agent;
                             world.changeColorTrafficLight(intersectionId);
-                        }
-                        catch (ClassCastException e) {
+                        } catch (ClassCastException e) {
                             TrafficLight trafficLight = (TrafficLight) agent;
-                            trafficLight.addBehaviour(new ChangeTLColor(trafficLight));
+                            trafficLight.addBehaviour(new ChangeTLColor(trafficLight, true));
                         }
                         break;
                     case "Inform Lane State":
                         TrafficLight trafficLight = (TrafficLight) agent;
                         int numCars = Integer.parseInt(msg_map.get("numCars"));
                         int closestCarDistance = Integer.parseInt(msg_map.get("closestCarDistance"));
-                        if(trafficLight.getIntersectionId() == 1 &&
+                        if (trafficLight.getIntersectionId() == 1 &&
                                 (trafficLight.getOrientation() == 'W' || trafficLight.getOrientation() == 'E')) {
                             int parallelNumCars = Integer.parseInt(msg_map.get("parallelNumCars"));
                             trafficLight.setParallelNumCarsLane(parallelNumCars);
@@ -69,7 +68,7 @@ public class ListeningInform extends CyclicBehaviour {
             } catch (UnreadableException e) {
                 throw new RuntimeException(e);
             }
-        }else {
+        } else {
             block();
         }
     }
