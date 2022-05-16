@@ -16,12 +16,12 @@ public class ChangeTLColorRequestInit extends AchieveREInitiator {
     }
 
     protected void handleAgree(ACLMessage agree) {
-        System.out.println(Utils.green + "\u2713" + Utils.reset + "Agent " + agree.getSender().getLocalName() + " accepted request to " +
+        System.out.println(Utils.green + "\u2713" + Utils.reset + " Agent " + agree.getSender().getLocalName() + " accepted request to " +
                 "change traffic light color");
     }
 
     protected void handleRefuse(ACLMessage refuse) {
-        System.out.println(Utils.red + "\u2A2F" + Utils.reset + "Agent " + refuse.getSender().getLocalName() + " refused request to " +
+        System.out.println(Utils.red + "\u2A2F" + Utils.reset + " Agent " + refuse.getSender().getLocalName() + " refused request to " +
                 "change traffic light color");
         trafficLight.setInNegotiation(false);
     }
