@@ -143,10 +143,6 @@ public class Lane {
         return numTimesOnRed;
     }
 
-    public int getNumTimesOnGreen() {
-        return numTimesOnGreen;
-    }
-
     public int getNumCarsLeaving() {
         return numCarsLeaving;
     }

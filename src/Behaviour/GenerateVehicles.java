@@ -5,7 +5,6 @@ import Utils.Lane;
 import jade.core.behaviours.TickerBehaviour;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Random;
 
 public class GenerateVehicles extends TickerBehaviour {
