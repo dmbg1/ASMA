@@ -35,7 +35,7 @@ public class Intersection {
             else
                 trafficLight = new TrafficLight(weTrafficLightColor, orientation);
 
-            Lane lane = new Lane(orientation, trafficLight, r.nextInt(100));
+            Lane lane = new Lane(orientation, trafficLight, 100);
             lanes.put(orientation, lane);
 
             if(trafficLight.getColor() == 'g') {

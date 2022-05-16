@@ -16,10 +16,12 @@ public class ChangeTLColorRequest extends TickerBehaviour {
     protected void onTick() {
         trafficLight.incrementElapsedTime();
         // if traffic light surpasses the 12 seconds elapsed mark change color
+
         if(trafficLight.getElapsedTime() > 12)
             trafficLight.addBehaviour(new ChangeTLColor(trafficLight));
 
         // Send request every 4 seconds elapsed in the color the traffic light is
+
         if(trafficLight.isInitiator() && !trafficLight.isInNegotiation()
                 && trafficLight.getElapsedTime() % 2 == 0 && trafficLight.getElapsedTime() > 0) {
             sendColorChangeRequest();

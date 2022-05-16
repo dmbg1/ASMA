@@ -54,11 +54,11 @@ public class TrafficLight extends Agent {
         addBehaviour(new ListeningInform(this));
 
         // For potential color change requests
+
         MessageTemplate template = MessageTemplate.and(
                 MessageTemplate.MatchProtocol(FIPANames.InteractionProtocol.FIPA_REQUEST),
                 MessageTemplate.MatchPerformative(ACLMessage.REQUEST));
         addBehaviour(new ChangeTLColorRequestResp(this, template));
-
 
          // For sending color change requests through elapsed time checking
          addBehaviour(new ChangeTLColorRequest(this, 1000));

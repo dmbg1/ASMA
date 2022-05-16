@@ -92,6 +92,7 @@ public class World extends Agent {
             System.out.println("\t>Vehicles Average Waiting time: " + lane.getTrafficLight().getNameId() + " " + lane.getRedTime()/lane.getNumTimesOnRed() + " s");
             System.out.println("\t>Flow of vehicles: " + lane.getTotalNumCarsPassedInLane() * 60 / (float)this.timePassed + " vehicles/min");
         }
+        System.out.println(this.timePassed);
         System.out.println(">Flow in intersection: " + totalCarsLeaving * 60/ (float)this.timePassed + " vehicles/min");
 
         try {
