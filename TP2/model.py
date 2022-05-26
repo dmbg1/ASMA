@@ -46,6 +46,7 @@ def agent_portrayal(agent):
 
 grid = CanvasGrid(agent_portrayal, 10, 10, 500, 500)
 
+
 server = ModularServer(MonstersVsHeros,
                        [grid],
                        "Monsters VS Heros",
