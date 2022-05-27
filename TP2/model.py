@@ -1,8 +1,10 @@
+import random
 from mesa.space import MultiGrid
 from sched import scheduler
-from mesa import Agent, Model
+from mesa import Model
 from mesa.time import RandomActivation
 from heroagent import HeroAgent
+from monsteragent import MonsterAgent
 
 from mesa.visualization.modules import CanvasGrid
 from mesa.visualization.ModularVisualization import ModularServer
@@ -14,10 +16,19 @@ class MonstersVsHeros(Model):
         self.num_agents = N
         self.grid = MultiGrid(width, height, True)
         self.schedule = RandomActivation(self)
+        self.genereteAgents()
 
-        # Create agents
+
+    def genereteAgents(self):
+
         for i in range(self.num_agents):
-            a = HeroAgent(i, self)
+            r = random.randint(0, 1)
+
+            if r == 0:
+                a = HeroAgent(i, self)
+            else:
+                a = MonsterAgent(i, self)
+
             self.schedule.add(a)
 
             # Add the agent to a random grid cell
@@ -35,22 +46,17 @@ class MonstersVsHeros(Model):
             self.step()
 
 
-def agent_portrayal(agent):
-    portrayal = {"Shape": "circle",
-                 "Color": "red",
-                 "Filled": "true",
-                 "Layer": 0,
-                 "r": 0.5}
-    return portrayal
+def agents_portrayal(agent):
+    return agent.portrayal()
 
 
-grid = CanvasGrid(agent_portrayal, 10, 10, 500, 500)
+grid = CanvasGrid(agents_portrayal, 20, 20, 500, 500)
 
 
 server = ModularServer(MonstersVsHeros,
                        [grid],
                        "Monsters VS Heros",
-                       {"N":100, "width":10, "height":10})
+                       {"N":50, "width":20, "height":20})
 
 server.port = 8521 # The default
 server.launch()
