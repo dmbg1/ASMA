@@ -1,11 +1,11 @@
 import random
+from turtle import pos
 from mesa.space import MultiGrid
 from mesa import Model
 from mesa.time import RandomActivation
 import Agents as agent
+import environment as env
 
-from mesa.visualization.modules import CanvasGrid
-from mesa.visualization.ModularVisualization import ModularServer
 
 class MonstersVsHeros(Model):
     """A model with some number of agents."""
@@ -43,20 +43,10 @@ class MonstersVsHeros(Model):
     def running(self):
       self.step()
 
-
-def agents_portrayal(agent):
-    return agent.portrayal()
-
-
-grid = CanvasGrid(agents_portrayal, 20, 20, 500, 500)
+def main():
+    model = MonstersVsHeros
+    env.createAndStartServer(model)
 
 
-server = ModularServer(MonstersVsHeros,
-                       [grid],
-                       "Monsters VS Heros",
-                       {"N":50, "width":20, "height":20})
-
-server.port = 8521 # The default
-server.launch()
-
-
+if __name__ == "__main__":
+    main()
