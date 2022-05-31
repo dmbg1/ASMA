@@ -1,14 +1,16 @@
 from abc import abstractmethod
+from traceback import print_tb
 from turtle import position
 from mesa import Agent
 
 class Character(Agent):
     """An agent with fixed initial wealth."""
 
-    def __init__(self, unique_id, model):
+    def __init__(self, unique_id, model, hp):
         super().__init__(unique_id, model)
         
         self.model = model
+        self.hp = hp
     
 
     def move(self):
@@ -17,10 +19,7 @@ class Character(Agent):
             moore=True,
             include_center=False)
         
-        new_position = self.random.choice(possible_steps)
-
-        self.chooseBestPosition(possible_steps)
-
+        new_position = self.chooseBestPosition(possible_steps)
         self.model.grid.move_agent(self, new_position)
 
     @abstractmethod
@@ -32,11 +31,18 @@ class Character(Agent):
         pass
 
     def getAgentsInSameCell(self):
-        return self.model.grid.get_neighbors(self.pos, False, True, 0)
+        return self.model.grid.get_neighbors(self.pos, True, True, 0)
 
     def getNearAgents(self, radius):
-        return self.model.grid.get_neighbors(self.pos, False, False, radius)
+
+        nearAgents = [] 
+
+        for r in range(1, radius+1):
+            nearAgents.append(self.model.grid.get_neighbors(self.pos, True, False, r))
+        
+        return [agent for subagents in nearAgents for agent in subagents]
 
     def step(self):
         self.move()
         self.action()
+

@@ -14,19 +14,19 @@ class MonstersVsHeros(Model):
         self.num_agents = N
         self.grid = MultiGrid(width, height, True)
         self.schedule = RandomActivation(self)
-        self.genereteAgents()
+        self.generateAgents()
 
-    def genereteAgents(self):
+    def generateAgents(self):
 
         for i in range(self.num_agents):
             r = random.randint(0, 4)
 
             if r == 0:
-                a = agent.HeroAgent(i, self, "circle", "blue", 0.7)
+                a = agent.HeroAgent(i, self, "circle", "blue", 0.7, 0)
             elif r == 1:
-                a = agent.MonsterAgent(i, self, "circle", "red", 0.7)
+                a = agent.MonsterAgent(i, self, "circle", "red", 0.7, 0)
             elif r == 2:
-                a = agent.PersonAgent(i, self, "circle", "black", 0.7)
+                a = agent.PersonAgent(i, self, "circle", "black", 0.7, 0)
             else:
                 a = agent.TurnIntoHeroAgent(i, self, "circle", "green", 0.4)
 
