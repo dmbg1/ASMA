@@ -19,7 +19,21 @@ class MonsterAgent(Character, Portrayable):
                 self.model.grid.remove_agent(neig)
                 self.model.schedule.remove(neig)
     
-    
+
+    def chooseBestPosition(self, possible_steps):
+
+        nearAgents = self.getNearAgents(4)
+        better_steps = []
+        
+        print(nearAgents)
+
+        for nearAgent in nearAgents:
+            for pos in possible_steps:
+
+
+
+
+
 class PersonAgent(Character, Portrayable):
 
     def __init__(self, unique_id, model, shape, color, radius):

@@ -1,3 +1,4 @@
+from abc import abstractmethod
 from turtle import position
 from mesa import Agent
 
@@ -13,18 +14,28 @@ class Character(Agent):
     def move(self):
         possible_steps = self.model.grid.get_neighborhood(
             self.pos,
-            moore=False,
+            moore=True,
             include_center=False)
+        
         new_position = self.random.choice(possible_steps)
+
+        self.chooseBestPosition(possible_steps)
+
         self.model.grid.move_agent(self, new_position)
 
-    
+    @abstractmethod
+    def chooseBestPosition(self, possible_steps):
+        pass
+
+    @abstractmethod
     def action(self):
         pass
 
     def getAgentsInSameCell(self):
-        neighbors = self.model.grid.get_neighbors(self.pos, False, True, 0)
-        return neighbors
+        return self.model.grid.get_neighbors(self.pos, False, True, 0)
+
+    def getNearAgents(self, radius):
+        return self.model.grid.get_neighbors(self.pos, False, False, radius)
 
     def step(self):
         self.move()
