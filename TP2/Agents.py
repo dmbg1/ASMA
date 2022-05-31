@@ -33,6 +33,15 @@ class MonsterAgent(Character, Portrayable):
                     pass
             
 
+        neighbors = self.getAgentsInSameCell()
+
+        for neig in neighbors:
+            if type(neig) == PersonAgent:
+                print(neig)
+                self.model.grid.remove_agent(neig)
+                self.model.schedule.remove(neig)
+    
+    
 class PersonAgent(Character, Portrayable):
 
     def __init__(self, unique_id, model, shape, color, radius, hp):
