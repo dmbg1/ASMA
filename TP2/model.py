@@ -18,9 +18,9 @@ class MonstersVsHeros(Model):
 
     def generateAgents(self):
 
-        numHeroes = int(self.num_agents * 0.3)
+        numHeroes = int(self.num_agents * 0.2)
         numMonsters = int(self.num_agents * 0.3)
-        numPersons = int(self.num_agents * 0.4)
+        numPersons = int(self.num_agents * 0.5)
         id = 0
 
         for _ in range(numHeroes):
