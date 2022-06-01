@@ -18,30 +18,42 @@ class MonstersVsHeros(Model):
 
     def generateAgents(self):
 
-        for i in range(self.num_agents):
-            r = random.randint(0, 4)
+        numHeroes = int(self.num_agents * 0.3)
+        numMonsters = int(self.num_agents * 0.3)
+        numPersons = int(self.num_agents * 0.4)
+        id = 0
 
-            if r == 0:
-                a = agent.HeroAgent(i, self, "circle", "blue", 0.7, 0)
-            elif r == 1:
-                a = agent.MonsterAgent(i, self, "circle", "red", 0.7, 0)
-            elif r == 2:
-                a = agent.PersonAgent(i, self, "circle", "black", 0.7, 0)
-            else:
-                a = agent.TurnIntoHeroAgent(i, self, "circle", "green", 0.4)
-
+        for _ in range(numHeroes):
+            a = agent.HeroAgent(id, self, "circle", "blue", 0.7, 0)
             self.schedule.add(a)
+            self.setAgentPosition(a)
+            id+=1
+            
+        for _ in range(numMonsters):
+            a = agent.MonsterAgent(id, self, "circle", "red", 0.7, 0)
+            self.schedule.add(a)
+            self.setAgentPosition(a)
+            id+=1
+            
+        for _ in range(numPersons):
+            a = agent.PersonAgent(id, self, "circle", "black", 0.7, 0)
+            self.schedule.add(a)
+            self.setAgentPosition(a)
+            id+=1
+        
 
-            # Add the agent to a random grid cell
-            x = self.random.randrange(self.grid.width)
-            y = self.random.randrange(self.grid.height)
-            self.grid.place_agent(a, (x, y))
-    
+    def setAgentPosition(self, a):
+        x = self.random.randrange(self.grid.width)
+        y = self.random.randrange(self.grid.height)
+        self.grid.place_agent(a, (x, y))
+        
+
     def step(self):
         self.schedule.step()
 
     def running(self):
       self.step()
+
 
 def main():
     model = MonstersVsHeros

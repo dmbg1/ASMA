@@ -24,13 +24,15 @@ class MonsterAgent(Character, Portrayable):
 
         nearAgents = self.getNearAgents(4)
 
-        print("=> ", self.pos, "\n")
-
         for nearAgent in nearAgents:
+            if "MonsterAgent" == type(nearAgent).__name__ and nearAgent.pos in possible_steps: 
+                possible_steps.remove(nearAgent.pos)
             if "PersonAgent" == type(nearAgent).__name__:
-                print("\t", nearAgent.pos)
-                return Utils.getNearPoint(nearAgent.pos, possible_steps)
+                return Utils.getNearPoint(self, nearAgent.pos, possible_steps)
         
+        if len(possible_steps) == 0:
+            return self.pos
+
         return self.random.choice(possible_steps)
         
 
@@ -41,6 +43,18 @@ class PersonAgent(Character, Portrayable):
         Portrayable.__init__(self, shape, color, radius)
     
     def chooseBestPosition(self, possible_steps):
+
+        nearAgents = self.getNearAgents(7)
+
+        for nearAgent in nearAgents:
+            if "PersonAgent" == type(nearAgent).__name__ and nearAgent.pos in possible_steps: 
+                possible_steps.remove(nearAgent.pos)
+            if "MonsterAgent" == type(nearAgent).__name__:
+                return Utils.getFurtherPoint(self, nearAgent.pos, possible_steps)
+        
+        if len(possible_steps) == 0:
+            return self.pos
+
         return self.random.choice(possible_steps)
         
 
@@ -51,6 +65,18 @@ class HeroAgent(Character, Portrayable):
         Portrayable.__init__(self, shape, color, radius)
 
     def chooseBestPosition(self, possible_steps):
+
+        nearAgents = self.getNearAgents(7)
+
+        for nearAgent in nearAgents:
+            if "HeroAgent" == type(nearAgent).__name__ and nearAgent.pos in possible_steps: 
+                possible_steps.remove(nearAgent.pos)
+            if "PersonAgent" == type(nearAgent).__name__:
+                return Utils.getNearPoint(self, nearAgent.pos, possible_steps)
+        
+        if len(possible_steps) == 0:
+            return self.pos
+
         return self.random.choice(possible_steps)
 
 

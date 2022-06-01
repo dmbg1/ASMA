@@ -17,7 +17,7 @@ def createAndStartServer(model):
     server = ModularServer(model,
                        [grid],
                        "Monsters VS Heros",
-                       {"N":50, "width":20, "height":20})
+                       {"N":100, "width":20, "height":20})
     
     server.port = 8521
     server.launch()

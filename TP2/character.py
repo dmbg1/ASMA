@@ -19,16 +19,10 @@ class Character(Agent):
             moore=True,
             include_center=False)
         
+        
+        
         new_position = self.chooseBestPosition(possible_steps)
         self.model.grid.move_agent(self, new_position)
-
-    @abstractmethod
-    def chooseBestPosition(self, possible_steps):
-        pass
-
-    @abstractmethod
-    def action(self):
-        pass
 
     def getAgentsInSameCell(self):
         return self.model.grid.get_neighbors(self.pos, True, True, 0)
@@ -41,6 +35,14 @@ class Character(Agent):
             nearAgents.append(self.model.grid.get_neighbors(self.pos, True, False, r))
         
         return [agent for subagents in nearAgents for agent in subagents]
+    
+    @abstractmethod
+    def chooseBestPosition(self, possible_steps):
+        pass
+
+    @abstractmethod
+    def action(self):
+        pass
 
     def step(self):
         self.move()
