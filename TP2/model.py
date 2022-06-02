@@ -20,7 +20,8 @@ class MonstersVsHeros(Model):
 
         numHeroes = int(self.num_agents * 0.2)
         numMonsters = int(self.num_agents * 0.3)
-        numPersons = int(self.num_agents * 0.5)
+        numPersons = int(self.num_agents * 0.45)
+        numFoods = int(self.num_agents * 0.05)
         id = 0
 
         for _ in range(numHeroes):
@@ -30,13 +31,19 @@ class MonstersVsHeros(Model):
             id+=1
             
         for _ in range(numMonsters):
-            a = agent.MonsterAgent(id, self, "circle", "red", 0.7, 0)
+            a = agent.MonsterAgent(id, self, "circle", "red", 0.8, 0)
             self.schedule.add(a)
             self.setAgentPosition(a)
             id+=1
             
         for _ in range(numPersons):
-            a = agent.PersonAgent(id, self, "circle", "black", 0.7, 0)
+            a = agent.PersonAgent(id, self, "circle", "black", 0.6, 0)
+            self.schedule.add(a)
+            self.setAgentPosition(a)
+            id+=1
+        
+        for _ in range(numFoods):
+            a = agent.TurnIntoHeroAgent(id, self, "circle", "green", 0.4)
             self.schedule.add(a)
             self.setAgentPosition(a)
             id+=1
