@@ -15,7 +15,7 @@ class Character(Agent):
 
     def move(self):
         possible_steps = self.model.grid.get_neighborhood(
-            self.pos,
+            self.pos, 
             moore=True,
             include_center=False)
         

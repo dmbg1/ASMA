@@ -6,6 +6,15 @@ from mesa.time import RandomActivation
 import Agents as agent
 import environment as env
 
+# TODO
+# Colocar paredes 
+# Comida e mutações provocadas pela comida (gerando periodicamente em posiçoes aleatorias)
+# Vida das pessoas vai descendo
+# Priorizar os monstros e dps as pessoas nos paths dos heróis
+# Priorizar as pessoas e dps os herois nos paths dos monstros
+# HP, DPS (aleatório) e %dano absorvido
+# Lutar parados numa células
+# Aumentar atributos de defesa (hp) e de ataque ao longo do tempo
 
 class MonstersVsHeros(Model):
     """A model with some number of agents."""
