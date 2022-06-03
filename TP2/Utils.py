@@ -13,12 +13,9 @@ def calculateDistance(pos1, pos2):
     return math.sqrt((pos2[0]-pos1[0])**2 + (pos2[1]-pos1[1])**2)
 
 
-def getNearPoint(agent, agentPos, possible_steps):
+def getNearPoint(agentPos, possible_steps):
 
     minDistance = 9999999
-
-    if len(possible_steps) == 0:
-        return agent.pos
 
     for step in possible_steps:
         distance = calculateDistance(agentPos, step)
@@ -29,13 +26,16 @@ def getNearPoint(agent, agentPos, possible_steps):
     return pos
 
 
-def getFurtherPoint(agent, agentPos, possible_steps):
+def getFurtherPoint(agentPos, possible_steps):
 
     maxDistance = -99999999
 
+<<<<<<< HEAD
     if len(possible_steps) == 0:
         return agent.pos
 
+=======
+>>>>>>> 4ed110856cac5dacc9ec9420c0bd7b4d7021a771
     for step in possible_steps:
         distance = calculateDistance(agentPos, step)
         if distance >= maxDistance:
@@ -43,3 +43,24 @@ def getFurtherPoint(agent, agentPos, possible_steps):
             pos = step
 
     return pos
+<<<<<<< HEAD
+=======
+
+
+def getNearAgent(agent, nearAgents):
+
+    minDistance = 99999
+
+    if len(nearAgents) == 0:
+        return -1
+
+    for nearAgent in nearAgents:
+        distance = calculateDistance(agent.pos, nearAgent.pos)
+        if distance <= minDistance:
+            minDistance = distance
+            agent = nearAgent
+    
+    return agent
+
+
+>>>>>>> 4ed110856cac5dacc9ec9420c0bd7b4d7021a771
