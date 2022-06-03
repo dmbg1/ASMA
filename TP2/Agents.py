@@ -22,8 +22,8 @@ class MonsterAgent(Character, Portrayable):
 
     def chooseBestPosition(self, possible_steps):
 
+        Utils.removeThroughWallSteps(self.pos, possible_steps, self.model.grid.width, self.model.grid.height)
         nearAgents = self.getNearAgents(4)
-
         for nearAgent in nearAgents:
             if "MonsterAgent" == type(nearAgent).__name__ and nearAgent.pos in possible_steps: 
                 possible_steps.remove(nearAgent.pos)
@@ -32,7 +32,6 @@ class MonsterAgent(Character, Portrayable):
         
         if len(possible_steps) == 0:
             return self.pos
-
         return self.random.choice(possible_steps)
         
 
@@ -44,6 +43,7 @@ class PersonAgent(Character, Portrayable):
     
     def chooseBestPosition(self, possible_steps):
 
+        Utils.removeThroughWallSteps(self.pos, possible_steps, self.model.grid.width, self.model.grid.height)
         nearAgents = self.getNearAgents(7)
 
         for nearAgent in nearAgents:
@@ -66,6 +66,7 @@ class HeroAgent(Character, Portrayable):
 
     def chooseBestPosition(self, possible_steps):
 
+        Utils.removeThroughWallSteps(self.pos, possible_steps, self.model.grid.width, self.model.grid.height)
         nearAgents = self.getNearAgents(7)
 
         for nearAgent in nearAgents:

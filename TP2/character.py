@@ -19,8 +19,6 @@ class Character(Agent):
             moore=True,
             include_center=False)
         
-        
-        
         new_position = self.chooseBestPosition(possible_steps)
         self.model.grid.move_agent(self, new_position)
 
