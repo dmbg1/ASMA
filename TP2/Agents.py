@@ -5,8 +5,8 @@ import Utils
 
 class MonsterAgent(Character, Portrayable):
 
-    def __init__(self, unique_id, model, shape, color, radius, hp):
-        Character.__init__(self, unique_id, model, hp)
+    def __init__(self, unique_id, model, shape, color, radius, hp, hp_decrease):
+        Character.__init__(self, unique_id, model, hp, hp_decrease)
         Portrayable.__init__(self, shape, color, radius)
 
     
@@ -40,8 +40,8 @@ class MonsterAgent(Character, Portrayable):
 
 class PersonAgent(Character, Portrayable):
 
-    def __init__(self, unique_id, model, shape, color, radius, hp):
-        Character.__init__(self, unique_id, model, hp)
+    def __init__(self, unique_id, model, shape, color, radius, hp, hp_decrease):
+        Character.__init__(self, unique_id, model, hp, hp_decrease)
         Portrayable.__init__(self, shape, color, radius)
     
     def chooseBestPosition(self, possible_steps):
@@ -64,8 +64,8 @@ class PersonAgent(Character, Portrayable):
 
 class HeroAgent(Character, Portrayable):
 
-    def __init__(self, unique_id, model, shape, color, radius, hp):
-        Character.__init__(self, unique_id, model, hp)
+    def __init__(self, unique_id, model, shape, color, radius, hp, hp_decrease):
+        Character.__init__(self, unique_id, model, hp, hp_decrease)
         Portrayable.__init__(self, shape, color, radius)
 
     def chooseBestPosition(self, possible_steps):

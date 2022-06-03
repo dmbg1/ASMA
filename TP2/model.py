@@ -34,19 +34,19 @@ class MonstersVsHeros(Model):
         id = 0
 
         for _ in range(numHeroes):
-            a = agent.HeroAgent(id, self, "circle", "blue", 0.7, 0)
+            a = agent.HeroAgent(id, self, "circle", "blue", 0.7, 100, 0)
             self.schedule.add(a)
             self.setAgentPosition(a)
             id+=1
             
         for _ in range(numMonsters):
-            a = agent.MonsterAgent(id, self, "circle", "red", 0.8, 0)
+            a = agent.MonsterAgent(id, self, "circle", "red", 0.8, 100, 0)
             self.schedule.add(a)
             self.setAgentPosition(a)
             id+=1
             
         for _ in range(numPersons):
-            a = agent.PersonAgent(id, self, "circle", "black", 0.6, 0)
+            a = agent.PersonAgent(id, self, "circle", "black", 0.6, 100, 10)
             self.schedule.add(a)
             self.setAgentPosition(a)
             id+=1

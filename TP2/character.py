@@ -3,22 +3,23 @@ from traceback import print_tb
 from turtle import position
 from mesa import Agent
 
+
 class Character(Agent):
     """An agent with fixed initial wealth."""
 
-    def __init__(self, unique_id, model, hp):
+    def __init__(self, unique_id, model, hp, hp_decrease):
         super().__init__(unique_id, model)
-        
+
         self.model = model
         self.hp = hp
-    
+        self.hp_decrease = hp_decrease
 
     def move(self):
         possible_steps = self.model.grid.get_neighborhood(
-            self.pos, 
+            self.pos,
             moore=True,
             include_center=False)
-        
+
         new_position = self.chooseBestPosition(possible_steps)
         self.model.grid.move_agent(self, new_position)
 
@@ -27,13 +28,14 @@ class Character(Agent):
 
     def getNearAgents(self, radius):
 
-        nearAgents = [] 
+        nearAgents = []
 
         for r in range(1, radius+1):
-            nearAgents.append(self.model.grid.get_neighbors(self.pos, True, False, r))
-        
+            nearAgents.append(self.model.grid.get_neighbors(
+                self.pos, True, False, r))
+
         return [agent for subagents in nearAgents for agent in subagents]
-    
+
     @abstractmethod
     def chooseBestPosition(self, possible_steps):
         pass
@@ -45,4 +47,7 @@ class Character(Agent):
     def step(self):
         self.move()
         self.action()
-
+        self.hp -= self.hp_decrease
+        if self.hp <= 0:
+            self.model.grid.remove_agent(self)
+            self.model.schedule.remove(self)
