@@ -5,6 +5,7 @@ def removeThroughWallSteps(pos, possible_steps, width, height):
     for possible_step in possible_steps:
         if (possible_step[1] == height - 1 and pos[1] == 0) or (possible_step[1] == 0 and pos[1] == height - 1) or\
                 (possible_step[0] == width - 1 and pos[0] == 0) or (possible_step[0] == 0 and pos[0] == width - 1):
+            print(123)
             possible_steps.remove(possible_step)
 
 
@@ -30,12 +31,6 @@ def getFurtherPoint(agentPos, possible_steps):
 
     maxDistance = -99999999
 
-<<<<<<< HEAD
-    if len(possible_steps) == 0:
-        return agent.pos
-
-=======
->>>>>>> 4ed110856cac5dacc9ec9420c0bd7b4d7021a771
     for step in possible_steps:
         distance = calculateDistance(agentPos, step)
         if distance >= maxDistance:
@@ -43,8 +38,6 @@ def getFurtherPoint(agentPos, possible_steps):
             pos = step
 
     return pos
-<<<<<<< HEAD
-=======
 
 
 def getNearAgent(agent, nearAgents):
@@ -63,4 +56,3 @@ def getNearAgent(agent, nearAgents):
     return agent
 
 
->>>>>>> 4ed110856cac5dacc9ec9420c0bd7b4d7021a771
