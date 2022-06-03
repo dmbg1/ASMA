@@ -5,7 +5,6 @@ def removeThroughWallSteps(pos, possible_steps, width, height):
     for possible_step in possible_steps:
         if (possible_step[1] == height - 1 and pos[1] == 0) or (possible_step[1] == 0 and pos[1] == height - 1) or\
                 (possible_step[0] == width - 1 and pos[0] == 0) or (possible_step[0] == 0 and pos[0] == width - 1):
-            print(123)
             possible_steps.remove(possible_step)
 
 
