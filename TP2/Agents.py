@@ -6,10 +6,10 @@ import Utils
 
 class MonsterAgent(Character, Portrayal):
 
-    def __init__(self, unique_id, model, shape, color, radius, hp, hp_decrease):
-        Character.__init__(self, unique_id, model, hp, hp_decrease)
+    def __init__(self, unique_id, model, shape, color, radius, hp, hp_decrease, damage_per_second):
+        Character.__init__(self, unique_id, model, hp, hp_decrease, damage_per_second)
         Portrayal.__init__(self, shape, color, radius)
-        self.state = ""
+        self.maxHP = hp
 
     def action(self):
 
@@ -40,10 +40,9 @@ class MonsterAgent(Character, Portrayal):
 
 class PersonAgent(Character, Portrayal):
 
-    def __init__(self, unique_id, model, shape, color, radius, hp, hp_decrease):
-        Character.__init__(self, unique_id, model, hp, hp_decrease)
+    def __init__(self, unique_id, model, shape, color, radius, hp, hp_decrease, damage_per_second):
+        Character.__init__(self, unique_id, model, hp, hp_decrease, damage_per_second)
         Portrayal.__init__(self, shape, color, radius)
-        self.state = ""
 
     def action(self):
 
@@ -51,8 +50,8 @@ class PersonAgent(Character, Portrayal):
 
         for neig in neighbors:
             if type(neig).__name__ == "Fruit":
-                if neig.state == "BadQuality":
-                    self.state = "TurningMonster"
+                if neig.state["state"] == "BadQuality":
+                    self.state = {"state": "TurningMonster"}
                     break
                 if self.hp < 100:
                     self.hp += neig.levelOfHPRecovery
@@ -61,8 +60,8 @@ class PersonAgent(Character, Portrayal):
                 else:
                     self.grid.remove_agent(neig)
                     self.model.schedule.remove(neig)
-                    if neig.state == "GoodQuality":
-                        self.state = "TurningHero"
+                    if neig.state["state"] == "GoodQuality":
+                        self.state = {"state": "TurningHero"}
 
     def chooseBestPosition(self, possible_steps):
 
@@ -89,10 +88,9 @@ class HeroAgent(Character, Portrayal):
     def action(self):
         pass
 
-    def __init__(self, unique_id, model, shape, color, radius, hp, hp_decrease):
-        Character.__init__(self, unique_id, model, hp, hp_decrease)
+    def __init__(self, unique_id, model, shape, color, radius, hp, hp_decrease, damage_per_second):
+        Character.__init__(self, unique_id, model, hp, hp_decrease, damage_per_second)
         Portrayal.__init__(self, shape, color, radius)
-        self.state = ""
 
     def chooseBestPosition(self, possible_steps):
 
@@ -123,7 +121,7 @@ class Fruit(Agent, Portrayal):
         self.levelRotRottenness = 0
         self.levelOfHPRecovery = 15
         self.probTurningToMonster = 20
-        self.state = "GoodQuality"
+        self.state = {"state": "GoodQuality"}
 
     def step(self):
 
@@ -137,4 +135,4 @@ class Fruit(Agent, Portrayal):
 
         if self.levelRotRottenness > 5:
             self.set_color("#618358")
-            self.state = "BadQuality"
+            self.state = {"state": "BadQuality"}

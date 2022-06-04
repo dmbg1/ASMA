@@ -78,17 +78,17 @@ class MonstersVsHeroes(Model):
     def createAgent(self, type, pos=None, availablePositions=None):
 
         if type == "HeroAgent":
-            a = agent.HeroAgent(self.id, self, "circle", "blue", 0.7, 100, 0)
+            a = agent.HeroAgent(self.id, self, "circle", "blue", 0.7, 100, 0, 30)
             self.schedule.add(a)
             self.setAgentPosition(a, pos, availablePositions)
             self.id += 1
         elif type == "MonsterAgent":
-            a = agent.MonsterAgent(self.id, self, "circle", "red", 0.8, 100, 15)
+            a = agent.MonsterAgent(self.id, self, "circle", "red", 0.8, 100, 15, 20)
             self.schedule.add(a)
             self.setAgentPosition(a, pos, availablePositions)
             self.id += 1
         elif type == "PersonAgent":
-            a = agent.PersonAgent(self.id, self, "circle", "black", 0.6, 100, 5)
+            a = agent.PersonAgent(self.id, self, "circle", "black", 0.6, 100, 5, 0)
             self.schedule.add(a)
             self.setAgentPosition(a, pos, availablePositions)
             self.id += 1
@@ -117,10 +117,10 @@ class MonstersVsHeroes(Model):
         self.numSteps += 1
 
         for a in self.schedule.agents:
-            if a.state == "TurningMonster":
+            if a.state["state"] == "TurningMonster":
                 self.createAgent("MonsterAgent", pos=a.pos)
                 self.removeAgent(a)
-            elif a.state == "TurningHero":
+            elif a.state["state"] == "TurningHero":
                 self.createAgent("HeroAgent", pos=a.pos)
                 self.removeAgent(a)
 
