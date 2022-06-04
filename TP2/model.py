@@ -1,8 +1,12 @@
 import random
 from turtle import pos
+
+from mesa.datacollection import DataCollector
 from mesa.space import MultiGrid
 from mesa import Model
 from mesa.time import RandomActivation
+
+import Agents
 import Agents as agent
 import environment as env
 
@@ -23,16 +27,24 @@ class MonstersVsHeroes(Model):
 
     def __init__(self, N, width, height, init_humans, init_monsters, init_heroes, init_food):
         self.num_agents = N
+
         if init_humans + init_heroes + init_food + init_monsters > 1:
             print("Error: The sum of the given percentages is higher than 100%! (Empty grid given)")
             init_humans = init_food = init_heroes = init_monsters = 0
+
         self.init_humans = init_humans
         self.init_monsters = init_monsters
         self.init_heroes = init_heroes
         self.init_food = init_food
+
         self.grid = MultiGrid(width, height, True)
         self.schedule = RandomActivation(self)
         self.numSteps = 0
+        self.datacollector = DataCollector({
+            'Humans': 'human',
+            'Heroes': 'hero',
+            'Monsters': 'monster'})
+
         self.id = 0
         self.generateAgents()
 
@@ -54,6 +66,8 @@ class MonstersVsHeroes(Model):
 
         for _ in range(numFoods):
             self.createAgent("Fruit")
+
+        self.datacollector.collect(self)
 
     def createAgent(self, type, pos=None):
 
@@ -107,8 +121,37 @@ class MonstersVsHeroes(Model):
             for _ in range(self.random.randrange(0, 10)):
                 self.createAgent("Fruit", None)
 
+        self.datacollector.collect(self)
+
     def running(self):
         self.step()
+
+    @property
+    def human(self):
+        agents = self.schedule.agents
+        amount = 0
+        for a in agents:
+            if a.__class__ == Agents.PersonAgent:
+                amount += 1
+        return amount
+
+    @property
+    def hero(self):
+        agents = self.schedule.agents
+        amount = 0
+        for a in agents:
+            if a.__class__ == Agents.HeroAgent:
+                amount += 1
+        return amount
+
+    @property
+    def monster(self):
+        agents = self.schedule.agents
+        amount = 0
+        for a in agents:
+            if a.__class__ == Agents.MonsterAgent:
+                amount += 1
+        return amount
 
 
 def main():

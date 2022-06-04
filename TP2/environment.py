@@ -32,11 +32,12 @@ def createCanvas():
 
 def createAndStartServer(model):
     grid = createCanvas()
-    #chart = ChartModule([{"Label": "Population of humans",
-      #                    "Color": "Black"}],
-       #                 data_collector_name='datacollector')
+    chart = ChartModule([{"Label": "Humans", "Color": "Black"},
+                         {"Label": "Heroes", "Color": "Blue"},
+                         {"Label": "Monsters", "Color": "Red"}])
+
     server = ModularServer(model,
-                           [grid],
+                           [grid, chart],
                            "Monsters VS Heroes",
                            model_params)
 
