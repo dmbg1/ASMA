@@ -6,8 +6,8 @@ import Utils
 
 class MonsterAgent(Character, Portrayal):
 
-    def __init__(self, unique_id, model, shape, color, radius, hp, hp_decrease, damage_per_second):
-        Character.__init__(self, unique_id, model, hp, hp_decrease, damage_per_second)
+    def __init__(self, unique_id, model, shape, color, radius, hp, hp_decrease, damage_per_second, noReprodSteps):
+        Character.__init__(self, unique_id, model, hp, hp_decrease, damage_per_second, noReprodSteps)
         Portrayal.__init__(self, shape, color, radius)
         self.maxHP = hp
 
@@ -60,8 +60,8 @@ class MonsterAgent(Character, Portrayal):
 
 class PersonAgent(Character, Portrayal):
 
-    def __init__(self, unique_id, model, shape, color, radius, hp, hp_decrease, damage_per_second):
-        Character.__init__(self, unique_id, model, hp, hp_decrease, damage_per_second)
+    def __init__(self, unique_id, model, shape, color, radius, hp, hp_decrease, damage_per_second, noReprodSteps):
+        Character.__init__(self, unique_id, model, hp, hp_decrease, damage_per_second, noReprodSteps)
         Portrayal.__init__(self, shape, color, radius)
 
     def action(self):
@@ -137,8 +137,8 @@ class HeroAgent(Character, Portrayal):
                         self.state = {"state": "Move"}
                     continue  # One enemy at a time
 
-    def __init__(self, unique_id, model, shape, color, radius, hp, hp_decrease, damage_per_second):
-        Character.__init__(self, unique_id, model, hp, hp_decrease, damage_per_second)
+    def __init__(self, unique_id, model, shape, color, radius, hp, hp_decrease, damage_per_second, noReprodSteps):
+        Character.__init__(self, unique_id, model, hp, hp_decrease, damage_per_second, noReprodSteps)
         Portrayal.__init__(self, shape, color, radius)
 
     def chooseBestPosition(self, possible_steps):
@@ -168,7 +168,7 @@ class Fruit(Agent, Portrayal):
         Portrayal.__init__(self, shape, color, radius)
 
         self.levelRotRottenness = 0
-        self.levelOfHPRecovery = 15
+        self.levelOfHPRecovery = 30
         self.probTurningToMonster = 20
         self.state = {"state": "GoodQuality"}
 

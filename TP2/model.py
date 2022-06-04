@@ -75,20 +75,20 @@ class MonstersVsHeroes(Model):
 
         self.datacollector.collect(self)
 
-    def createAgent(self, type, pos=None, availablePositions=None):
+    def createAgent(self, type, pos=None, availablePositions=None, noReprodSteps=0):
 
         if type == "HeroAgent":
-            a = agent.HeroAgent(self.id, self, "circle", "blue", 0.7, 100, 0, 30)
+            a = agent.HeroAgent(self.id, self, "circle", "blue", 0.7, 150, 0, 50, noReprodSteps)
             self.schedule.add(a)
             self.setAgentPosition(a, pos, availablePositions)
             self.id += 1
         elif type == "MonsterAgent":
-            a = agent.MonsterAgent(self.id, self, "circle", "red", 0.8, 100, 5, 50)
+            a = agent.MonsterAgent(self.id, self, "circle", "red", 0.8, 100, 5, 20, noReprodSteps)
             self.schedule.add(a)
             self.setAgentPosition(a, pos, availablePositions)
             self.id += 1
         elif type == "PersonAgent":
-            a = agent.PersonAgent(self.id, self, "circle", "black", 0.6, 100, 5, 0)
+            a = agent.PersonAgent(self.id, self, "circle", "black", 0.6, 100, 5, 0, noReprodSteps)
             self.schedule.add(a)
             self.setAgentPosition(a, pos, availablePositions)
             self.id += 1
@@ -118,10 +118,10 @@ class MonstersVsHeroes(Model):
 
         for a in self.schedule.agents:
             if a.state["state"] == "TurningMonster":
-                self.createAgent("MonsterAgent", pos=a.pos)
+                self.createAgent("MonsterAgent", pos=a.pos, noReprodSteps=a.noReprodSteps)
                 self.removeAgent(a)
             elif a.state["state"] == "TurningHero":
-                self.createAgent("HeroAgent", pos=a.pos)
+                self.createAgent("HeroAgent", pos=a.pos, noReprodSteps=a.noReprodSteps)
                 self.removeAgent(a)
 
         if self.numSteps % 5 == 0:

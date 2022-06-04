@@ -7,7 +7,7 @@ import Utils
 class Character(Agent):
     """An agent with fixed initial wealth."""
 
-    def __init__(self, unique_id, model, hp, hp_decrease, damage_per_second):
+    def __init__(self, unique_id, model, hp, hp_decrease, damage_per_second, noReprodSteps):
         super().__init__(unique_id, model)
 
         self.model = model
@@ -16,6 +16,7 @@ class Character(Agent):
         self.hp_decrease = hp_decrease
         self.damage_per_second = damage_per_second
         self.state = {"state": "Move"}
+        self.noReprodSteps = noReprodSteps
 
     def move(self):
         possible_steps = self.grid.get_neighborhood(
@@ -32,10 +33,11 @@ class Character(Agent):
         neighbors = self.getAgentsInSameCell()
 
         for neigh in neighbors:
-            if type(neigh).__name__ == type(self).__name__:
-                for _ in range(
-                        self.model.random.randrange(0, 1)):  # TODO: Alterar o 1 para 2 para os agentes se reproduzirem
-                    self.model.createAgent(type(self).__name__)
+            if type(neigh).__name__ == type(self).__name__ and self.noReprodSteps + neigh.noReprodSteps == 0 and\
+                    type(self).__name__ != "HeroAgent":
+                for _ in range(self.model.random.randrange(0, 2)):
+                    self.model.createAgent(type(self).__name__, noReprodSteps=10)
+                    self.noReprodSteps = 5
 
     def getAgentsInSameCell(self):
         return self.grid.get_neighbors(self.pos, True, True, 0)
@@ -78,3 +80,5 @@ class Character(Agent):
 
         self.action()
         self.reproduction()
+        if self.noReprodSteps > 0:
+            self.noReprodSteps -= 1
