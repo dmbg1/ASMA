@@ -1,9 +1,6 @@
 from abc import abstractmethod
-from traceback import print_tb
-from turtle import position
 from mesa import Agent
 
-import Agents
 import Utils
 
 
@@ -64,24 +61,20 @@ class Character(Agent):
     def set_hp(self, hp):
         self.hp = hp
 
+    def set_state(self, state):
+        self.state = state
+
     def hurtEnemy(self, enemy):
         enemy.set_hp(enemy.hp - self.damage_per_second)
 
     def step(self):
-        self.move()
-        self.action()
-        self.reproduction()
-
-        if self.state["state"] == "InFight":
-            enemy = self.state["enemy"]
-            self.hurtEnemy(enemy)
-            if enemy.hp <= 0:
-                self.state = {"state": "Move"}
-                if self.__class__ == Agents.MonsterAgent:
-                    self.hp = self.state["heal"]
-        else:
+        if self.state["state"] != "InFight":
+            self.move()
             self.hp -= self.hp_decrease
-
         if self.hp <= 0:
             self.grid.remove_agent(self)
             self.model.schedule.remove(self)
+            return
+
+        self.action()
+        self.reproduction()

@@ -12,14 +12,34 @@ class MonsterAgent(Character, Portrayal):
         self.maxHP = hp
 
     def action(self):
+        if self.state["state"] == "InFight":
+            enemy = self.state["enemy"]
+            print(enemy.hp)
+            self.hurtEnemy(enemy)
+            print(enemy.hp)
+            if enemy.hp <= 0:
+                if "heal" in self.state:
+                    heal = self.state["heal"]
+                    self.hp = heal + self.hp if heal + self.hp < self.maxHP else self.maxHP
+                self.state = {"state": "Move"}
+        else:
+            neighbors = self.getAgentsInSameCell()
 
-        neighbors = self.getAgentsInSameCell()
-
-        for neig in neighbors:
-            if type(neig).__name__ == "PersonAgent":
-                self.hp += int(neig.hp * 0.5)
-                self.grid.remove_agent(neig)
-                self.model.schedule.remove(neig)
+            for neig in neighbors:
+                if type(neig).__name__ == "PersonAgent":
+                    self.state = {
+                        "state": "InFight",
+                        "enemy": neig,
+                        "heal": neig.hp  # Heal if enemy is killed
+                    }
+                    neig.set_state({
+                        "state": "InFight",
+                        "enemy": self
+                    })
+                    self.hurtEnemy(neig)
+                    if neig.hp <= 0:
+                        self.state = {"state": "Move"}
+                    continue  # One enemy at a time
 
     def chooseBestPosition(self, possible_steps):
 
@@ -47,6 +67,12 @@ class PersonAgent(Character, Portrayal):
     def action(self):
 
         neighbors = self.getAgentsInSameCell()
+
+        if self.state["state"] == "InFight":
+            enemy = self.state["enemy"]
+            self.hurtEnemy(enemy)
+            if enemy.hp <= 0:
+                self.state = {"state": "Move"}
 
         for neig in neighbors:
             if type(neig).__name__ == "Fruit":
@@ -86,7 +112,30 @@ class PersonAgent(Character, Portrayal):
 class HeroAgent(Character, Portrayal):
 
     def action(self):
-        pass
+        if self.state["state"] == "InFight":
+            enemy = self.state["enemy"]
+            print(enemy.hp)
+            self.hurtEnemy(enemy)
+            print(enemy.hp)
+            if enemy.hp <= 0:
+                self.state = {"state": "Move"}
+        else:
+            neighbors = self.getAgentsInSameCell()
+
+            for neig in neighbors:
+                if type(neig).__name__ == "MonsterAgent":
+                    self.state = {
+                        "state": "InFight",
+                        "enemy": neig
+                    }
+                    neig.set_state({
+                        "state": "InFight",
+                        "enemy": self
+                    })
+                    self.hurtEnemy(neig)
+                    if neig.hp <= 0:
+                        self.state = {"state": "Move"}
+                    continue  # One enemy at a time
 
     def __init__(self, unique_id, model, shape, color, radius, hp, hp_decrease, damage_per_second):
         Character.__init__(self, unique_id, model, hp, hp_decrease, damage_per_second)
@@ -125,7 +174,7 @@ class Fruit(Agent, Portrayal):
 
     def step(self):
 
-        rotIncrease = self.random.randrange(0, 5)
+        rotIncrease = self.random.randrange(0, 3)
         levelDecreaseHP = self.random.randrange(0, 9)
 
         self.levelRotRottenness += rotIncrease
@@ -133,6 +182,6 @@ class Fruit(Agent, Portrayal):
         if self.levelOfHPRecovery - levelDecreaseHP >= 0:
             self.levelOfHPRecovery -= levelDecreaseHP
 
-        if self.levelRotRottenness > 5:
+        if self.levelRotRottenness > 7:
             self.set_color("#618358")
             self.state = {"state": "BadQuality"}

@@ -13,12 +13,12 @@ import environment as env
 
 # TODO
 # Colocar paredes (done)
-# Comida e mutações provocadas pela comida (gerando periodicamente em posiçoes aleatorias)
+# Comida e mutações provocadas pela comida (gerando periodicamente em posiçoes aleatorias) (done)
 # Vida das pessoas vai descendo (done)
 # Priorizar os monstros e dps as pessoas nos paths dos heróis (done)
 # Priorizar as pessoas e dps os herois nos paths dos monstros (done)
 # HP, DPS (aleatório) e %dano absorvido
-# Lutar parados numa células
+# Lutar parados numa células(done)
 
 # Aumentar atributos de defesa (hp) e de ataque ao longo do tempo
 
@@ -83,7 +83,7 @@ class MonstersVsHeroes(Model):
             self.setAgentPosition(a, pos, availablePositions)
             self.id += 1
         elif type == "MonsterAgent":
-            a = agent.MonsterAgent(self.id, self, "circle", "red", 0.8, 100, 15, 20)
+            a = agent.MonsterAgent(self.id, self, "circle", "red", 0.8, 100, 5, 20)
             self.schedule.add(a)
             self.setAgentPosition(a, pos, availablePositions)
             self.id += 1
