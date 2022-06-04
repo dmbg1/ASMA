@@ -83,7 +83,7 @@ class MonstersVsHeroes(Model):
             self.setAgentPosition(a, pos, availablePositions)
             self.id += 1
         elif type == "MonsterAgent":
-            a = agent.MonsterAgent(self.id, self, "circle", "red", 0.8, 100, 5, 20)
+            a = agent.MonsterAgent(self.id, self, "circle", "red", 0.8, 100, 5, 50)
             self.schedule.add(a)
             self.setAgentPosition(a, pos, availablePositions)
             self.id += 1
@@ -129,6 +129,11 @@ class MonstersVsHeroes(Model):
                 self.createAgent("Fruit", pos=None)
 
         self.datacollector.collect(self)
+
+        for a in self.schedule.agents:
+            if a.__class__ == Agents.MonsterAgent:
+                return
+        self.running = False
 
     def running(self):
         self.step()
