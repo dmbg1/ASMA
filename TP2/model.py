@@ -12,7 +12,7 @@ import environment as env
 
 
 # TODO
-# Colocar paredes 
+# Colocar paredes (done)
 # Comida e mutações provocadas pela comida (gerando periodicamente em posiçoes aleatorias)
 # Vida das pessoas vai descendo (done)
 # Priorizar os monstros e dps as pessoas nos paths dos heróis (done)
@@ -50,56 +50,63 @@ class MonstersVsHeroes(Model):
 
     def generateAgents(self):
 
-        numHeroes = round(self.num_agents * self.init_heroes)
-        numMonsters = round(self.num_agents * self.init_monsters)
-        numPersons = round(self.num_agents * self.init_humans)
-        numFoods = round(self.num_agents * self.init_food)
+        numHeroes = int(self.num_agents * self.init_heroes)
+        numMonsters = int(self.num_agents * self.init_monsters)
+        numPersons = int(self.num_agents * self.init_humans)
+        numFoods = int(self.num_agents * self.init_food)
+
+        availablePositions = []
+
+        for i in range(self.grid.width):
+            for j in range(self.grid.height):
+                availablePositions.append((i, j))
 
         for _ in range(numHeroes):
-            self.createAgent("HeroAgent")
+            self.createAgent("HeroAgent", availablePositions=availablePositions)
 
         for _ in range(numMonsters):
-            self.createAgent("MonsterAgent")
+            self.createAgent("MonsterAgent", availablePositions=availablePositions)
 
         for _ in range(numPersons):
-            self.createAgent("PersonAgent")
+            self.createAgent("PersonAgent", availablePositions=availablePositions)
 
         for _ in range(numFoods):
-            self.createAgent("Fruit")
+            self.createAgent("Fruit", availablePositions=availablePositions)
 
         self.datacollector.collect(self)
 
-    def createAgent(self, type, pos=None):
+    def createAgent(self, type, pos=None, availablePositions=None):
 
         if type == "HeroAgent":
             a = agent.HeroAgent(self.id, self, "circle", "blue", 0.7, 100, 0)
             self.schedule.add(a)
-            self.setAgentPosition(a, pos)
+            self.setAgentPosition(a, pos, availablePositions)
             self.id += 1
         elif type == "MonsterAgent":
             a = agent.MonsterAgent(self.id, self, "circle", "red", 0.8, 100, 20)
             self.schedule.add(a)
-            self.setAgentPosition(a, pos)
+            self.setAgentPosition(a, pos, availablePositions)
             self.id += 1
         elif type == "PersonAgent":
             a = agent.PersonAgent(self.id, self, "circle", "black", 0.6, 100, 20)
             self.schedule.add(a)
-            self.setAgentPosition(a, pos)
+            self.setAgentPosition(a, pos, availablePositions)
             self.id += 1
         else:
             a = agent.Fruit(self.id, self, "circle", "green", 0.4)
             self.schedule.add(a)
-            self.setAgentPosition(a, pos)
+            self.setAgentPosition(a, pos, availablePositions)
             self.id += 1
 
-    def setAgentPosition(self, a, pos):
-
+    def setAgentPosition(self, a, pos, availablePositions):
         if pos is None:
-            x = self.random.randrange(self.grid.width)
-            y = self.random.randrange(self.grid.height)
-            self.grid.place_agent(a, (x, y))
-        else:
-            self.grid.place_agent(a, pos)
+            if availablePositions is not None:
+                pos = random.choice(availablePositions)
+                availablePositions.remove(pos)
+            else:
+                pos = (self.random.randrange(self.grid.width), self.random.randrange(self.grid.height))
+
+        self.grid.place_agent(a, pos)
 
     def removeAgent(self, agent):
         self.grid.remove_agent(agent)
@@ -111,15 +118,15 @@ class MonstersVsHeroes(Model):
 
         for a in self.schedule.agents:
             if a.state == "TurningMonster":
-                self.createAgent("MonsterAgent", a.pos)
+                self.createAgent("MonsterAgent", pos=a.pos)
                 self.removeAgent(a)
             elif a.state == "TurningHero":
-                self.createAgent("HeroAgent", a.pos)
+                self.createAgent("HeroAgent", pos=a.pos)
                 self.removeAgent(a)
 
         if self.numSteps % 5 == 0:
             for _ in range(self.random.randrange(0, 10)):
-                self.createAgent("Fruit", None)
+                self.createAgent("Fruit", pos=None)
 
         self.datacollector.collect(self)
 

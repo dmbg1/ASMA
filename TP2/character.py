@@ -63,7 +63,7 @@ class Character(Agent):
         self.move()
         self.action()
         self.reproduction()
-        #self.hp -= self.hp_decrease
+        self.hp -= self.hp_decrease
         if self.hp <= 0:
             self.grid.remove_agent(self)
             self.model.schedule.remove(self)
