@@ -9,9 +9,9 @@ import environment as env
 # TODO
 # Colocar paredes 
 # Comida e mutações provocadas pela comida (gerando periodicamente em posiçoes aleatorias)
-# Vida das pessoas vai descendo
-# Priorizar os monstros e dps as pessoas nos paths dos heróis
-# Priorizar as pessoas e dps os herois nos paths dos monstros
+# Vida das pessoas vai descendo (done)
+# Priorizar os monstros e dps as pessoas nos paths dos heróis (done)
+# Priorizar as pessoas e dps os herois nos paths dos monstros (done)
 # HP, DPS (aleatório) e %dano absorvido
 # Lutar parados numa células
 # Aumentar atributos de defesa (hp) e de ataque ao longo do tempo
@@ -23,52 +23,89 @@ class MonstersVsHeros(Model):
         self.num_agents = N
         self.grid = MultiGrid(width, height, True)
         self.schedule = RandomActivation(self)
+        self.numSteps = 0
+        self.id = 0
         self.generateAgents()
 
     def generateAgents(self):
 
         numHeroes = int(self.num_agents * 0.2)
-        numMonsters = int(self.num_agents * 0.3)
-        numPersons = int(self.num_agents * 0.45)
-        numFoods = int(self.num_agents * 0.05)
-        id = 0
+        numMonsters = int(self.num_agents * 0.35)
+        numPersons = int(self.num_agents * 0.35)
+        numFoods = int(self.num_agents * 0.1)
 
         for _ in range(numHeroes):
-            a = agent.HeroAgent(id, self, "circle", "blue", 0.7, 100, 0)
-            self.schedule.add(a)
-            self.setAgentPosition(a)
-            id+=1
+            self.createAgent("HeroAgent")
             
         for _ in range(numMonsters):
-            a = agent.MonsterAgent(id, self, "circle", "red", 0.8, 100, 0)
-            self.schedule.add(a)
-            self.setAgentPosition(a)
-            id+=1
+            self.createAgent("MonsterAgent")
             
         for _ in range(numPersons):
-            a = agent.PersonAgent(id, self, "circle", "black", 0.6, 100, 10)
-            self.schedule.add(a)
-            self.setAgentPosition(a)
-            id+=1
+            self.createAgent("PersonAgent")
         
         for _ in range(numFoods):
-            a = agent.TurnIntoHeroAgent(id, self, "circle", "green", 0.4)
-            self.schedule.add(a)
-            self.setAgentPosition(a)
-            id+=1
-        
+            self.createAgent("Fruit")
+    
 
-    def setAgentPosition(self, a):
-        x = self.random.randrange(self.grid.width)
-        y = self.random.randrange(self.grid.height)
-        self.grid.place_agent(a, (x, y))
+    def createAgent(self, type, pos=None):
+
+        if type == "HeroAgent":
+            a = agent.HeroAgent(self.id, self, "circle", "blue", 0.7, 100, 0)
+            self.schedule.add(a)
+            self.setAgentPosition(a, pos)
+            self.id+=1
+        elif type == "MonsterAgent":
+            a = agent.MonsterAgent(self.id, self, "circle", "red", 0.8, 100, 20)
+            self.schedule.add(a)
+            self.setAgentPosition(a, pos)
+            self.id+=1
+        elif type == "PersonAgent":    
+            a = agent.PersonAgent(self.id, self, "circle", "black", 0.6, 100, 20)
+            self.schedule.add(a)
+            self.setAgentPosition(a, pos)
+            self.id+=1
+        else:
+            a = agent.Fruit(self.id, self, "circle", "green", 0.4)
+            self.schedule.add(a)
+            self.setAgentPosition(a, pos)
+            self.id+=1
+   
+   
+    def setAgentPosition(self, a, pos):
+
+        if pos is None:
+            x = self.random.randrange(self.grid.width)
+            y = self.random.randrange(self.grid.height)
+            self.grid.place_agent(a, (x, y))
+        else:
+            self.grid.place_agent(a, pos)
+
+    
+    def removeAgent(self, agent):
+        self.grid.remove_agent(agent)
+        self.schedule.remove(agent)
         
 
     def step(self):
         self.schedule.step()
+        self.numSteps += 1
+
+        for agent in self.schedule.agents:
+            if agent.state == "TurningMonster":
+                self.createAgent("MonsterAgent", agent.pos)
+                self.removeAgent(agent)
+            elif agent.state == "TurningHero":
+                self.createAgent("HeroAgent", agent.pos)
+                self.removeAgent(agent)
+
+
+        if self.numSteps % 5 == 0:
+            for _ in range(self.random.randrange(0, 10)):
+                self.createAgent("Fruit", None)
+
 
     def running(self):
-      self.step()
+        self.step()
 
 
 def main():

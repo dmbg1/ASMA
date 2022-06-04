@@ -13,6 +13,7 @@ class Character(Agent):
         self.model = model
         self.hp = hp
         self.hp_decrease = hp_decrease
+        self.state = "Move"
 
     def move(self):
         possible_steps = self.model.grid.get_neighborhood(
@@ -22,6 +23,16 @@ class Character(Agent):
 
         new_position = self.chooseBestPosition(possible_steps)
         self.model.grid.move_agent(self, new_position)
+
+    def reproduction(self):
+
+        neighbors = self.getAgentsInSameCell()
+
+        for neig in neighbors:
+            if type(neig).__name__ == type(self).__name__:
+                for _ in range(self.model.random.randrange(0, 1)): #TODO: Alterar o 1 para 2 para os agentes se reproduzirem
+                    self.model.createAgent(type(self).__name__)
+
 
     def getAgentsInSameCell(self):
         return self.model.grid.get_neighbors(self.pos, True, True, 0)
@@ -47,6 +58,7 @@ class Character(Agent):
     def step(self):
         self.move()
         self.action()
+        self.reproduction()
         self.hp -= self.hp_decrease
         if self.hp <= 0:
             self.model.grid.remove_agent(self)
