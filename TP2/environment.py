@@ -12,13 +12,13 @@ model_params = {
     'width': canvasHeight,
     'height': canvasHeight,
     'init_humans': UserSettableParameter(
-        'slider', '% of initial pop. of humans', 0.5, 0, 1, 0.05),
+        'slider', '% of initial pop. of humans', 0.4, 0, 1, 0.05),
     'init_monsters': UserSettableParameter(
         'slider', '% of initial pop. of monsters', 0.3, 0, 1, 0.05),
     'init_heroes': UserSettableParameter(
         'slider', '% of initial pop. of heroes', 0.2, 0, 1, 0.05),
     'init_food': UserSettableParameter(
-            'slider', '% of initial amount of food', 0.2, 0, 1, 0.05)
+            'slider', '% of initial amount of food', 0.1, 0, 1, 0.05)
 }
 
 
@@ -32,7 +32,7 @@ def createCanvas():
 
 def createAndStartServer(model):
     grid = createCanvas()
-    #chart = ChartModule([{"Label": "Gini",
+    #chart = ChartModule([{"Label": "Population of humans",
       #                    "Color": "Black"}],
        #                 data_collector_name='datacollector')
     server = ModularServer(model,

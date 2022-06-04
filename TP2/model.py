@@ -23,6 +23,9 @@ class MonstersVsHeroes(Model):
 
     def __init__(self, N, width, height, init_humans, init_monsters, init_heroes, init_food):
         self.num_agents = N
+        if init_humans + init_heroes + init_food + init_monsters > 1:
+            print("Error: The sum of the given percentages is higher than 100%! (Empty grid given)")
+            init_humans = init_food = init_heroes = init_monsters = 0
         self.init_humans = init_humans
         self.init_monsters = init_monsters
         self.init_heroes = init_heroes
