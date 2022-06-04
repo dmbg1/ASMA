@@ -83,6 +83,9 @@ class PersonAgent(Character, Portrayal):
 
 class HeroAgent(Character, Portrayal):
 
+    def action(self):
+        pass
+
     def __init__(self, unique_id, model, shape, color, radius, hp, hp_decrease):
         Character.__init__(self, unique_id, model, hp, hp_decrease)
         Portrayal.__init__(self, shape, color, radius)

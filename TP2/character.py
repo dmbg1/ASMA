@@ -3,6 +3,8 @@ from traceback import print_tb
 from turtle import position
 from mesa import Agent
 
+import Utils
+
 
 class Character(Agent):
     """An agent with fixed initial wealth."""
@@ -22,6 +24,7 @@ class Character(Agent):
             moore=True,
             include_center=False)
 
+        Utils.removeThroughWallSteps(self.pos, possible_steps, self.grid.width, self.grid.height)
         new_position = self.chooseBestPosition(possible_steps)
         self.grid.move_agent(self, new_position)
 
@@ -60,7 +63,7 @@ class Character(Agent):
         self.move()
         self.action()
         self.reproduction()
-        self.hp -= self.hp_decrease
+        #self.hp -= self.hp_decrease
         if self.hp <= 0:
             self.grid.remove_agent(self)
             self.model.schedule.remove(self)
