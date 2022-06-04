@@ -9,6 +9,7 @@ class MonsterAgent(Character, Portrayal):
     def __init__(self, unique_id, model, shape, color, radius, hp, hp_decrease):
         Character.__init__(self, unique_id, model, hp, hp_decrease)
         Portrayal.__init__(self, shape, color, radius)
+        self.state = ""
 
     def action(self):
 
@@ -42,6 +43,7 @@ class PersonAgent(Character, Portrayal):
     def __init__(self, unique_id, model, shape, color, radius, hp, hp_decrease):
         Character.__init__(self, unique_id, model, hp, hp_decrease)
         Portrayal.__init__(self, shape, color, radius)
+        self.state = ""
 
     def action(self):
 
@@ -49,8 +51,11 @@ class PersonAgent(Character, Portrayal):
 
         for neig in neighbors:
             if type(neig).__name__ == "Fruit":
+                if neig.state == "BadQuality":
+                    self.state = "TurningMonster"
+                    break
                 if self.hp < 100:
-                    self.hp += neig.levelOfHPREcovery
+                    self.hp += neig.levelOfHPRecovery
                     self.grid.remove_agent(neig)
                     self.model.schedule.remove(neig)
                 else:
@@ -58,8 +63,6 @@ class PersonAgent(Character, Portrayal):
                     self.model.schedule.remove(neig)
                     if neig.state == "GoodQuality":
                         self.state = "TurningHero"
-                    else:
-                        self.state = "TurningMonster"
 
     def chooseBestPosition(self, possible_steps):
 
@@ -89,6 +92,7 @@ class HeroAgent(Character, Portrayal):
     def __init__(self, unique_id, model, shape, color, radius, hp, hp_decrease):
         Character.__init__(self, unique_id, model, hp, hp_decrease)
         Portrayal.__init__(self, shape, color, radius)
+        self.state = ""
 
     def chooseBestPosition(self, possible_steps):
 
@@ -117,7 +121,7 @@ class Fruit(Agent, Portrayal):
         Portrayal.__init__(self, shape, color, radius)
 
         self.levelRotRottenness = 0
-        self.levelOfHPREcovery = 15
+        self.levelOfHPRecovery = 15
         self.probTurningToMonster = 20
         self.state = "GoodQuality"
 
@@ -128,8 +132,9 @@ class Fruit(Agent, Portrayal):
 
         self.levelRotRottenness += rotIncrease
 
-        if self.levelOfHPREcovery - levelDecreaseHP >= 0:
-            self.levelOfHPREcovery -= levelDecreaseHP
+        if self.levelOfHPRecovery - levelDecreaseHP >= 0:
+            self.levelOfHPRecovery -= levelDecreaseHP
 
-        if self.levelRotRottenness < 5:
-            self.state == "BadQuality"
+        if self.levelRotRottenness > 5:
+            self.set_color("#618358")
+            self.state = "BadQuality"

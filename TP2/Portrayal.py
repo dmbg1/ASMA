@@ -13,3 +13,6 @@ class Portrayal:
                      "r": self.radius}
 
         return portrayal
+
+    def set_color(self, color):
+        self.color = color

@@ -83,12 +83,12 @@ class MonstersVsHeroes(Model):
             self.setAgentPosition(a, pos, availablePositions)
             self.id += 1
         elif type == "MonsterAgent":
-            a = agent.MonsterAgent(self.id, self, "circle", "red", 0.8, 100, 20)
+            a = agent.MonsterAgent(self.id, self, "circle", "red", 0.8, 100, 15)
             self.schedule.add(a)
             self.setAgentPosition(a, pos, availablePositions)
             self.id += 1
         elif type == "PersonAgent":
-            a = agent.PersonAgent(self.id, self, "circle", "black", 0.6, 100, 20)
+            a = agent.PersonAgent(self.id, self, "circle", "black", 0.6, 100, 5)
             self.schedule.add(a)
             self.setAgentPosition(a, pos, availablePositions)
             self.id += 1
