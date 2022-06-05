@@ -56,4 +56,7 @@ def getNearAgent(agent, nearAgents):
     
     return agent
 
+def average(n1, n2):
+    return int(n1 + n2 /2)
+
 

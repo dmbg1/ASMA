@@ -3,12 +3,12 @@ from mesa.visualization.ModularVisualization import ModularServer
 from mesa.visualization.modules import ChartModule
 from mesa.visualization.UserParam import UserSettableParameter
 
-canvasWidth = 20
-canvasHeight = 20
+canvasWidth = 40
+canvasHeight = 40
 
 model_params = {
     'N': UserSettableParameter(
-        'slider', 'Number of agents', 100, 0, canvasWidth * canvasHeight),
+        'slider', 'Number of agents', 250, 0, canvasWidth * canvasHeight),
     'width': canvasHeight,
     'height': canvasHeight,
     'init_humans': UserSettableParameter(
@@ -18,7 +18,23 @@ model_params = {
     'init_heroes': UserSettableParameter(
         'slider', '% of initial pop. of heroes', 0.2, 0, 1, 0.05),
     'init_food': UserSettableParameter(
-            'slider', '% of initial amount of food', 0.1, 0, 1, 0.05)
+            'slider', '% of initial amount of fruit', 0.1, 0, 1, 0.05),
+    'human_HPDecrease': UserSettableParameter(
+            'slider', 'Amount of HP decrease each step', 10, 0, 30),
+    'monster_HPDecrease': UserSettableParameter(
+            'slider', 'Amount of HP decrease each step', 10, 0, 30),
+    'hero_HPDecrease': UserSettableParameter(
+            'slider', 'Amount of HP decrease each step', 0, 0, 30),
+    'probTurningHero': UserSettableParameter(
+            'slider', 'Probability of human turning to a Hero', 1, 0, 100),
+    'generateQuantityFruit': UserSettableParameter(
+            'slider', '% of fruit generated every 5 steps', 7, 0, canvasWidth * canvasHeight * 0.05),
+    'human_reproduction': UserSettableParameter(
+            'checkbox', 'Human can reproduce', True),
+    'monster_reproduction': UserSettableParameter(
+            'checkbox', 'Monster can reproduce', True),
+    'hero_reproduction': UserSettableParameter(
+            'checkbox', 'Hero can reproduce', False)
 }
 
 
@@ -27,7 +43,7 @@ def agents_portrayal(agent):
 
 
 def createCanvas():
-    return CanvasGrid(agents_portrayal, canvasWidth, canvasHeight, 500, 500)
+    return CanvasGrid(agents_portrayal, canvasWidth, canvasHeight, 400, 400)
 
 
 def createAndStartServer(model):
@@ -35,6 +51,8 @@ def createAndStartServer(model):
     chart = ChartModule([{"Label": "Humans", "Color": "Black"},
                          {"Label": "Heroes", "Color": "Blue"},
                          {"Label": "Monsters", "Color": "Red"}])
+    
+
 
     server = ModularServer(model,
                            [grid, chart],
@@ -43,3 +61,4 @@ def createAndStartServer(model):
 
     server.port = 8521
     server.launch()
+

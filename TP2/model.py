@@ -1,5 +1,6 @@
 import random
 from turtle import pos
+import matplotlib.pyplot as plt
 
 from mesa.datacollection import DataCollector
 from mesa.space import MultiGrid
@@ -22,10 +23,19 @@ import environment as env
 
 # Aumentar atributos de defesa (hp) e de ataque ao longo do tempo
 
+#Acrescentar: 
+# >Podem-se reproduzir
+# >Dano feito
+
+
+
 class MonstersVsHeroes(Model):
     """A model with some number of agents."""
 
-    def __init__(self, N, width, height, init_humans, init_monsters, init_heroes, init_food):
+    def __init__(self, N, width, height, init_humans, init_monsters, init_heroes, init_food, generateQuantityFruit,\
+        human_reproduction, monster_reproduction, hero_reproduction, human_HPDecrease, monster_HPDecrease, hero_HPDecrease,\
+        probTurningHero):
+
         self.num_agents = N
 
         if init_humans + init_heroes + init_food + init_monsters > 1:
@@ -37,13 +47,36 @@ class MonstersVsHeroes(Model):
         self.init_heroes = init_heroes
         self.init_food = init_food
 
+        self.generateQuantityFruit = generateQuantityFruit
+        self.human_reproduction = human_reproduction
+        self.monster_reproduction = monster_reproduction
+        self.hero_reproduction = hero_reproduction
+
+        self.human_HPDecrease = human_HPDecrease
+        self.monster_HPDecrease = monster_HPDecrease
+        self.hero_HPDecrease = hero_HPDecrease
+
+        self.probTurningHero = probTurningHero
+
         self.grid = MultiGrid(width, height, True)
         self.schedule = RandomActivation(self)
         self.numSteps = 0
+        
+        self.numDeadsByKillMonster = 0
+        self.numDeadsByOldAge = 0
+        self.totolDeaths = 0
+
         self.datacollector = DataCollector({
             'Humans': 'human',
             'Heroes': 'hero',
             'Monsters': 'monster'})
+
+        '''
+        self.datacollector2 = DataCollector(
+            deadsByKill = {"Kills": self.numDeadsByKill},
+            deadsByOldAge = {"DeadsByOldAge": self.numDeadsByOldAge}
+        )
+        '''
 
         self.id = 0
         self.generateAgents()
@@ -78,17 +111,17 @@ class MonstersVsHeroes(Model):
     def createAgent(self, type, pos=None, availablePositions=None, noReprodSteps=0):
 
         if type == "HeroAgent":
-            a = agent.HeroAgent(self.id, self, "circle", "blue", 0.7, 150, 0, 50, noReprodSteps)
+            a = agent.HeroAgent(self.id, self, "circle", "blue", 0.7, 100, self.hero_HPDecrease, 30, noReprodSteps, self.hero_reproduction)
             self.schedule.add(a)
             self.setAgentPosition(a, pos, availablePositions)
             self.id += 1
         elif type == "MonsterAgent":
-            a = agent.MonsterAgent(self.id, self, "circle", "red", 0.8, 100, 5, 20, noReprodSteps)
+            a = agent.MonsterAgent(self.id, self, "circle", "red", 0.8, 100, self.monster_HPDecrease, 20, noReprodSteps, self.monster_reproduction)
             self.schedule.add(a)
             self.setAgentPosition(a, pos, availablePositions)
             self.id += 1
         elif type == "PersonAgent":
-            a = agent.PersonAgent(self.id, self, "circle", "black", 0.6, 100, 5, 0, noReprodSteps)
+            a = agent.PersonAgent(self.id, self, "circle", "black", 0.6, 100, self.human_HPDecrease, 0, noReprodSteps, self.human_reproduction, self.probTurningHero)
             self.schedule.add(a)
             self.setAgentPosition(a, pos, availablePositions)
             self.id += 1
@@ -123,9 +156,14 @@ class MonstersVsHeroes(Model):
             elif a.state["state"] == "TurningHero":
                 self.createAgent("HeroAgent", pos=a.pos, noReprodSteps=a.noReprodSteps)
                 self.removeAgent(a)
+            
+            if type(a).__name__ == "Fruit":
+                if a.levelRotRottenness >= 20:
+                    self.removeAgent(a)
+            
 
         if self.numSteps % 5 == 0:
-            for _ in range(self.random.randrange(0, 10)):
+            for _ in range(self.generateQuantityFruit):
                 self.createAgent("Fruit", pos=None)
 
         self.datacollector.collect(self)
@@ -173,3 +211,5 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+

@@ -1,4 +1,5 @@
 from abc import abstractmethod
+import math
 from mesa import Agent
 
 import Utils
@@ -7,7 +8,7 @@ import Utils
 class Character(Agent):
     """An agent with fixed initial wealth."""
 
-    def __init__(self, unique_id, model, hp, hp_decrease, damage_per_second, noReprodSteps):
+    def __init__(self, unique_id, model, hp, hp_decrease, damage_per_second, noReprodSteps, canReproduce):
         super().__init__(unique_id, model)
 
         self.model = model
@@ -17,6 +18,7 @@ class Character(Agent):
         self.damage_per_second = damage_per_second
         self.state = {"state": "Move"}
         self.noReprodSteps = noReprodSteps
+        self.canReproduce = canReproduce
 
     def move(self):
         possible_steps = self.grid.get_neighborhood(
@@ -34,7 +36,7 @@ class Character(Agent):
 
         for neigh in neighbors:
             if type(neigh).__name__ == type(self).__name__ and self.noReprodSteps + neigh.noReprodSteps == 0 and\
-                    type(self).__name__ != "HeroAgent":
+                   self.canReproduce:
                 for _ in range(self.model.random.randrange(0, 2)):
                     self.model.createAgent(type(self).__name__, noReprodSteps=10)
                     self.noReprodSteps = 5
@@ -74,6 +76,10 @@ class Character(Agent):
             self.move()
             self.hp -= self.hp_decrease
         if self.hp <= 0:
+            if self.state["state"] == "InFight" and type(self).__name__ == "Monster":
+                self.model.numDeadsByKill+=1
+            self.model.totolDeaths+=1
+            #self.model.datacollector2.collect(self)
             self.grid.remove_agent(self)
             self.model.schedule.remove(self)
             return
