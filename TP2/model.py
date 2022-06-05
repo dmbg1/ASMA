@@ -57,8 +57,7 @@ class MonstersVsHeroes(Model):
         self.datacollector = DataCollector({
             'Humans': 'human',
             'Heroes': 'hero',
-            'Monsters': 'monster',
-            'Food': "food"})
+            'Monsters': 'monster'})
         self.deaths_collector = DataCollector({
             'Human Deaths by enemy attacks': 'humanNumDeathsByKill',
             'Human Deaths by hunger': 'humanNumDeathsByHunger',
@@ -237,15 +236,6 @@ class MonstersVsHeroes(Model):
         amount = 0
         for a in agents:
             if a.__class__ == Agents.MonsterAgent:
-                amount += 1
-        return amount
-
-    @property
-    def food(self):
-        agents = self.schedule.agents
-        amount = 0
-        for a in agents:
-            if a.__class__ == Agents.Fruit:
                 amount += 1
         return amount
 

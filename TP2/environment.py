@@ -50,8 +50,7 @@ def createAndStartServer(model):
     grid = createCanvas()
     chart = ChartModule([{"Label": "Humans", "Color": "Black"},
                          {"Label": "Heroes", "Color": "Blue"},
-                         {"Label": "Monsters", "Color": "Red"},
-                         {"Label": "Food", "Color": "Green"}])
+                         {"Label": "Monsters", "Color": "Red"}])
 
     deathsChart = ChartModule([{"Label": "Human Deaths by enemy attacks", "Color": "Black"},
                                {"Label": "Human Deaths by hunger", "Color": "#3B3C36"},
