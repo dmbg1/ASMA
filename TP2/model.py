@@ -55,9 +55,9 @@ class MonstersVsHeroes(Model):
         self.num_hero_reproductions = 0
 
         self.datacollector = DataCollector({
-            'Humans': 'human',
-            'Heroes': 'hero',
-            'Monsters': 'monster'})
+            'Human Pop.': 'human',
+            'Hero Pop.': 'hero',
+            'Monster Pop.': 'monster'})
         self.deaths_collector = DataCollector({
             'Human Deaths by enemy attacks': 'humanNumDeathsByKill',
             'Human Deaths by hunger': 'humanNumDeathsByHunger',

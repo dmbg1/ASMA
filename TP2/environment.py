@@ -28,7 +28,7 @@ model_params = {
     'probTurningHero': UserSettableParameter(
         'slider', 'Probability of human turning to a Hero', 1, 0, 100),
     'generateQuantityFruit': UserSettableParameter(
-        'slider', '% of fruit generated every 5 steps', 7, 0, canvasWidth * canvasHeight * 0.05),
+        'slider', 'Amount of fruit generated every 5 steps', 7, 0, canvasWidth * canvasHeight * 0.05),
     'human_reproduction': UserSettableParameter(
         'checkbox', 'Human can reproduce', True),
     'monster_reproduction': UserSettableParameter(
@@ -48,9 +48,9 @@ def createCanvas():
 
 def createAndStartServer(model):
     grid = createCanvas()
-    chart = ChartModule([{"Label": "Humans", "Color": "Black"},
-                         {"Label": "Heroes", "Color": "Blue"},
-                         {"Label": "Monsters", "Color": "Red"}])
+    chart = ChartModule([{"Label": "Human Pop.", "Color": "Black"},
+                         {"Label": "Hero Pop.", "Color": "Blue"},
+                         {"Label": "Monster Pop.", "Color": "Red"}])
 
     deathsChart = ChartModule([{"Label": "Human Deaths by enemy attacks", "Color": "Black"},
                                {"Label": "Human Deaths by hunger", "Color": "#3B3C36"},
