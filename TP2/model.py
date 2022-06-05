@@ -59,15 +59,11 @@ class MonstersVsHeroes(Model):
             'Heroes': 'hero',
             'Monsters': 'monster',
             'Food': "food"})
-        self.human_deaths_collector = DataCollector({
+        self.deaths_collector = DataCollector({
             'Human Deaths by enemy attacks': 'humanNumDeathsByKill',
-            'Human Deaths by hunger': 'humanNumDeathsByHunger'
-        })
-        self.monster_deaths_collector = DataCollector({
+            'Human Deaths by hunger': 'humanNumDeathsByHunger',
             'Monster Deaths by enemy attacks': 'monsterNumDeathsByKill',
-            'Monster Deaths by hunger': 'monsterNumDeathsByHunger'
-        })
-        self.hero_deaths_collector = DataCollector({
+            'Monster Deaths by hunger': 'monsterNumDeathsByHunger',
             'Hero Deaths by enemy attacks': 'heroNumDeathsByKill',
             'Hero Deaths by hunger': 'heroNumDeathsByHunger'
         })
@@ -172,9 +168,7 @@ class MonstersVsHeroes(Model):
                 self.createAgent("Fruit", pos=None)
 
         self.datacollector.collect(self)
-        self.human_deaths_collector.collect(self)
-        self.monster_deaths_collector.collect(self)
-        self.hero_deaths_collector.collect(self)
+        self.deaths_collector.collect(self)
         self.human_reproduction_collector.collect(self)
         self.monster_reproduction_collector.collect(self)
         self.hero_reproduction_collector.collect(self)

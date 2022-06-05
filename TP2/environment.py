@@ -53,15 +53,13 @@ def createAndStartServer(model):
                          {"Label": "Monsters", "Color": "Red"},
                          {"Label": "Food", "Color": "Green"}])
 
-    humanDeathsChart = ChartModule([{"Label": "Human Deaths by enemy attacks", "Color": "Black"},
-                                    {"Label": "Human Deaths by hunger", "Color": "#3B3C36"}],
-                                   data_collector_name="human_deaths_collector")
-    monsterDeathsChart = ChartModule([{"Label": "Monster Deaths by enemy attacks", "Color": "Red"},
-                                      {"Label": "Monster Deaths by hunger", "Color": "#910D09"}],
-                                     data_collector_name="monster_deaths_collector")
-    heroDeathsChart = ChartModule([{"Label": "Hero Deaths by enemy attacks", "Color": "Blue"},
-                                   {"Label": "Hero Deaths by hunger", "Color": "#002366"}],
-                                  data_collector_name="hero_deaths_collector")
+    deathsChart = ChartModule([{"Label": "Human Deaths by enemy attacks", "Color": "Black"},
+                               {"Label": "Human Deaths by hunger", "Color": "#3B3C36"},
+                               {"Label": "Monster Deaths by enemy attacks", "Color": "Red"},
+                               {"Label": "Monster Deaths by hunger", "Color": "#910D09"},
+                               {"Label": "Hero Deaths by enemy attacks", "Color": "Blue"},
+                               {"Label": "Hero Deaths by hunger", "Color": "#002366"}],
+                              data_collector_name="deaths_collector")
 
     humanReproductionsChart = ChartModule([{"Label": "Human Reproduction amount", "Color": "Black"}],
                                           data_collector_name="human_reproduction_collector")
@@ -71,8 +69,8 @@ def createAndStartServer(model):
                                          data_collector_name="hero_reproduction_collector")
 
     server = ModularServer(model,
-                           [grid, chart, humanDeathsChart, monsterDeathsChart, heroDeathsChart,
-                            humanReproductionsChart, monsterReproductionsChart, heroReproductionsChart],
+                           [grid, chart, deathsChart, humanReproductionsChart, monsterReproductionsChart,
+                            heroReproductionsChart],
                            "Monsters VS Heroes",
                            model_params)
 
