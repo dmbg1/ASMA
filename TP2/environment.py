@@ -20,11 +20,11 @@ model_params = {
     'init_food': UserSettableParameter(
         'slider', '% of initial amount of fruit', 0.1, 0, 1, 0.05),
     'human_HPDecrease': UserSettableParameter(
-        'slider', 'Amount of HP decrease each step', 10, 0, 30),
+        'slider', 'Amount of HP decrease each step for human', 10, 0, 30),
     'monster_HPDecrease': UserSettableParameter(
-        'slider', 'Amount of HP decrease each step', 10, 0, 30),
+        'slider', 'Amount of HP decrease each step for monster', 10, 0, 30),
     'hero_HPDecrease': UserSettableParameter(
-        'slider', 'Amount of HP decrease each step', 0, 0, 30),
+        'slider', 'Amount of HP decrease each step for hero', 0, 0, 30),
     'probTurningHero': UserSettableParameter(
         'slider', 'Probability of human turning to a Hero', 1, 0, 100),
     'generateQuantityFruit': UserSettableParameter(
