@@ -35,10 +35,12 @@ class Character(Agent):
         neighbors = self.getAgentsInSameCell()
 
         for neigh in neighbors:
-            if type(neigh).__name__ == type(self).__name__ and self.noReprodSteps + neigh.noReprodSteps == 0 and\
-                   self.canReproduce:
+            own_agent_type = type(self).__name__
+            if type(neigh).__name__ == own_agent_type and self.noReprodSteps + neigh.noReprodSteps == 0 and \
+                    self.canReproduce:
                 for _ in range(self.model.random.randrange(0, 2)):
-                    self.model.createAgent(type(self).__name__, noReprodSteps=10)
+                    self.model.createAgent(own_agent_type, noReprodSteps=10)
+                    self.model.incr_num_reproductions(own_agent_type)
                     self.noReprodSteps = 5
 
     def getAgentsInSameCell(self):
@@ -71,17 +73,23 @@ class Character(Agent):
     def hurtEnemy(self, enemy):
         enemy.set_hp(enemy.hp - self.damage_per_second)
 
+    def agent_death(self):
+        agent_type = type(self).__name__
+
+        if self.state["state"] == "InFight":
+            self.model.incr_num_deaths_by_kill(agent_type)
+        else:
+            self.model.incr_num_deaths_by_hunger(agent_type)
+
+        # self.model.datacollector2.collect(self)
+        self.model.removeAgent(self)
+
     def step(self):
         if self.state["state"] != "InFight":
             self.move()
             self.hp -= self.hp_decrease
         if self.hp <= 0:
-            if self.state["state"] == "InFight" and type(self).__name__ == "Monster":
-                self.model.numDeadsByKill+=1
-            self.model.totolDeaths+=1
-            #self.model.datacollector2.collect(self)
-            self.grid.remove_agent(self)
-            self.model.schedule.remove(self)
+            self.agent_death()
             return
 
         self.action()

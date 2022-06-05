@@ -6,7 +6,8 @@ import Utils
 
 class MonsterAgent(Character, Portrayal):
 
-    def __init__(self, unique_id, model, shape, color, radius, hp, hp_decrease, damage_per_second, noReprodSteps, canReproduce):
+    def __init__(self, unique_id, model, shape, color, radius, hp, hp_decrease, damage_per_second, noReprodSteps,
+                 canReproduce):
         Character.__init__(self, unique_id, model, hp, hp_decrease, damage_per_second, noReprodSteps, canReproduce)
         Portrayal.__init__(self, shape, color, radius)
         self.maxHP = hp
@@ -14,9 +15,7 @@ class MonsterAgent(Character, Portrayal):
     def action(self):
         if self.state["state"] == "InFight":
             enemy = self.state["enemy"]
-            print(enemy.hp)
             self.hurtEnemy(enemy)
-            print(enemy.hp)
             if enemy.hp <= 0:
                 if "heal" in self.state:
                     heal = self.state["heal"]
@@ -60,7 +59,8 @@ class MonsterAgent(Character, Portrayal):
 
 class PersonAgent(Character, Portrayal):
 
-    def __init__(self, unique_id, model, shape, color, radius, hp, hp_decrease, damage_per_second, noReprodSteps, canReproduce, probTurningHero):
+    def __init__(self, unique_id, model, shape, color, radius, hp, hp_decrease, damage_per_second, noReprodSteps,
+                 canReproduce, probTurningHero):
         Character.__init__(self, unique_id, model, hp, hp_decrease, damage_per_second, noReprodSteps, canReproduce)
         Portrayal.__init__(self, shape, color, radius)
 
@@ -80,15 +80,14 @@ class PersonAgent(Character, Portrayal):
             if type(neig).__name__ == "Fruit":
                 self.grid.remove_agent(neig)
                 self.model.schedule.remove(neig)
-                if neig.state["state"] == "BadQuality" :
+                if neig.state["state"] == "BadQuality":
                     self.state = {"state": "TurningMonster"}
                 else:
                     if self.random.randrange(0, 101) >= self.probTurningHero:
                         self.hp += 75
                     else:
                         self.state = {"state": "TurningHero"}
-               
-                    
+
     def chooseBestPosition(self, possible_steps):
 
         nearAgents = self.getNearAgents(6)
@@ -111,16 +110,15 @@ class PersonAgent(Character, Portrayal):
 
 class HeroAgent(Character, Portrayal):
 
-    def __init__(self, unique_id, model, shape, color, radius, hp, hp_decrease, damage_per_second, noReprodSteps, canReproduce):
+    def __init__(self, unique_id, model, shape, color, radius, hp, hp_decrease, damage_per_second, noReprodSteps,
+                 canReproduce):
         Character.__init__(self, unique_id, model, hp, hp_decrease, damage_per_second, noReprodSteps, canReproduce)
         Portrayal.__init__(self, shape, color, radius)
 
     def action(self):
         if self.state["state"] == "InFight":
             enemy = self.state["enemy"]
-            print(enemy.hp)
             self.hurtEnemy(enemy)
-            print(enemy.hp)
             if enemy.hp <= 0:
                 self.state = {"state": "Move"}
         else:
@@ -138,7 +136,7 @@ class HeroAgent(Character, Portrayal):
                     })
                     self.hurtEnemy(neig)
                     if neig.hp <= 0:
-                        #self.datacollector2.collect(self)
+                        # self.datacollector2.collect(self)
                         self.state = {"state": "Move"}
                     continue  # One enemy at a time
 
@@ -176,7 +174,7 @@ class Fruit(Agent, Portrayal):
 
     def step(self):
 
-        self.numSteps+=1
+        self.numSteps += 1
 
         rotIncrease = self.random.randrange(0, 4)
         levelDecreaseHP = self.random.randrange(0, 9)

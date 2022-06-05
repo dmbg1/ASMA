@@ -1,6 +1,4 @@
 import random
-from turtle import pos
-import matplotlib.pyplot as plt
 
 from mesa.datacollection import DataCollector
 from mesa.space import MultiGrid
@@ -12,29 +10,12 @@ import Agents as agent
 import environment as env
 
 
-# TODO
-# Colocar paredes (done)
-# Comida e mutações provocadas pela comida (gerando periodicamente em posiçoes aleatorias) (done)
-# Vida das pessoas vai descendo (done)
-# Priorizar os monstros e dps as pessoas nos paths dos heróis (done)
-# Priorizar as pessoas e dps os herois nos paths dos monstros (done)
-# HP, DPS (aleatório) e %dano absorvido
-# Lutar parados numa células(done)
-
-# Aumentar atributos de defesa (hp) e de ataque ao longo do tempo
-
-#Acrescentar: 
-# >Podem-se reproduzir
-# >Dano feito
-
-
-
 class MonstersVsHeroes(Model):
     """A model with some number of agents."""
 
-    def __init__(self, N, width, height, init_humans, init_monsters, init_heroes, init_food, generateQuantityFruit,\
-        human_reproduction, monster_reproduction, hero_reproduction, human_HPDecrease, monster_HPDecrease, hero_HPDecrease,\
-        probTurningHero):
+    def __init__(self, N, width, height, init_humans, init_monsters, init_heroes, init_food, generateQuantityFruit,
+                 human_reproduction, monster_reproduction, hero_reproduction, human_HPDecrease, monster_HPDecrease,
+                 hero_HPDecrease, probTurningHero):
 
         self.num_agents = N
 
@@ -61,22 +42,44 @@ class MonstersVsHeroes(Model):
         self.grid = MultiGrid(width, height, True)
         self.schedule = RandomActivation(self)
         self.numSteps = 0
-        
-        self.numDeadsByKillMonster = 0
-        self.numDeadsByOldAge = 0
-        self.totolDeaths = 0
+
+        self.monster_num_deaths_by_kill = 0
+        self.monster_num_deaths_by_hunger = 0
+        self.human_num_deaths_by_kill = 0
+        self.human_num_deaths_by_hunger = 0
+        self.hero_num_deaths_by_kill = 0
+        self.hero_num_deaths_by_hunger = 0
+
+        self.num_human_reproductions = 0
+        self.num_monster_reproductions = 0
+        self.num_hero_reproductions = 0
 
         self.datacollector = DataCollector({
             'Humans': 'human',
             'Heroes': 'hero',
-            'Monsters': 'monster'})
-
-        '''
-        self.datacollector2 = DataCollector(
-            deadsByKill = {"Kills": self.numDeadsByKill},
-            deadsByOldAge = {"DeadsByOldAge": self.numDeadsByOldAge}
-        )
-        '''
+            'Monsters': 'monster',
+            'Food': "food"})
+        self.human_deaths_collector = DataCollector({
+            'Human Deaths by enemy attacks': 'humanNumDeathsByKill',
+            'Human Deaths by hunger': 'humanNumDeathsByHunger'
+        })
+        self.monster_deaths_collector = DataCollector({
+            'Monster Deaths by enemy attacks': 'monsterNumDeathsByKill',
+            'Monster Deaths by hunger': 'monsterNumDeathsByHunger'
+        })
+        self.hero_deaths_collector = DataCollector({
+            'Hero Deaths by enemy attacks': 'heroNumDeathsByKill',
+            'Hero Deaths by hunger': 'heroNumDeathsByHunger'
+        })
+        self.human_reproduction_collector = DataCollector({
+            "Human Reproduction amount": "numHumanReproductions"
+        })
+        self.monster_reproduction_collector = DataCollector({
+            "Monster Reproduction amount": "numMonsterReproductions"
+        })
+        self.hero_reproduction_collector = DataCollector({
+            "Hero Reproduction amount": "numHeroReproductions"
+        })
 
         self.id = 0
         self.generateAgents()
@@ -111,17 +114,20 @@ class MonstersVsHeroes(Model):
     def createAgent(self, type, pos=None, availablePositions=None, noReprodSteps=0):
 
         if type == "HeroAgent":
-            a = agent.HeroAgent(self.id, self, "circle", "blue", 0.7, 100, self.hero_HPDecrease, 30, noReprodSteps, self.hero_reproduction)
+            a = agent.HeroAgent(self.id, self, "circle", "blue", 0.7, 100, self.hero_HPDecrease, 30, noReprodSteps,
+                                self.hero_reproduction)
             self.schedule.add(a)
             self.setAgentPosition(a, pos, availablePositions)
             self.id += 1
         elif type == "MonsterAgent":
-            a = agent.MonsterAgent(self.id, self, "circle", "red", 0.8, 100, self.monster_HPDecrease, 20, noReprodSteps, self.monster_reproduction)
+            a = agent.MonsterAgent(self.id, self, "circle", "red", 0.8, 100, self.monster_HPDecrease, 20, noReprodSteps,
+                                   self.monster_reproduction)
             self.schedule.add(a)
             self.setAgentPosition(a, pos, availablePositions)
             self.id += 1
         elif type == "PersonAgent":
-            a = agent.PersonAgent(self.id, self, "circle", "black", 0.6, 100, self.human_HPDecrease, 0, noReprodSteps, self.human_reproduction, self.probTurningHero)
+            a = agent.PersonAgent(self.id, self, "circle", "black", 0.6, 100, self.human_HPDecrease, 0, noReprodSteps,
+                                  self.human_reproduction, self.probTurningHero)
             self.schedule.add(a)
             self.setAgentPosition(a, pos, availablePositions)
             self.id += 1
@@ -156,17 +162,22 @@ class MonstersVsHeroes(Model):
             elif a.state["state"] == "TurningHero":
                 self.createAgent("HeroAgent", pos=a.pos, noReprodSteps=a.noReprodSteps)
                 self.removeAgent(a)
-            
+
             if type(a).__name__ == "Fruit":
                 if a.levelRotRottenness >= 20:
                     self.removeAgent(a)
-            
 
         if self.numSteps % 5 == 0:
             for _ in range(self.generateQuantityFruit):
                 self.createAgent("Fruit", pos=None)
 
         self.datacollector.collect(self)
+        self.human_deaths_collector.collect(self)
+        self.monster_deaths_collector.collect(self)
+        self.hero_deaths_collector.collect(self)
+        self.human_reproduction_collector.collect(self)
+        self.monster_reproduction_collector.collect(self)
+        self.hero_reproduction_collector.collect(self)
 
         for a in self.schedule.agents:
             if a.__class__ == Agents.MonsterAgent:
@@ -175,6 +186,38 @@ class MonstersVsHeroes(Model):
 
     def running(self):
         self.step()
+
+    def incr_num_deaths_by_kill(self, agent_type):
+        if agent_type == "MonsterAgent":
+            self.monster_num_deaths_by_kill += 1
+        elif agent_type == "PersonAgent":
+            self.human_num_deaths_by_kill += 1
+        elif agent_type == "HeroAgent":
+            self.hero_num_deaths_by_kill += 1
+
+    def incr_num_deaths_by_hunger(self, agent_type):
+        if agent_type == "MonsterAgent":
+            self.monster_num_deaths_by_hunger += 1
+        elif agent_type == "PersonAgent":
+            self.human_num_deaths_by_hunger += 1
+        elif agent_type == "HeroAgent":
+            self.hero_num_deaths_by_hunger += 1
+
+    def incr_num_deaths_by_hunger(self, agent_type):
+        if agent_type == "MonsterAgent":
+            self.monster_num_deaths_by_hunger += 1
+        elif agent_type == "PersonAgent":
+            self.human_num_deaths_by_hunger += 1
+        elif agent_type == "HeroAgent":
+            self.hero_num_deaths_by_hunger += 1
+
+    def incr_num_reproductions(self, agent_type):
+        if agent_type == "MonsterAgent":
+            self.num_monster_reproductions += 1
+        elif agent_type == "PersonAgent":
+            self.num_human_reproductions += 1
+        elif agent_type == "HeroAgent":
+            self.num_hero_reproductions += 1
 
     @property
     def human(self):
@@ -203,6 +246,51 @@ class MonstersVsHeroes(Model):
                 amount += 1
         return amount
 
+    @property
+    def food(self):
+        agents = self.schedule.agents
+        amount = 0
+        for a in agents:
+            if a.__class__ == Agents.Fruit:
+                amount += 1
+        return amount
+
+    @property
+    def humanNumDeathsByKill(self):
+        return self.human_num_deaths_by_kill
+
+    @property
+    def humanNumDeathsByHunger(self):
+        return self.human_num_deaths_by_hunger
+
+    @property
+    def monsterNumDeathsByKill(self):
+        return self.monster_num_deaths_by_kill
+
+    @property
+    def monsterNumDeathsByHunger(self):
+        return self.monster_num_deaths_by_hunger
+
+    @property
+    def heroNumDeathsByKill(self):
+        return self.hero_num_deaths_by_kill
+
+    @property
+    def heroNumDeathsByHunger(self):
+        return self.hero_num_deaths_by_hunger
+
+    @property
+    def numHumanReproductions(self):
+        return self.num_human_reproductions
+
+    @property
+    def numMonsterReproductions(self):
+        return self.num_monster_reproductions
+
+    @property
+    def numHeroReproductions(self):
+        return self.num_hero_reproductions
+
 
 def main():
     model = MonstersVsHeroes
@@ -211,5 +299,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
-
