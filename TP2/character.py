@@ -8,7 +8,7 @@ import Utils
 class Character(Agent):
     """An agent with fixed initial wealth."""
 
-    def __init__(self, unique_id, model, hp, hp_decrease, damage_per_second, canReproduce):
+    def __init__(self, unique_id, model, hp, hp_decrease, damage_per_second, canReproduce, age, maxAge):
         super().__init__(unique_id, model)
 
         self.model = model
@@ -19,7 +19,8 @@ class Character(Agent):
         self.state = {"state": "Move"}
         self.canReproduce = canReproduce
         self.noReprodSteps = 0
-        self.age = 0
+        self.age = age
+        self.maxAge = maxAge
         if type(self).__name__ == "HeroAgent":
             self.maxAge = 150
         else:
@@ -44,7 +45,7 @@ class Character(Agent):
             if type(neigh).__name__ == own_agent_type and self.canReproduce and self.age > 0.2 * self.maxAge \
                     and self.noReprodSteps == 0:
                 for _ in range(self.model.random.randrange(0, 2)):
-                    self.model.createAgent(own_agent_type)
+                    self.model.createAgent(own_agent_type, 0)
                     self.model.incr_num_reproductions(own_agent_type)
                     self.noReprodSteps = 5
 

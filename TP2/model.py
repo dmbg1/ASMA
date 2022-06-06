@@ -92,37 +92,38 @@ class MonstersVsHeroes(Model):
             for j in range(self.grid.height):
                 availablePositions.append((i, j))
 
+        # Start agents at an initial age that permits reproduction
         for _ in range(numHeroes):
-            self.createAgent("HeroAgent", availablePositions=availablePositions)
+            self.createAgent("HeroAgent", 150 * 0.2, availablePositions=availablePositions)
 
         for _ in range(numMonsters):
-            self.createAgent("MonsterAgent", availablePositions=availablePositions)
+            self.createAgent("MonsterAgent", 75 * 0.2, availablePositions=availablePositions)
 
         for _ in range(numPersons):
-            self.createAgent("PersonAgent", availablePositions=availablePositions)
+            self.createAgent("PersonAgent", 75 * 0.2, availablePositions=availablePositions)
 
         for _ in range(numFoods):
-            self.createAgent("Fruit", availablePositions=availablePositions)
+            self.createAgent("Fruit", 0, availablePositions=availablePositions)
 
         self.datacollector.collect(self)
 
-    def createAgent(self, type, pos=None, availablePositions=None):
+    def createAgent(self, type, age, pos=None, availablePositions=None):
 
         if type == "HeroAgent":
-            a = agent.HeroAgent(self.id, self, "circle", "blue", 0.7, 100, self.hero_HPDecrease, 15,
-                                self.hero_reproduction)
+            a = agent.HeroAgent(self.id, self, "circle", "blue", 0.7, 100, self.hero_HPDecrease, 20,
+                                self.hero_reproduction, age, 150)
             self.schedule.add(a)
             self.setAgentPosition(a, pos, availablePositions)
             self.id += 1
         elif type == "MonsterAgent":
             a = agent.MonsterAgent(self.id, self, "circle", "red", 0.8, 100, self.monster_HPDecrease, 20,
-                                   self.monster_reproduction)
+                                   self.monster_reproduction, age, 75)
             self.schedule.add(a)
             self.setAgentPosition(a, pos, availablePositions)
             self.id += 1
         elif type == "PersonAgent":
             a = agent.PersonAgent(self.id, self, "circle", "black", 0.6, 100, self.human_HPDecrease, 0,
-                                  self.human_reproduction, self.probTurningHero)
+                                  self.human_reproduction, self.probTurningHero, age, 75)
             self.schedule.add(a)
             self.setAgentPosition(a, pos, availablePositions)
             self.id += 1
@@ -152,10 +153,10 @@ class MonstersVsHeroes(Model):
 
         for a in self.schedule.agents:
             if a.state["state"] == "TurningMonster":
-                self.createAgent("MonsterAgent", pos=a.pos)
+                self.createAgent("MonsterAgent", a.age, pos=a.pos)
                 self.removeAgent(a)
             elif a.state["state"] == "TurningHero":
-                self.createAgent("HeroAgent", pos=a.pos)
+                self.createAgent("HeroAgent", a.age, pos=a.pos)
                 self.removeAgent(a)
 
             if type(a).__name__ == "Fruit":
@@ -164,7 +165,7 @@ class MonstersVsHeroes(Model):
 
         if self.numSteps % 5 == 0:
             for _ in range(self.generateQuantityFruit):
-                self.createAgent("Fruit", pos=None)
+                self.createAgent("Fruit", 0, pos=None)
 
         self.datacollector.collect(self)
         self.deaths_collector.collect(self)
