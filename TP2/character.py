@@ -41,7 +41,8 @@ class Character(Agent):
 
         for neigh in neighbors:
             own_agent_type = type(self).__name__
-            if type(neigh).__name__ == own_agent_type and self.canReproduce and self.age > 0.2 * self.maxAge:
+            if type(neigh).__name__ == own_agent_type and self.canReproduce and self.age > 0.2 * self.maxAge \
+                    and self.noReprodSteps == 0:
                 for _ in range(self.model.random.randrange(0, 2)):
                     self.model.createAgent(own_agent_type)
                     self.model.incr_num_reproductions(own_agent_type)
