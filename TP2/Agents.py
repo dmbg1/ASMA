@@ -6,9 +6,9 @@ import Utils
 
 class MonsterAgent(Character, Portrayal):
 
-    def __init__(self, unique_id, model, shape, color, radius, hp, hp_decrease, damage_per_second, noReprodSteps,
+    def __init__(self, unique_id, model, shape, color, radius, hp, hp_decrease, damage_per_second,
                  canReproduce):
-        Character.__init__(self, unique_id, model, hp, hp_decrease, damage_per_second, noReprodSteps, canReproduce)
+        Character.__init__(self, unique_id, model, hp, hp_decrease, damage_per_second, canReproduce)
         Portrayal.__init__(self, shape, color, radius)
         self.maxHP = hp
 
@@ -59,9 +59,9 @@ class MonsterAgent(Character, Portrayal):
 
 class PersonAgent(Character, Portrayal):
 
-    def __init__(self, unique_id, model, shape, color, radius, hp, hp_decrease, damage_per_second, noReprodSteps,
+    def __init__(self, unique_id, model, shape, color, radius, hp, hp_decrease, damage_per_second,
                  canReproduce, probTurningHero):
-        Character.__init__(self, unique_id, model, hp, hp_decrease, damage_per_second, noReprodSteps, canReproduce)
+        Character.__init__(self, unique_id, model, hp, hp_decrease, damage_per_second, canReproduce)
         Portrayal.__init__(self, shape, color, radius)
 
         self.probTurningHero = probTurningHero
@@ -110,9 +110,9 @@ class PersonAgent(Character, Portrayal):
 
 class HeroAgent(Character, Portrayal):
 
-    def __init__(self, unique_id, model, shape, color, radius, hp, hp_decrease, damage_per_second, noReprodSteps,
+    def __init__(self, unique_id, model, shape, color, radius, hp, hp_decrease, damage_per_second,
                  canReproduce):
-        Character.__init__(self, unique_id, model, hp, hp_decrease, damage_per_second, noReprodSteps, canReproduce)
+        Character.__init__(self, unique_id, model, hp, hp_decrease, damage_per_second, canReproduce)
         Portrayal.__init__(self, shape, color, radius)
 
     def action(self):

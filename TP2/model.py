@@ -106,22 +106,22 @@ class MonstersVsHeroes(Model):
 
         self.datacollector.collect(self)
 
-    def createAgent(self, type, pos=None, availablePositions=None, noReprodSteps=0):
+    def createAgent(self, type, pos=None, availablePositions=None):
 
         if type == "HeroAgent":
-            a = agent.HeroAgent(self.id, self, "circle", "blue", 0.7, 100, self.hero_HPDecrease, 30, noReprodSteps,
+            a = agent.HeroAgent(self.id, self, "circle", "blue", 0.7, 100, self.hero_HPDecrease, 15,
                                 self.hero_reproduction)
             self.schedule.add(a)
             self.setAgentPosition(a, pos, availablePositions)
             self.id += 1
         elif type == "MonsterAgent":
-            a = agent.MonsterAgent(self.id, self, "circle", "red", 0.8, 100, self.monster_HPDecrease, 20, noReprodSteps,
+            a = agent.MonsterAgent(self.id, self, "circle", "red", 0.8, 100, self.monster_HPDecrease, 20,
                                    self.monster_reproduction)
             self.schedule.add(a)
             self.setAgentPosition(a, pos, availablePositions)
             self.id += 1
         elif type == "PersonAgent":
-            a = agent.PersonAgent(self.id, self, "circle", "black", 0.6, 100, self.human_HPDecrease, 0, noReprodSteps,
+            a = agent.PersonAgent(self.id, self, "circle", "black", 0.6, 100, self.human_HPDecrease, 0,
                                   self.human_reproduction, self.probTurningHero)
             self.schedule.add(a)
             self.setAgentPosition(a, pos, availablePositions)
@@ -152,10 +152,10 @@ class MonstersVsHeroes(Model):
 
         for a in self.schedule.agents:
             if a.state["state"] == "TurningMonster":
-                self.createAgent("MonsterAgent", pos=a.pos, noReprodSteps=a.noReprodSteps)
+                self.createAgent("MonsterAgent", pos=a.pos)
                 self.removeAgent(a)
             elif a.state["state"] == "TurningHero":
-                self.createAgent("HeroAgent", pos=a.pos, noReprodSteps=a.noReprodSteps)
+                self.createAgent("HeroAgent", pos=a.pos)
                 self.removeAgent(a)
 
             if type(a).__name__ == "Fruit":

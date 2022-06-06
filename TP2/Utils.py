@@ -5,18 +5,16 @@ from copy import copy
 def removeThroughWallSteps(pos, possible_steps, width, height):
     aux = copy(possible_steps)
     for possible_step in aux:
-        if (possible_step[1] == height - 1 and pos[1] == 0) or (possible_step[1] == 0 and pos[1] == height - 1) or\
+        if (possible_step[1] == height - 1 and pos[1] == 0) or (possible_step[1] == 0 and pos[1] == height - 1) or \
                 (possible_step[0] == width - 1 and pos[0] == 0) or (possible_step[0] == 0 and pos[0] == width - 1):
             possible_steps.remove(possible_step)
 
 
 def calculateDistance(pos1, pos2):
-
-    return math.sqrt((pos2[0]-pos1[0])**2 + (pos2[1]-pos1[1])**2)
+    return math.sqrt((pos2[0] - pos1[0]) ** 2 + (pos2[1] - pos1[1]) ** 2)
 
 
 def getNearPoint(agentPos, possible_steps):
-
     minDistance = 9999999
 
     for step in possible_steps:
@@ -29,7 +27,6 @@ def getNearPoint(agentPos, possible_steps):
 
 
 def getFurtherPoint(agentPos, possible_steps):
-
     maxDistance = -99999999
 
     for step in possible_steps:
@@ -42,7 +39,6 @@ def getFurtherPoint(agentPos, possible_steps):
 
 
 def getNearAgent(agent, nearAgents):
-
     minDistance = 99999
 
     if len(nearAgents) == 0:
@@ -53,10 +49,9 @@ def getNearAgent(agent, nearAgents):
         if distance <= minDistance:
             minDistance = distance
             agent = nearAgent
-    
+
     return agent
 
+
 def average(n1, n2):
-    return int(n1 + n2 /2)
-
-
+    return int(n1 + n2 / 2)

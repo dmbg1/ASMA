@@ -1,6 +1,7 @@
 from mesa.visualization.modules import CanvasGrid
 from mesa.visualization.ModularVisualization import ModularServer
 from mesa.visualization.modules import ChartModule
+from mesa.visualization.modules import BarChartModule
 from mesa.visualization.UserParam import UserSettableParameter
 
 canvasWidth = 40
@@ -52,13 +53,13 @@ def createAndStartServer(model):
                          {"Label": "Hero Pop.", "Color": "Blue"},
                          {"Label": "Monster Pop.", "Color": "Red"}])
 
-    deathsChart = ChartModule([{"Label": "Human Deaths by enemy attacks", "Color": "Black"},
-                               {"Label": "Human Deaths by hunger", "Color": "#3B3C36"},
-                               {"Label": "Monster Deaths by enemy attacks", "Color": "Red"},
-                               {"Label": "Monster Deaths by hunger", "Color": "#910D09"},
-                               {"Label": "Hero Deaths by enemy attacks", "Color": "Blue"},
-                               {"Label": "Hero Deaths by hunger", "Color": "#002366"}],
-                              data_collector_name="deaths_collector")
+    deathsChart = BarChartModule([{"Label": "Human Deaths by enemy attacks", "Color": "Black"},
+                                  {"Label": "Human Deaths by hunger", "Color": "#3B3C36"},
+                                  {"Label": "Monster Deaths by enemy attacks", "Color": "Red"},
+                                  {"Label": "Monster Deaths by hunger", "Color": "#910D09"},
+                                  {"Label": "Hero Deaths by enemy attacks", "Color": "Blue"},
+                                  {"Label": "Hero Deaths by hunger", "Color": "#002366"}],
+                                 data_collector_name="deaths_collector")
 
     humanReproductionsChart = ChartModule([{"Label": "Human Reproduction amount", "Color": "Black"}],
                                           data_collector_name="human_reproduction_collector")
@@ -73,5 +74,6 @@ def createAndStartServer(model):
                            "Monsters VS Heroes",
                            model_params)
 
+    print(chart.series)
     server.port = 8521
     server.launch()
