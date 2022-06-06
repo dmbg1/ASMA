@@ -55,10 +55,8 @@ def createAndStartServer(model):
 
     deathsChart = BarChartModule([{"Label": "Human Deaths by enemy attacks", "Color": "Black"},
                                   {"Label": "Human Deaths by hunger", "Color": "#3B3C36"},
-                                  {"Label": "Human Deaths by age", "Color": "#151515"},
                                   {"Label": "Monster Deaths by enemy attacks", "Color": "Red"},
                                   {"Label": "Monster Deaths by hunger", "Color": "#910D09"},
-                                  {"Label": "Monster Deaths by age", "Color": "#910D09"},
                                   {"Label": "Hero Deaths by enemy attacks", "Color": "Blue"},
                                   {"Label": "Hero Deaths by hunger", "Color": "#002366"}],
                                  data_collector_name="deaths_collector", canvas_height=300)

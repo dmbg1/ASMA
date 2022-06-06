@@ -196,14 +196,6 @@ class MonstersVsHeroes(Model):
         elif agent_type == "HeroAgent":
             self.hero_num_deaths_by_hunger += 1
 
-    def incr_num_deaths_by_hunger(self, agent_type):
-        if agent_type == "MonsterAgent":
-            self.monster_num_deaths_by_hunger += 1
-        elif agent_type == "PersonAgent":
-            self.human_num_deaths_by_hunger += 1
-        elif agent_type == "HeroAgent":
-            self.hero_num_deaths_by_hunger += 1
-
     def incr_num_reproductions(self, agent_type):
         if agent_type == "MonsterAgent":
             self.num_monster_reproductions += 1

@@ -86,7 +86,6 @@ class Character(Agent):
         elif death_cause == "hunger":
             self.model.incr_num_deaths_by_hunger(agent_type)
 
-        # self.model.datacollector2.collect(self)
         self.model.removeAgent(self)
 
     def step(self):
@@ -94,7 +93,6 @@ class Character(Agent):
 
         self.age += 1
         if self.age >= self.maxAge:
-            death_cause = "age"
             self.hp = 0
 
         if self.state["state"] != "InFight" and self.hp > 0:
