@@ -19,7 +19,7 @@ model_params = {
     'init_heroes': UserSettableParameter(
         'slider', '% of initial pop. of heroes', 0.2, 0, 1, 0.05),
     'init_food': UserSettableParameter(
-        'slider', '% of initial amount of fruit', 0.2, 0, 1, 0.05),
+        'slider', '% of initial amount of food', 0.2, 0, 1, 0.05),
     'human_HPDecrease': UserSettableParameter(
         'slider', 'Amount of HP decrease each step for human', 10, 0, 30),
     'monster_HPDecrease': UserSettableParameter(
@@ -27,9 +27,9 @@ model_params = {
     'hero_HPDecrease': UserSettableParameter(
         'slider', 'Amount of HP decrease each step for hero', 0, 0, 30),
     'probTurningHero': UserSettableParameter(
-        'slider', 'Probability of human turning to a Hero', 1, 0, 100),
+        'slider', 'Probability of human turning to a hero', 1, 0, 100),
     'generateQuantityFruit': UserSettableParameter(
-        'slider', 'Amount of fruit generated every 5 steps', 20, 0, canvasWidth * canvasHeight * 0.05),
+        'slider', 'Amount of food generated every 5 steps', 20, 0, canvasWidth * canvasHeight * 0.05),
     'human_reproduction': UserSettableParameter(
         'checkbox', 'Human can reproduce', True),
     'monster_reproduction': UserSettableParameter(
