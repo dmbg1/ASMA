@@ -185,5 +185,5 @@ class Fruit(Agent, Portrayal):
             self.levelOfHPRecovery -= levelDecreaseHP
 
         if self.levelRotRottenness > 15:
-            self.set_color("#618358")
+            self.set_color("yellow")
             self.state = {"state": "BadQuality"}
