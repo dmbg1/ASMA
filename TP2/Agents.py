@@ -12,33 +12,31 @@ class MonsterAgent(Character, Portrayal):
         Portrayal.__init__(self, shape, color, radius)
         self.maxHP = hp
 
+    def agentsInSameCellAction(self, sameCellAgent):
+        if type(sameCellAgent).__name__ == "PersonAgent":  # Start Fight
+            self.state = {
+                "state": "InFight",
+                "enemy": sameCellAgent,
+                "heal": sameCellAgent.hp  # Heal if enemy is killed
+            }
+            sameCellAgent.set_state({
+                "state": "InFight",
+                "enemy": self
+            })
+            self.inFightAction()
+
     def action(self):
         if self.state["state"] == "InFight":
-            enemy = self.state["enemy"]
-            self.hurtEnemy(enemy)
-            if enemy.hp <= 0:
-                if "heal" in self.state:
-                    heal = self.state["heal"]
-                    self.hp = heal + self.hp if heal + self.hp < self.maxHP else self.maxHP
-                self.state = {"state": "Move"}
-        else:
-            neighbors = self.getAgentsInSameCell()
+            self.inFightAction()
+        else:  # Check agents in same cell
+            sameCellAgents = self.getAgentsInSameCell()
 
-            for neig in neighbors:
-                if type(neig).__name__ == "PersonAgent":
-                    self.state = {
-                        "state": "InFight",
-                        "enemy": neig,
-                        "heal": neig.hp  # Heal if enemy is killed
-                    }
-                    neig.set_state({
-                        "state": "InFight",
-                        "enemy": self
-                    })
-                    self.hurtEnemy(neig)
-                    if neig.hp <= 0:
-                        self.state = {"state": "Move"}
-                    continue  # One enemy at a time
+            for a in sameCellAgents:
+                self.agentsInSameCellAction(a)
+                if self.state["state"] == "InFight":
+                    break  # One enemy at a time
+                # No reproduction if agent is in a fight
+                self.reproduction(a)
 
     def chooseBestPosition(self, possible_steps):
 
@@ -66,27 +64,30 @@ class PersonAgent(Character, Portrayal):
 
         self.probTurningHero = probTurningHero
 
+    def agentsInSameCellAction(self, sameCellAgent):
+        if type(sameCellAgent).__name__ == "Fruit":
+            self.grid.remove_agent(sameCellAgent)
+            self.model.schedule.remove(sameCellAgent)
+            if sameCellAgent.state["state"] == "BadQuality":  # Degraded food consumption
+                self.state = {"state": "TurningMonster"}
+            else:
+                if self.random.randrange(0, 101) >= self.probTurningHero:
+                    self.hp += 75
+                else:
+                    self.state = {"state": "TurningHero"}
+
     def action(self):
 
-        neighbors = self.getAgentsInSameCell()
+        sameCellAgents = self.getAgentsInSameCell()
 
-        if self.state["state"] == "InFight":
-            enemy = self.state["enemy"]
-            self.hurtEnemy(enemy)
-            if enemy.hp <= 0:
-                self.state = {"state": "Move"}
+        if self.state["state"] == "InFight":  # In fight action
+            self.inFightAction()
 
-        for neig in neighbors:
-            if type(neig).__name__ == "Fruit":
-                self.grid.remove_agent(neig)
-                self.model.schedule.remove(neig)
-                if neig.state["state"] == "BadQuality":
-                    self.state = {"state": "TurningMonster"}
-                else:
-                    if self.random.randrange(0, 101) >= self.probTurningHero:
-                        self.hp += 75
-                    else:
-                        self.state = {"state": "TurningHero"}
+        for a in sameCellAgents:
+            self.agentsInSameCellAction(a)
+            # No reproduction if agent is in a fight
+            if self.state["state"] != "InFight":
+                self.reproduction(a)
 
     def chooseBestPosition(self, possible_steps):
 
@@ -115,30 +116,30 @@ class HeroAgent(Character, Portrayal):
         Character.__init__(self, unique_id, model, hp, hp_decrease, damage_per_second, canReproduce, age, maxAge)
         Portrayal.__init__(self, shape, color, radius)
 
+    def agentsInSameCellAction(self, sameCellAgent):
+        if type(sameCellAgent).__name__ == "MonsterAgent":
+            self.state = {
+                "state": "InFight",
+                "enemy": sameCellAgent
+            }
+            sameCellAgent.set_state({
+                "state": "InFight",
+                "enemy": self
+            })
+            self.inFightAction()
+
     def action(self):
         if self.state["state"] == "InFight":
-            enemy = self.state["enemy"]
-            self.hurtEnemy(enemy)
-            if enemy.hp <= 0:
-                self.state = {"state": "Move"}
+            self.inFightAction()
         else:
-            neighbors = self.getAgentsInSameCell()
+            sameCellAgents = self.getAgentsInSameCell()
 
-            for neig in neighbors:
-                if type(neig).__name__ == "MonsterAgent":
-                    self.state = {
-                        "state": "InFight",
-                        "enemy": neig
-                    }
-                    neig.set_state({
-                        "state": "InFight",
-                        "enemy": self
-                    })
-                    self.hurtEnemy(neig)
-                    if neig.hp <= 0:
-                        # self.datacollector2.collect(self)
-                        self.state = {"state": "Move"}
-                    continue  # One enemy at a time
+            for a in sameCellAgents:
+                self.agentsInSameCellAction(a)
+                if self.state["state"] == "InFight":
+                    break  # One enemy at a time
+                # No reproduction if agent is in a fight
+                self.reproduction(a)
 
     def chooseBestPosition(self, possible_steps):
 
@@ -166,24 +167,21 @@ class Fruit(Agent, Portrayal):
         Agent.__init__(self, unique_id, model)
         Portrayal.__init__(self, shape, color, radius)
 
-        self.levelRotRottenness = 0
+        self.levelOfRottenness = 0
         self.levelOfHPRecovery = 30
         self.probTurningToMonster = 20
-        self.numSteps = 0
         self.state = {"state": "GoodQuality"}
 
     def step(self):
 
-        self.numSteps += 1
-
         rotIncrease = self.random.randrange(0, 4)
         levelDecreaseHP = self.random.randrange(0, 9)
 
-        self.levelRotRottenness += rotIncrease
+        self.levelOfRottenness += rotIncrease
 
         if self.levelOfHPRecovery - levelDecreaseHP >= 0:
             self.levelOfHPRecovery -= levelDecreaseHP
 
-        if self.levelRotRottenness > 15:
+        if self.levelOfRottenness > 15:
             self.set_color("yellow")
             self.state = {"state": "BadQuality"}

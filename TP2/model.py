@@ -160,7 +160,7 @@ class MonstersVsHeroes(Model):
                 self.removeAgent(a)
 
             if type(a).__name__ == "Fruit":
-                if a.levelRotRottenness >= 20:
+                if a.levelOfRottenness >= 20:
                     self.removeAgent(a)
 
         if self.numSteps % 5 == 0:
