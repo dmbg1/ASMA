@@ -14,5 +14,5 @@ class Portrayal:
 
         return portrayal
 
-    def set_color(self, color):
+    def setColor(self, color):
         self.color = color

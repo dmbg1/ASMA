@@ -6,9 +6,9 @@ import Utils
 
 class MonsterAgent(Character, Portrayal):
 
-    def __init__(self, unique_id, model, shape, color, radius, hp, hp_decrease, damage_per_second,
+    def __init__(self, uniqueId, model, shape, color, radius, hp, hpDecrease, damagePerSecond,
                  canReproduce, age, maxAge):
-        Character.__init__(self, unique_id, model, hp, hp_decrease, damage_per_second, canReproduce, age, maxAge)
+        Character.__init__(self, uniqueId, model, hp, hpDecrease, damagePerSecond, canReproduce, age, maxAge)
         Portrayal.__init__(self, shape, color, radius)
         self.maxHP = hp
 
@@ -19,7 +19,7 @@ class MonsterAgent(Character, Portrayal):
                 "enemy": sameCellAgent,
                 "heal": sameCellAgent.hp  # Heal if enemy is killed
             }
-            sameCellAgent.set_state({
+            sameCellAgent.setState({
                 "state": "InFight",
                 "enemy": self
             })
@@ -38,28 +38,28 @@ class MonsterAgent(Character, Portrayal):
                 # No reproduction if agent is in a fight
                 self.reproduction(a)
 
-    def chooseBestPosition(self, possible_steps):
+    def chooseBestPosition(self, possibleSteps):
 
         nearAgents = self.getNearAgents(4)
         nearAgent = Utils.getNearAgent(self, nearAgents)
 
         if nearAgent == -1:
-            return self.random.choice(possible_steps)
+            return self.random.choice(possibleSteps)
 
         if "PersonAgent" == type(nearAgent).__name__:
-            return Utils.getNearPoint(nearAgent.pos, possible_steps)
+            return Utils.getNearPoint(nearAgent.pos, possibleSteps)
 
         if "MonsterAgent" == type(nearAgent).__name__:
-            return Utils.getFurtherPoint(nearAgent.pos, possible_steps)
+            return Utils.getFurtherPoint(nearAgent.pos, possibleSteps)
 
-        return self.random.choice(possible_steps)
+        return self.random.choice(possibleSteps)
 
 
 class PersonAgent(Character, Portrayal):
 
-    def __init__(self, unique_id, model, shape, color, radius, hp, hp_decrease, damage_per_second,
+    def __init__(self, uniqueId, model, shape, color, radius, hp, hpDecrease, damagePerSecond,
                  canReproduce, probTurningHero, age, maxAge):
-        Character.__init__(self, unique_id, model, hp, hp_decrease, damage_per_second, canReproduce, age, maxAge)
+        Character.__init__(self, uniqueId, model, hp, hpDecrease, damagePerSecond, canReproduce, age, maxAge)
         Portrayal.__init__(self, shape, color, radius)
 
         self.probTurningHero = probTurningHero
@@ -89,31 +89,31 @@ class PersonAgent(Character, Portrayal):
             if self.state["state"] != "InFight":
                 self.reproduction(a)
 
-    def chooseBestPosition(self, possible_steps):
+    def chooseBestPosition(self, possibleSteps):
 
         nearAgents = self.getNearAgents(6)
         nearAgent = Utils.getNearAgent(self, nearAgents)
 
         if nearAgent == -1:
-            return self.random.choice(possible_steps)
+            return self.random.choice(possibleSteps)
 
         if "MonsterAgent" == type(nearAgent).__name__:
-            return Utils.getFurtherPoint(nearAgent.pos, possible_steps)
+            return Utils.getFurtherPoint(nearAgent.pos, possibleSteps)
 
         if "Fruit" == type(nearAgent).__name__:
-            return Utils.getNearPoint(nearAgent.pos, possible_steps)
+            return Utils.getNearPoint(nearAgent.pos, possibleSteps)
 
         if "PersonAgent" == type(nearAgent).__name__:
-            return Utils.getNearPoint(nearAgent.pos, possible_steps)
+            return Utils.getNearPoint(nearAgent.pos, possibleSteps)
 
-        return self.random.choice(possible_steps)
+        return self.random.choice(possibleSteps)
 
 
 class HeroAgent(Character, Portrayal):
 
-    def __init__(self, unique_id, model, shape, color, radius, hp, hp_decrease, damage_per_second,
+    def __init__(self, uniqueId, model, shape, color, radius, hp, hpDecrease, damagePerSecond,
                  canReproduce, age, maxAge):
-        Character.__init__(self, unique_id, model, hp, hp_decrease, damage_per_second, canReproduce, age, maxAge)
+        Character.__init__(self, uniqueId, model, hp, hpDecrease, damagePerSecond, canReproduce, age, maxAge)
         Portrayal.__init__(self, shape, color, radius)
 
     def agentsInSameCellAction(self, sameCellAgent):
@@ -122,7 +122,7 @@ class HeroAgent(Character, Portrayal):
                 "state": "InFight",
                 "enemy": sameCellAgent
             }
-            sameCellAgent.set_state({
+            sameCellAgent.setState({
                 "state": "InFight",
                 "enemy": self
             })
@@ -141,30 +141,30 @@ class HeroAgent(Character, Portrayal):
                 # No reproduction if agent is in a fight
                 self.reproduction(a)
 
-    def chooseBestPosition(self, possible_steps):
+    def chooseBestPosition(self, possibleSteps):
 
         nearAgents = self.getNearAgents(7)
         nearAgent = Utils.getNearAgent(self, nearAgents)
 
         if nearAgent == -1:
-            return self.random.choice(possible_steps)
+            return self.random.choice(possibleSteps)
 
         if "MonsterAgent" == type(nearAgent).__name__:
-            return Utils.getNearPoint(nearAgent.pos, possible_steps)
+            return Utils.getNearPoint(nearAgent.pos, possibleSteps)
 
         if "PersonAgent" == type(nearAgent).__name__:
-            return Utils.getNearPoint(nearAgent.pos, possible_steps)
+            return Utils.getNearPoint(nearAgent.pos, possibleSteps)
 
         if "HeroAgent" == type(nearAgent).__name__:
-            return Utils.getFurtherPoint(nearAgent.pos, possible_steps)
+            return Utils.getFurtherPoint(nearAgent.pos, possibleSteps)
 
-        return self.random.choice(possible_steps)
+        return self.random.choice(possibleSteps)
 
 
 class Fruit(Agent, Portrayal):
 
-    def __init__(self, unique_id, model, shape, color, radius):
-        Agent.__init__(self, unique_id, model)
+    def __init__(self, uniqueId, model, shape, color, radius):
+        Agent.__init__(self, uniqueId, model)
         Portrayal.__init__(self, shape, color, radius)
 
         self.levelOfRottenness = 0
@@ -183,5 +183,5 @@ class Fruit(Agent, Portrayal):
             self.levelOfHPRecovery -= levelDecreaseHP
 
         if self.levelOfRottenness > 15:
-            self.set_color("yellow")
+            self.setColor("yellow")
             self.state = {"state": "BadQuality"}

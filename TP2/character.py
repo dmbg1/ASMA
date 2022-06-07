@@ -8,14 +8,14 @@ import Utils
 class Character(Agent):
     """An agent with fixed initial wealth."""
 
-    def __init__(self, unique_id, model, hp, hpDecrease, damagePerSecond, canReproduce, age, maxAge):
-        super().__init__(unique_id, model)
+    def __init__(self, uniqueId, model, hp, hpDecrease, damagePerSecond, canReproduce, age, maxAge):
+        super().__init__(uniqueId, model)
 
         self.model = model
         self.grid = model.grid
         self.hp = hp
-        self.hp_decrease = hpDecrease
-        self.damage_per_second = damagePerSecond
+        self.hpDecrease = hpDecrease
+        self.damagePerSecond = damagePerSecond
         self.state = {"state": "Move"}
         self.canReproduce = canReproduce
         self.noReprodSteps = 0
@@ -24,27 +24,27 @@ class Character(Agent):
 
     # Choose agents' best position and move the agent to that position
     def move(self):
-        possible_steps = self.grid.get_neighborhood(
+        possibleSteps = self.grid.get_neighborhood(
             self.pos,
             moore=True,
             include_center=False)
 
         # Agents can't move through walls
-        Utils.removeThroughWallSteps(self.pos, possible_steps, self.grid.width, self.grid.height)
+        Utils.removeThroughWallSteps(self.pos, possibleSteps, self.grid.width, self.grid.height)
 
-        new_position = self.chooseBestPosition(possible_steps)
-        self.grid.move_agent(self, new_position)
+        newPosition = self.chooseBestPosition(possibleSteps)
+        self.grid.move_agent(self, newPosition)
 
     # Checks if agent in the same cell is of the same type, which can reproduce and has an age higher than 20 % of
     # the max age
     def reproduction(self, sameCellAgent):
 
-        own_agent_type = type(self).__name__
-        if type(sameCellAgent).__name__ == own_agent_type and self.canReproduce and self.age > 0.2 * self.maxAge \
+        ownAgentType = type(self).__name__
+        if type(sameCellAgent).__name__ == ownAgentType and self.canReproduce and self.age > 0.2 * self.maxAge \
                 and self.noReprodSteps == 0:
             for _ in range(self.model.random.randrange(0, 2)):
-                self.model.createAgent(own_agent_type, 0)
-                self.model.incr_num_reproductions(own_agent_type)
+                self.model.createAgent(ownAgentType, 0)
+                self.model.incrNumReproductions(ownAgentType)
                 self.noReprodSteps = 5
 
     # Hurt enemy if in fight (monsters heals if the attack results on the death of a human)
@@ -83,7 +83,7 @@ class Character(Agent):
             self.noReprodSteps -= 1
 
     @abstractmethod
-    def chooseBestPosition(self, possible_steps):
+    def chooseBestPosition(self, possibleSteps):
         pass
 
     @abstractmethod
@@ -94,27 +94,27 @@ class Character(Agent):
     def agentsInSameCellAction(self, sameCellAgent):
         pass
 
-    def set_hp(self, hp):
+    def setHp(self, hp):
         self.hp = hp
 
-    def set_state(self, state):
+    def setState(self, state):
         self.state = state
 
     def hurtEnemy(self, enemy):
-        enemy.set_hp(enemy.hp - self.damage_per_second)
+        enemy.setHp(enemy.hp - self.damagePerSecond)
 
-    def agent_death(self, death_cause):
-        agent_type = type(self).__name__
+    def agentDeath(self, deathCause):
+        agentType = type(self).__name__
 
-        if death_cause == "fight":
-            self.model.incr_num_deaths_by_kill(agent_type)
-        elif death_cause == "hunger":
-            self.model.incr_num_deaths_by_hunger(agent_type)
+        if deathCause == "fight":
+            self.model.incrNumDeathsByKill(agentType)
+        elif deathCause == "hunger":
+            self.model.incrNumDeathsByHunger(agentType)
 
         self.model.removeAgent(self)
 
     def step(self):
-        death_cause = "fight"  # Death cause if agent dies (default to fight change if not in fight)
+        deathCause = "fight"  # Death cause if agent dies (default to fight change if not in fight)
 
         self.incrAge()
 
@@ -123,11 +123,11 @@ class Character(Agent):
         # if in fight agent doesn't move and hunger factor doesn't come into play
         if self.state["state"] != "InFight" and self.hp > 0:
             self.move()
-            self.hp -= self.hp_decrease
-            death_cause = "hunger"
+            self.hp -= self.hpDecrease
+            deathCause = "hunger"
 
         if self.hp <= 0:
-            self.agent_death(death_cause)
+            self.agentDeath(deathCause)
             return  # Don't do action if hp <= 0
 
         self.action()
