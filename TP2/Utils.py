@@ -2,6 +2,7 @@ import math
 from copy import copy
 
 
+# Removes moves through walls from the possible steps
 def removeThroughWallSteps(pos, possibleSteps, width, height):
     aux = copy(possibleSteps)
     for possibleStep in aux:
@@ -10,10 +11,12 @@ def removeThroughWallSteps(pos, possibleSteps, width, height):
             possibleSteps.remove(possibleStep)
 
 
+# Calculate distance between two cells of the grid
 def calculateDistance(pos1, pos2):
     return math.sqrt((pos2[0] - pos1[0]) ** 2 + (pos2[1] - pos1[1]) ** 2)
 
 
+# Get the nearest point to a specific agent
 def getNearPoint(agentPos, possibleSteps):
     minDistance = 9999999
 
@@ -26,6 +29,7 @@ def getNearPoint(agentPos, possibleSteps):
     return pos
 
 
+# Get the furthest point to a specific agent
 def getFurtherPoint(agentPos, possibleSteps):
     maxDistance = -99999999
 
@@ -38,6 +42,7 @@ def getFurtherPoint(agentPos, possibleSteps):
     return pos
 
 
+# Get the nearest agent in a set of agents
 def getNearAgent(agent, nearAgents):
     minDistance = 99999
 

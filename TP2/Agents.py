@@ -13,7 +13,7 @@ class MonsterAgent(Character, Portrayal):
         self.maxHP = hp
 
     def agentsInSameCellAction(self, sameCellAgent):
-        if type(sameCellAgent).__name__ == "PersonAgent":  # Start Fight
+        if type(sameCellAgent).__name__ == "HumanAgent":  # Start Fight
             self.state = {
                 "state": "InFight",
                 "enemy": sameCellAgent,
@@ -46,7 +46,7 @@ class MonsterAgent(Character, Portrayal):
         if nearAgent == -1:
             return self.random.choice(possibleSteps)
 
-        if "PersonAgent" == type(nearAgent).__name__:
+        if "HumanAgent" == type(nearAgent).__name__:
             return Utils.getNearPoint(nearAgent.pos, possibleSteps)
 
         if "MonsterAgent" == type(nearAgent).__name__:
@@ -55,7 +55,7 @@ class MonsterAgent(Character, Portrayal):
         return self.random.choice(possibleSteps)
 
 
-class PersonAgent(Character, Portrayal):
+class HumanAgent(Character, Portrayal):
 
     def __init__(self, uniqueId, model, shape, color, radius, hp, hpDecrease, damagePerSecond,
                  canReproduce, probTurningHero, age, maxAge):
@@ -65,7 +65,7 @@ class PersonAgent(Character, Portrayal):
         self.probTurningHero = probTurningHero
 
     def agentsInSameCellAction(self, sameCellAgent):
-        if type(sameCellAgent).__name__ == "Fruit":
+        if type(sameCellAgent).__name__ == "Food":
             self.grid.remove_agent(sameCellAgent)
             self.model.schedule.remove(sameCellAgent)
             if sameCellAgent.state["state"] == "BadQuality":  # Degraded food consumption
@@ -100,10 +100,10 @@ class PersonAgent(Character, Portrayal):
         if "MonsterAgent" == type(nearAgent).__name__:
             return Utils.getFurtherPoint(nearAgent.pos, possibleSteps)
 
-        if "Fruit" == type(nearAgent).__name__:
+        if "Food" == type(nearAgent).__name__:
             return Utils.getNearPoint(nearAgent.pos, possibleSteps)
 
-        if "PersonAgent" == type(nearAgent).__name__:
+        if "HumanAgent" == type(nearAgent).__name__:
             return Utils.getNearPoint(nearAgent.pos, possibleSteps)
 
         return self.random.choice(possibleSteps)
@@ -152,7 +152,7 @@ class HeroAgent(Character, Portrayal):
         if "MonsterAgent" == type(nearAgent).__name__:
             return Utils.getNearPoint(nearAgent.pos, possibleSteps)
 
-        if "PersonAgent" == type(nearAgent).__name__:
+        if "HumanAgent" == type(nearAgent).__name__:
             return Utils.getNearPoint(nearAgent.pos, possibleSteps)
 
         if "HeroAgent" == type(nearAgent).__name__:
@@ -161,7 +161,7 @@ class HeroAgent(Character, Portrayal):
         return self.random.choice(possibleSteps)
 
 
-class Fruit(Agent, Portrayal):
+class Food(Agent, Portrayal):
 
     def __init__(self, uniqueId, model, shape, color, radius):
         Agent.__init__(self, uniqueId, model)

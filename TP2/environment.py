@@ -28,7 +28,7 @@ modelParams = {
         'slider', 'Amount of HP decrease each step for hero', 0, 0, 30),
     'probTurningHero': UserSettableParameter(
         'slider', 'Probability of human turning to a hero', 1, 0, 100),
-    'generateQuantityFruit': UserSettableParameter(
+    'generateQuantityFood': UserSettableParameter(
         'slider', 'Amount of food generated every 5 steps', 20, 0, canvasWidth * canvasHeight * 0.05),
     'humanReproduction': UserSettableParameter(
         'checkbox', 'Human can reproduce', True),
