@@ -21,10 +21,6 @@ class Character(Agent):
         self.noReprodSteps = 0
         self.age = age
         self.maxAge = maxAge
-        if type(self).__name__ == "HeroAgent":
-            self.maxAge = 150
-        else:
-            self.maxAge = 75
 
     def move(self):
         possible_steps = self.grid.get_neighborhood(

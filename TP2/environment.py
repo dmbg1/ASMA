@@ -15,11 +15,11 @@ model_params = {
     'init_humans': UserSettableParameter(
         'slider', '% of initial pop. of humans', 0.3, 0, 1, 0.05),
     'init_monsters': UserSettableParameter(
-        'slider', '% of initial pop. of monsters', 0.3, 0, 1, 0.05),
+        'slider', '% of initial pop. of monsters', 0.2, 0, 1, 0.05),
     'init_heroes': UserSettableParameter(
         'slider', '% of initial pop. of heroes', 0.3, 0, 1, 0.05),
     'init_food': UserSettableParameter(
-        'slider', '% of initial amount of food', 0.1, 0, 1, 0.05),
+        'slider', '% of initial amount of food', 0.2, 0, 1, 0.05),
     'human_HPDecrease': UserSettableParameter(
         'slider', 'Amount of HP decrease each step for human', 10, 0, 30),
     'monster_HPDecrease': UserSettableParameter(
